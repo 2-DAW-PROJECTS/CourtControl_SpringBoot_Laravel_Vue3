@@ -26,5 +26,11 @@ RUN curl -sS https://getcomposer.org/installer | php \
 # Copiar el archivo de configuración personalizado para php.ini (opcional)
 # COPY php.ini /usr/local/etc/php/
 
-# Establecer el directorio de trabajo
-WORKDIR /var/www/html
+# Establecer el directorio de trabajo como el proyecto Laravel
+WORKDIR /var/www/html/1_helloworld
+
+# Exponer el puerto 8000 para el servidor de Laravel
+EXPOSE 8000
+
+# Ejecutar el servidor de Laravel al iniciar el contenedor (asegurándonos de estar en el directorio correcto)
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

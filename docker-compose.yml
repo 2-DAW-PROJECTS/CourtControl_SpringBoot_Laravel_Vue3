@@ -5,7 +5,8 @@ services:
     build: .
     container_name: apache
     ports:
-      - "80:80"
+      - "80:80" #Apache
+      - "8000:8000" #Laravel
     volumes:
       - ./src:/var/www/html
     depends_on:
