@@ -29,8 +29,14 @@ RUN curl -sS https://getcomposer.org/installer | php \
 # Establecer el directorio de trabajo como el proyecto Laravel
 WORKDIR /var/www/html/1_helloworld
 
+# Copiar el script de inicio al contenedor
+COPY start.sh /usr/local/bin/start.sh
+
+# Dar permisos de ejecución al script de inicio
+RUN chmod +x /usr/local/bin/start.sh
+
 # Exponer el puerto 8000 para el servidor de Laravel
 EXPOSE 8000
 
-# Ejecutar el servidor de Laravel al iniciar el contenedor (asegurándonos de estar en el directorio correcto)
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Ejecutar el script de inicio al iniciar el contenedor
+CMD ["/usr/local/bin/start.sh"]
