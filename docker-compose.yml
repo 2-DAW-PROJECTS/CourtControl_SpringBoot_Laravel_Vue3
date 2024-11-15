@@ -40,21 +40,22 @@
 
 # volumes:
 #   db_data:
-version: '3.8'
+# version: '3.8'
 
 services:
   apache:
     build: .
     container_name: apache
     ports:
-      - "80:80" #Apache
-      - "8000:8000" #Laravel
+      - "80:80"
+      - "8000:8000"
     volumes:
       - ./src:/var/www/html
     depends_on:
       - mysql
     networks:
       - app-network
+
 
   mysql:
     image: mysql:5.7
