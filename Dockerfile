@@ -1,44 +1,80 @@
-# Usar una imagen base oficial de PHP con Apache
+# FROM php:8.1-apache
+
+# # Install system dependencies
+# RUN apt-get update && apt-get install -y \
+#     libpng-dev \
+#     libjpeg-dev \
+#     libfreetype6-dev \
+#     zip \
+#     unzip \
+#     git \
+#     curl \
+#     && docker-php-ext-configure gd --with-freetype --with-jpeg \
+#     && docker-php-ext-install gd \
+#     && docker-php-ext-install pdo_mysql
+
+# # Enable Apache mod_rewrite
+# RUN a2enmod rewrite
+
+# # Install Composer
+# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# # Set working directory
+# WORKDIR /var/www/html
+
+# # Copy existing application directory contents
+# COPY ./src/1_helloworld /var/www/html
+
+# # Copy existing application directory permissions
+# COPY --chown=www-data:www-data ./src/1_helloworld /var/www/html
+
+# # Allow Composer to run as root
+# ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# # Install Laravel dependencies
+# RUN composer install
+
+# # Copy Apache config
+# COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
+# # Ensure the script is copied with Unix line endings and has execution permissions
+# COPY --chmod=755 start.sh /usr/local/bin/start.sh
+
+# # Expose port 80
+# EXPOSE 80
+
+# # Set the ServerName directive globally to suppress the warning
+# RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# # Run the start script
+# ENTRYPOINT ["/usr/local/bin/start.sh"]
 FROM php:8.1-apache
 
-# Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
-    unzip \
-    curl \
-    git \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
     zip \
-    mariadb-client \
+    unzip \
+    git \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql mbstring exif pcntl bcmath xml
+    && docker-php-ext-install gd \
+    && docker-php-ext-install pdo_mysql
 
-# Habilitar módulos de Apache necesarios
 RUN a2enmod rewrite
 
-# Instalar Composer
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar el archivo de configuración personalizado para php.ini (opcional)
-# COPY php.ini /usr/local/etc/php/
+WORKDIR /var/www/html
 
-# Establecer el directorio de trabajo como el proyecto Laravel
-WORKDIR /var/www/html/1_helloworld
+COPY ./src /var/www/html
+COPY --chown=www-data:www-data ./src /var/www/html
 
-# Copiar el script de inicio al contenedor
-COPY ./start.sh /usr/local/bin/start.sh
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN cd /var/www/html/1_helloworld && composer install
 
-# Dar permisos de ejecución al script de inicio
-RUN chmod +x /usr/local/bin/start.sh
-
-# Exponer el puerto 8000 para el servidor de Laravel
-EXPOSE 8000
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Ejecutar el script de inicio al iniciar el contenedor
-# CMD ["/usr/local/bin/start.sh"]
 CMD ["apache2-foreground"]
+

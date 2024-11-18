@@ -1,54 +1,98 @@
-# # version: '3.8'
+# version: '3.8'
 
 # services:
 #   apache:
-#     build: .
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
 #     container_name: apache
 #     ports:
-#       - "80:80" #Apache
-#       - "8000:8000" #Laravel
+#       - "80:80"
 #     volumes:
 #       - ./src:/var/www/html
 #     depends_on:
-#       - mysql
+#       mysql:
+#         condition: service_healthy
+#     networks:
+#       - app-network
 
 #   mysql:
 #     image: mysql:5.7
 #     container_name: mysql
+#     command: --max_allowed_packet=32505856
 #     restart: always
 #     environment:
-#       MYSQL_ROOT_PASSWORD: rootpassword
-#       MYSQL_DATABASE: exampledb
-#       MYSQL_USER: user
-#       MYSQL_PASSWORD: userpassword
+#       - MYSQL_ROOT_PASSWORD=rootpassword
+#       - MYSQL_DATABASE=crud_students
+#       - MYSQL_USER=laravel
+#       - MYSQL_PASSWORD=secret
 #     ports:
 #       - "3306:3306"
 #     volumes:
 #       - db_data:/var/lib/mysql
+#     healthcheck:
+#       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     networks:
+#       - app-network
 
 #   phpmyadmin:
-#     image: phpmyadmin/phpmyadmin
+#     image: phpmyadmin:latest
 #     container_name: phpmyadmin
+#     environment:
+#       - PMA_HOST=mysql
+#       - PMA_PORT=3306
+#       - MYSQL_ROOT_PASSWORD=rootpassword
+#       - PMA_ARBITRARY=1
+#       - UPLOAD_LIMIT=300M
 #     restart: always
-#     depends_on:
-#       - mysql
 #     ports:
 #       - "8080:80"
+#     depends_on:
+#       mysql:
+#         condition: service_healthy
+#     networks:
+#       - app-network
+
+#   laravel:
+#     build:
+#       context: ./src/1_helloworld
+#       dockerfile: Dockerfile
+#     container_name: laravel
+#     volumes:
+#       - ./src/1_helloworld:/var/www/html
+#     ports:
+#       - "8000:8000"
 #     environment:
-#       PMA_HOST: mysql
-#       MYSQL_ROOT_PASSWORD: rootpassword
+#       - DB_HOST=mysql
+#       - DB_DATABASE=crud_students
+#       - DB_USERNAME=laravel
+#       - DB_PASSWORD=secret
+#     depends_on:
+#       mysql:
+#         condition: service_healthy
+#     networks:
+#       - app-network
 
 # volumes:
 #   db_data:
-# version: '3.8'
+
+# networks:
+#   app-network:
+#     driver: bridge
+
+version: '3.8'
 
 services:
   apache:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: apache
     ports:
       - "80:80"
-      - "8000:8000"
     volumes:
       - ./src:/var/www/html
     depends_on:
@@ -56,16 +100,19 @@ services:
     networks:
       - app-network
 
-
   mysql:
     image: mysql:5.7
     container_name: mysql
+    command: 
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: crud_students
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootpassword
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
     ports:
       - "3306:3306"
     volumes:
@@ -83,7 +130,21 @@ services:
       - "8080:80"
     environment:
       PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: rootpassword
+    networks:
+      - app-network
+
+  laravel:
+    build:
+      context: ./src/1_helloworld
+      dockerfile: Dockerfile
+    container_name: laravel
+    volumes:
+      - ./src/1_helloworld:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
     networks:
       - app-network
 
