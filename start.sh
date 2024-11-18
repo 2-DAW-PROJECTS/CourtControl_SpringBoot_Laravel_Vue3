@@ -1,10 +1,13 @@
 #!/bin/bash
-cd /var/www/html
 
+# Change to Laravel project directory
+cd /var/www/html/laravel
+
+# Generate Laravel key
 php artisan key:generate
 
+# Show available routes
 php artisan route:list
 
-php artisan migrate
-
-php artisan serve --host=0.0.0.0 --port=8000 & apache2-foreground
+# Start Apache in foreground
+apache2-foreground
