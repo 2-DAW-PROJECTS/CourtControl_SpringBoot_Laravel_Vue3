@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Cambiar al directorio del proyecto Laravel
-cd /var/www/html/1_helloworld
+# Change to Laravel project directory
+cd /var/www/html/laravel
 
-# Generar la clave de Laravel si es necesario
+# Generate Laravel key
 php artisan key:generate
 
-# Mostrar las rutas disponibles
+# Show available routes
 php artisan route:list
 
-# Iniciar el servidor Laravel
-php artisan serve --host=0.0.0.0 --port=8000
+# Start Apache in foreground
+apache2-foreground

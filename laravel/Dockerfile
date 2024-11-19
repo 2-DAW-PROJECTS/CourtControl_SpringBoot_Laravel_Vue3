@@ -17,15 +17,18 @@ RUN a2enmod rewrite
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html/laravel
+WORKDIR /var/www/html
 
-# Copia los archivos en la carpeta laravel
-COPY ./laravel /var/www/html/laravel
-COPY --chown=www-data:www-data ./laravel /var/www/html/laravel
+COPY . /var/www/html
+COPY --chown=www-data:www-data . /var/www/html
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install
 
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
+EXPOSE 8000
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 CMD ["apache2-foreground"]
