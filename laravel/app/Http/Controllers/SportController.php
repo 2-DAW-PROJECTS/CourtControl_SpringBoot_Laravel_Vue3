@@ -4,34 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sport;
+use App\Http\Requests\StoreSportRequest;
+use App\Http\Requests\UpdateSportRequest;
+use App\Http\Resources\SportResource;
 
 class SportController extends Controller
 {
     // Método para obtener todos los deportes
     public function index()
     {
-        return Sport::all();
+        return SportResource::collection(Sport::all());
     }
 
     // Método para obtener un deporte por ID
     public function show($id)
     {
-        return Sport::find($id);
+        return new SportResource(Sport::find($id));
     }
 
     // Método para crear un nuevo deporte
-    public function store(Request $request)
+    public function store(StoreSportRequest $request)
     {
-        $sport = Sport::create($request->all());
-        return response()->json($sport, 201);
+        $sport = Sport::create($request->validated());
+        return new SportResource($sport);
     }
 
     // Método para actualizar un deporte existente
-    public function update(Request $request, $id)
+    public function update(UpdateSportRequest $request, $id)
     {
         $sport = Sport::findOrFail($id);
-        $sport->update($request->all());
-        return response()->json($sport, 200);
+        $sport->update($request->validated());
+        return new SportResource($sport);
     }
 
     // Método para eliminar un deporte
