@@ -10,7 +10,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./laravel:/var/www/html/laravel
+      - ./backend/laravel:/var/www/html/backend/laravel
     depends_on:
       - mysql
     networks:
@@ -52,11 +52,11 @@ services:
 
   laravel:
     build:
-      context: ./laravel
+      context: ./backend/laravel
       dockerfile: Dockerfile
     container_name: laravel
     volumes:
-      - ./laravel:/var/www/html
+      - ./backend/laravel:/var/www/html
     ports:
       - "8000:8000"
     depends_on:

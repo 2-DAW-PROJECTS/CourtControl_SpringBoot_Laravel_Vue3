@@ -17,11 +17,11 @@ RUN a2enmod rewrite
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html/laravel
+WORKDIR /var/www/html/backend/laravel
 
 # Copia los archivos en la carpeta laravel
-COPY ./laravel /var/www/html/laravel
-COPY --chown=www-data:www-data ./laravel /var/www/html/laravel
+COPY ./backend/laravel /var/www/html/backend/laravel
+COPY --chown=www-data:www-data ./backend/laravel /var/www/html/laravel
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install
