@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Sport;
 
 class SportsTableSeeder extends Seeder
 {
@@ -106,6 +107,7 @@ class SportsTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
-        
+
+            // Sport::factory()->count(10)->create();
     }
 }
