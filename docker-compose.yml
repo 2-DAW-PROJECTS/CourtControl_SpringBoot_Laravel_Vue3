@@ -64,6 +64,15 @@ services:
     networks:
       - app-network
 
+  vue:
+    build:
+      context: ./frontend/vue
+    container_name: vue_frontend
+    ports:
+      - "8081:8080"
+    networks:
+      - app-network
+
 volumes:
   db_data:
 
