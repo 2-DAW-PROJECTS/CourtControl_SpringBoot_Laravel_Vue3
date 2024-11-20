@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@egjs/flicking": "^4.11.4",
+    "@egjs/flicking-plugins": "^4.7.1",
     "@egjs/vue3-flicking": "^4.11.4",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/vue-splide": "^0.6.12",
