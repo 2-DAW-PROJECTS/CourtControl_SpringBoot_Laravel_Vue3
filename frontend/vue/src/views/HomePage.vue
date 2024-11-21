@@ -2,11 +2,18 @@
   <div class="home"> 
 
   <!-- Home Gifts -->
-  <HomeGifts />
-
+  <!-- <HomeGifts /> -->
+    
   <!-- Carousel Simple -->
   <!-- <CarrouselSimple /> -->
 
+  <!-- TESTE -->.
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
   <!-- Carousel Home -->
   <CarrouselHome />
 
@@ -16,12 +23,12 @@
 <script>
 import CarrouselHome from "@/components/Carrousel_home.vue";
 // import CarrouselSimple from "@/components/Carrousel_simple.vue";
-import HomeGifts from "@/components/Home_gifts.vue";
+// import HomeGifts from "@/components/Home_gifts.vue";
 
 export default {
   name: "HomePage",
   components: {
-    HomeGifts,
+    // HomeGifts,
     // CarrouselSimple,
     CarrouselHome
   }

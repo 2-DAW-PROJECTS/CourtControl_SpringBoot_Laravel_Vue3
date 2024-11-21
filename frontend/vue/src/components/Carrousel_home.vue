@@ -1,4 +1,3 @@
-<!-- IMPLEMENTAR IMAGENES DE FONDO EN LOS ITEMS -->
 <template>
   <div class="flicking-section">
     <Flicking
@@ -15,28 +14,34 @@
       <div class="panel">
         <div class="grid-container">
           <div class="grid-item i1">
-            <h2>Sección de Baloncesto</h2>
-            <p>Descubre nuestras modernas instalaciones</p>
+            <div class="content-overlay"></div>
+            <h2>Basket Mania </h2>
+            <p>¡Ven a botar con nosotros en nuestras increíbles instalaciones! </p>
           </div>
           <div class="grid-item i2">
-            <h3>Tecnificaciones</h3>
-            <p>| Tiro | Bote | Pase | Salto |</p>
+            <div class="content-overlay"></div>
+            <h3>¡Tecnificaciones!</h3>
+            <p align="center"> Tiro | Bote | Pase  <br> Salto </p>
           </div>
           <div class="grid-item i3">
-            <h3>Fisicos</h3>
-            <p>Te vamos a preparar fisicamente</p>
+            <div class="content-overlay"></div>
+            <h3>¡Ponte en Forma!</h3>
+            <p>¡Prepárate para ser imparable!</p>
           </div>
           <div class="grid-item i4">
-            <h3>Reserva Pistas</h3>
-            <p>| Parquet | Asfalto | Interior | Exterior |</p>
+            <div class="content-overlay"></div>
+            <h3>¡Tu Cancha te Espera!</h3>
+            <p>¡Elige tu terreno de juego favorito y a divertirse!</p>
           </div>
           <div class="grid-item i5">
-            <h3>Veranos Intensivos</h3>
-            <p>| BENJAMÍN 6 - 8 | ALEVIN 9 - 11 | INFANTIL 12 - 14 | CADETE 15 - 17 | JUNIOR 18 - 20 | SENIOR 21 - 39 |</p>
+            <div class="content-overlay"></div>
+            <h3>¡Veranos Inolvidables!</h3>
+            <p>¡Diversión sin límites para todas las edades! ¡Únete a la aventura! 🌞</p>
           </div>
           <div class="grid-item i6">
+            <div class="content-overlay"></div>
             <h3>Eventos</h3>
-            <p>Competiciones y torneos</p>
+            <p>Competiciones y Torneos 🏆</p>
           </div>
         </div>
       </div>
@@ -44,28 +49,34 @@
       <div class="panel">
         <div class="grid-container">
           <div class="grid-item i7">
-            <h2>Servicios Premium</h2>
-            <p>La mejor experiencia deportiva</p>
+            <div class="content-overlay"></div>
+            <h2>Volley Mania</h2>
+            <p>¡Aprende, salta y diviértete con nuestro método único!</p>
           </div>
           <div class="grid-item i8">
-            <h3>Entrenador Personal</h3>
-            <p>Planes personalizados</p>
+            <div class="content-overlay"></div>
+            <h3>¡Tecnificaciones!</h3>
+            <p align="center"> Saque | Bloqueo | Remate  <br> Colocación | Defensa </p>
           </div>
           <div class="grid-item i9">
-            <h3>Nutrición</h3>
-            <p>Asesoramiento experto</p>
+            <div class="content-overlay"></div>
+            <h3>¡Ponte en Forma!</h3>
+            <p>¡Prepárate para volar! </p>
           </div>
           <div class="grid-item i10">
-            <h3>Spa & Wellness</h3>
-            <p>Relájate después del ejercicio</p>
+            <div class="content-overlay"></div>
+            <h3>¡Tu Espacio de Juego!</h3>
+            <p>¡De la arena a la pista, la diversión no para! </p>
           </div>
           <div class="grid-item i11">
-            <h3>Membresías</h3>
-            <p>Planes flexibles para ti</p>
+            <div class="content-overlay"></div>
+            <h3>¡Verano de Campeones!</h3>
+            <p>¡Diversión asegurada para todos! ¡Ven a vivir la experiencia! 🌞</p>
           </div>
           <div class="grid-item i12">
-            <h3>App Móvil</h3>
-            <p>Reserva y seguimiento</p>
+            <div class="content-overlay"></div>
+            <h3>Eventos</h3>
+            <p>Competiciones y Torneos 🏆</p>
           </div>
         </div>
       </div>
@@ -92,28 +103,27 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
 .flicking-section {
+  width: 100%;
+  height: 75vh;
+  /* background: linear-gradient(135deg, #2a2a2a, #3c4e60); */
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 80vh;
-  background: #1a1a1a;
 }
 
 .flicking-viewport {
-  width: 100%;
-  height: 70vh;
-  overflow: hidden;
-  background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+  height: 100%;
+  position: relative;
 }
 
 .panel {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  padding: 15px;
 }
 
 .grid-container {
@@ -122,11 +132,12 @@ export default {
     "item1 item2 item3"
     "item1 item4 item4"
     "item5 item5 item6";
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
   grid-template-columns: 2fr 1fr 1fr;
   gap: 12px;
-  width: 90%;
-  height: 90%;
+  width: 80%;
+  height: 85%;
+  padding: 15px;
 }
 
 .grid-item {
@@ -134,56 +145,80 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-  border: 1px solid rgba(46, 213, 115, 0.3);
-  color: white;
-  text-align: center;
+  border-radius: 12px;
+  padding: 15px;
+  transition: all 0.5s ease;
+  position: relative;
   background-size: cover;
   background-position: center;
-  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  /* border: 2px solid transparent; */
 }
 
-.grid-item::before {
-  content: '';
+.content-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.grid-item:hover .content-overlay {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .grid-item:hover {
-  transform: scale(1.02);
-  border-color: rgba(46, 213, 115, 0.8);
-  box-shadow: 0 4px 12px rgba(46, 213, 115, 0.2);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(46, 213, 116, 0.205);
+  border-color: #5ce147;
 }
 
-.grid-item h2, .grid-item h3, .grid-item p {
-  position: relative;
-  z-index: 1;
+.grid-item:hover h2,
+.grid-item:hover h3 {
+  /* transform: scale(1.1); */
+  text-shadow: 2px 2px 4px rgba(238, 203, 114, 0.6);
+  letter-spacing: 1px;
+}
+
+.grid-item:hover p {
+  transform: translateY(5px);
+}
+
+.grid-item h2,
+.grid-item h3,
+.grid-item p {
+  z-index: 2;
+  transition: all 0.3s ease;
+  font-family: 'Russo One', sans-serif;
+  
 }
 
 .grid-item h2 {
-  font-size: 2.2rem;
-  margin-bottom: 12px;
-  font-weight: 700;
+  font-size: 1.8rem;
   color: #2ed573;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+  margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
 .grid-item h3 {
-  font-size: 1.6rem;
-  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  color: #eecb72;
   font-weight: 600;
-  color: #2ed573;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  margin-bottom: 8px;
 }
 
 .grid-item p {
-  font-size: 1.1rem;
-  opacity: 0.9;
+  font-size: 0.9rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  line-height: 1.3;
 }
 
 .i1 { grid-area: item1; background-image: url('../assets/img_sports/basket.jpg'); }
@@ -196,26 +231,57 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* background-size: 100% 100%; */
 }
 .i6 { grid-area: item6; background-image: url('../assets/img_sports/competicion_basket.jpg'); }
 
-.i7 { grid-area: item1; background-image: url('../assets/img_sports/voleibol.jpg'); }
-.i8 { grid-area: item2; background-image: url('../assets/img_sports/basket.jpg'); }
-.i9 { grid-area: item3; background-image: url('../assets/img_sports/basket.jpg'); }
-.i10 { grid-area: item4; background-image: url('../assets/img_sports/basket.jpg'); }
-.i11 { grid-area: item5; background-image: url('../assets/img_sports/basket.jpg'); }
-.i12 { grid-area: item6; background-image: url('../assets/img_sports/basket.jpg'); }
+.i7 { grid-area: item1; background-image: url('../assets/img_sports/voley_5.jpg'); }
+.i8 { grid-area: item2; background-image: url('../assets/img_sports/voley_4.jpg'); }
+.i9 { grid-area: item3; background-image: url('../assets/img_sports/fisico_basket.jpg'); }
+.i10 { grid-area: item4; background-image: url('../assets/img_sports/voley_2.avif'); }
+.i11 {
+  grid-area: item5; 
+  background-image: url('../assets/img_sports/volley_7.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.i12 { grid-area: item6; background-image: url('../assets/img_sports/voley_1.jpg'); }
 
 @media (max-width: 768px) {
+  .grid-container {
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .grid-item {
+    padding: 12px;
+  }
+  
   .grid-item h2 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
+  
   .grid-item h3 {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
+  
   .grid-item p {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-areas:
+      "item1"
+      "item2"
+      "item3"
+      "item4"
+      "item5"
+      "item6";
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
   }
 }
 </style>
