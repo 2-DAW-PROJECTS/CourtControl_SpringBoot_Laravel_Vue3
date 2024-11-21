@@ -44,28 +44,28 @@
       <div class="panel">
         <div class="grid-container">
           <div class="grid-item i7">
-            <h2>Servicios Premium</h2>
-            <p>La mejor experiencia deportiva</p>
+            <h2>Sección de Voleibol</h2>
+            <p>Descubre nuestra metodología avanzada de entrenamiento.</p>
           </div>
           <div class="grid-item i8">
-            <h3>Entrenador Personal</h3>
-            <p>Planes personalizados</p>
+            <h3>Técnicas</h3>
+            <p>| Saque | Bloqueo | Remate | Defensa | Colocación | Recepción |</p>
           </div>
           <div class="grid-item i9">
-            <h3>Nutrición</h3>
-            <p>Asesoramiento experto</p>
+            <h3>Físico</h3>
+            <p>Te ayudamos a alcanzar tu mejor Prime.</p>
           </div>
           <div class="grid-item i10">
-            <h3>Spa & Wellness</h3>
-            <p>Relájate después del ejercicio</p>
+            <h3>Reserva Pistas</h3>
+            <p>| Arena | Tarima | Interior | Exterior |</p>
           </div>
           <div class="grid-item i11">
-            <h3>Membresías</h3>
-            <p>Planes flexibles para ti</p>
+            <h3>Veranos Intensivos</h3>
+            <p>| BENJAMÍN 6 - 8 | ALEVÍN 9 - 11 | INFANTIL 12 - 14 | CADETE 15 - 17 | JUNIOR 18 - 20 | SENIOR 21 - 50 |</p>
           </div>
           <div class="grid-item i12">
-            <h3>App Móvil</h3>
-            <p>Reserva y seguimiento</p>
+            <h3>Eventos</h3>
+            <p>Participa en competiciones y torneos emocionantes.</p>
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 8px;
 }
 
@@ -196,7 +196,6 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* background-size: 100% 100%; */
 }
 .i6 { grid-area: item6; background-image: url('../assets/img_sports/competicion_basket.jpg'); }
 
