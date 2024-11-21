@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('match_duration')->nullable(); // Duración del partido (en minuts)
             $table->string('physical_intensity')->nullable(); // Intensidad física (baja, media, alta)
             $table->text('rules')->nullable(); // Reglas
-            $table->boolean('isActive')->default(true); // 
+            $table->boolean('isActive')->default(1); // 
             $table->string('icon')->nullable(); // imagen
             $table->text('description')->nullable(); // Descripción
             $table->timestamps(); // Camps created_at y updated_at

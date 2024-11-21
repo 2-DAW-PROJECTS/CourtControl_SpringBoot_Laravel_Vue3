@@ -32,7 +32,7 @@ class UpdateSportRequest extends FormRequest
             'match_duration' => 'sometimes|required|integer|min:1',
             'physical_intensity' => 'sometimes|required|string|max:255',
             'rules' => 'sometimes|required|string',
-            'isActive' => 'sometimes|required|boolean',
+            'isActive' => 'sometimes|required|integer|min:0|max:1',
             'icon' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
         ];

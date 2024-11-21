@@ -30,7 +30,7 @@ class StoreSportRequest extends FormRequest
             'match_duration' => 'required|integer|min:1',
             'physical_intensity' => 'required|string|max:255',
             'rules' => 'required|string',
-            'isActive' => 'required|boolean',
+            'isActive' => 'required|integer|min:0|max:1',
             'icon' => 'required|string|max:255',
             'description' => 'required|string',
         ];
