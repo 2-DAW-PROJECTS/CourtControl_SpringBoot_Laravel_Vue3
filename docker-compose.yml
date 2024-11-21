@@ -73,6 +73,22 @@ services:
     networks:
       - app-network
 
+  springboot:
+    build:
+      context: ./backend/SpringBoot
+    container_name: springboot
+    ports:
+      - "8085:8085" # Mapeo de puerto externo a interno actualizado
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/CourtControl
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+
 volumes:
   db_data:
 
