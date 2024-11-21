@@ -1,3 +1,4 @@
+<!-- IMPLEMENTAR IMAGENES DE FONDO EN LOS ITEMS -->
 <template>
   <div class="flicking-section">
     <Flicking
@@ -13,27 +14,27 @@
     >
       <div class="panel">
         <div class="grid-container">
-          <div class="grid-item item1">
-            <h2>Instalaciones Deportivas</h2>
+          <div class="grid-item i1">
+            <h2>Sección de Baloncesto</h2>
             <p>Descubre nuestras modernas instalaciones</p>
           </div>
-          <div class="grid-item item2">
-            <h3>Piscina</h3>
-            <p>Nado libre y clases</p>
+          <div class="grid-item i2">
+            <h3>Tecnificaciones</h3>
+            <p>| Tiro | Bote | Pase | Salto |</p>
           </div>
-          <div class="grid-item item3">
-            <h3>Gimnasio</h3>
-            <p>Equipo de última generación</p>
+          <div class="grid-item i3">
+            <h3>Fisicos</h3>
+            <p>Te vamos a preparar fisicamente</p>
           </div>
-          <div class="grid-item item4">
-            <h3>Pistas</h3>
-            <p>Tenis, Fútbol y más</p>
+          <div class="grid-item i4">
+            <h3>Reserva Pistas</h3>
+            <p>| Parquet | Asfalto | Interior | Exterior |</p>
           </div>
-          <div class="grid-item item5">
-            <h3>Actividades</h3>
-            <p>Yoga, Pilates, Zumba</p>
+          <div class="grid-item i5">
+            <h3>Veranos Intensivos</h3>
+            <p>| BENJAMÍN 6 - 8 | ALEVIN 9 - 11 | INFANTIL 12 - 14 | CADETE 15 - 17 | JUNIOR 18 - 20 | SENIOR 21 - 39 |</p>
           </div>
-          <div class="grid-item item6">
+          <div class="grid-item i6">
             <h3>Eventos</h3>
             <p>Competiciones y torneos</p>
           </div>
@@ -42,27 +43,27 @@
 
       <div class="panel">
         <div class="grid-container">
-          <div class="grid-item item1">
+          <div class="grid-item i7">
             <h2>Servicios Premium</h2>
             <p>La mejor experiencia deportiva</p>
           </div>
-          <div class="grid-item item2">
+          <div class="grid-item i8">
             <h3>Entrenador Personal</h3>
             <p>Planes personalizados</p>
           </div>
-          <div class="grid-item item3">
+          <div class="grid-item i9">
             <h3>Nutrición</h3>
             <p>Asesoramiento experto</p>
           </div>
-          <div class="grid-item item4">
+          <div class="grid-item i10">
             <h3>Spa & Wellness</h3>
             <p>Relájate después del ejercicio</p>
           </div>
-          <div class="grid-item item5">
+          <div class="grid-item i11">
             <h3>Membresías</h3>
             <p>Planes flexibles para ti</p>
           </div>
-          <div class="grid-item item6">
+          <div class="grid-item i12">
             <h3>App Móvil</h3>
             <p>Reserva y seguimiento</p>
           </div>
@@ -136,17 +137,34 @@ export default {
   padding: 12px;
   border-radius: 8px;
   transition: transform 0.3s ease;
-  backdrop-filter: blur(5px);
-  background: rgba(0, 0, 0, 0.7);
   border: 1px solid rgba(46, 213, 115, 0.3);
   color: white;
   text-align: center;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.grid-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
 }
 
 .grid-item:hover {
   transform: scale(1.02);
   border-color: rgba(46, 213, 115, 0.8);
   box-shadow: 0 4px 12px rgba(46, 213, 115, 0.2);
+}
+
+.grid-item h2, .grid-item h3, .grid-item p {
+  position: relative;
+  z-index: 1;
 }
 
 .grid-item h2 {
@@ -168,12 +186,26 @@ export default {
   opacity: 0.9;
 }
 
-.item1 { grid-area: item1; background: rgba(0, 0, 0, 0.8); }
-.item2 { grid-area: item2; background: rgba(46, 213, 115, 0.1); }
-.item3 { grid-area: item3; background: rgba(46, 213, 115, 0.1); }
-.item4 { grid-area: item4; background: rgba(46, 213, 115, 0.1); }
-.item5 { grid-area: item5; background: rgba(46, 213, 115, 0.1); }
-.item6 { grid-area: item6; background: rgba(46, 213, 115, 0.1); }
+.i1 { grid-area: item1; background-image: url('../assets/img_sports/basket.jpg'); }
+.i2 { grid-area: item2; background-image: url('../assets/img_sports/tecnification_basket.webp'); }
+.i3 { grid-area: item3; background-image: url('../assets/img_sports/fisico_basket.jpg'); }
+.i4 { grid-area: item4; background-image: url('../assets/img_sports/pistas_basket.webp'); }
+.i5 { 
+  grid-area: item5; 
+  background-image: url('../assets/img_sports/vereano_basket.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-size: 100% 100%; */
+}
+.i6 { grid-area: item6; background-image: url('../assets/img_sports/competicion_basket.jpg'); }
+
+.i7 { grid-area: item1; background-image: url('../assets/img_sports/voleibol.jpg'); }
+.i8 { grid-area: item2; background-image: url('../assets/img_sports/basket.jpg'); }
+.i9 { grid-area: item3; background-image: url('../assets/img_sports/basket.jpg'); }
+.i10 { grid-area: item4; background-image: url('../assets/img_sports/basket.jpg'); }
+.i11 { grid-area: item5; background-image: url('../assets/img_sports/basket.jpg'); }
+.i12 { grid-area: item6; background-image: url('../assets/img_sports/basket.jpg'); }
 
 @media (max-width: 768px) {
   .grid-item h2 {

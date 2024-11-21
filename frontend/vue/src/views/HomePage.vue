@@ -5,7 +5,7 @@
   <HomeGifts />
 
   <!-- Carousel Simple -->
-  <CarrouselSimple />
+  <!-- <CarrouselSimple /> -->
 
   <!-- Carousel Home -->
   <CarrouselHome />
@@ -15,14 +15,14 @@
 
 <script>
 import CarrouselHome from "@/components/Carrousel_home.vue";
-import CarrouselSimple from "@/components/Carrousel_simple.vue";
+// import CarrouselSimple from "@/components/Carrousel_simple.vue";
 import HomeGifts from "@/components/Home_gifts.vue";
 
 export default {
   name: "HomePage",
   components: {
     HomeGifts,
-    CarrouselSimple,
+    // CarrouselSimple,
     CarrouselHome
   }
 };
