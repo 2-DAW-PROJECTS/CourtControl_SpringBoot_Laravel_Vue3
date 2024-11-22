@@ -40,7 +40,7 @@ export default {
 <style scoped>
 .header {
   background-color: rgba(0, 0, 0, 0.8);
-  padding: 15px 20px;
+  padding: 0px 20px;
   backdrop-filter: blur(10px);
   position: fixed;
   width: 100%;
@@ -54,11 +54,11 @@ export default {
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 }
 
 .logo img {
-  height: 50px;
+  height: 100px;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
