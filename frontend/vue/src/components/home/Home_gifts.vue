@@ -42,7 +42,7 @@ export default {
 .hero-section {
   height: 80vh;
   position: relative;
-  background: url('../assets/gifts/volei.webp') center center;
+  background: url('../../assets/gifts/volei.webp') center center;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -55,17 +55,17 @@ export default {
 }
 
 @keyframes backgroundSlide {
-  0% { background-image: url('../assets/gifts/volei.webp'); }
-  10% { background-image: url('../assets/gifts/tenis.webp'); }
-  20% { background-image: url('../assets/gifts/footbol.webp'); }
-  30% { background-image: url('../assets/gifts/boxeo.gif'); }
-  40% { background-image: url('../assets/gifts/basket.webp'); }
-  50% { background-image: url('../assets/gifts/atletismo.webp'); }
-  60% { background-image: url('../assets/gifts/surf.gif'); }
-  70% { background-image: url('../assets/gifts/curry.webp'); }
-  80% { background-image: url('../assets/gifts/rugby.webp'); }
-  90% { background-image: url('../assets/gifts/beisbol.webp'); }
-  100% { background-image: url('../assets/gifts/volei.webp'); }
+  0% { background-image: url('../../assets/gifts/volei.webp'); }
+  10% { background-image: url('../../assets/gifts/tenis.webp'); }
+  20% { background-image: url('../../assets/gifts/footbol.webp'); }
+  30% { background-image: url('../../assets/gifts/boxeo.gif'); }
+  40% { background-image: url('../../assets/gifts/basket.webp'); }
+  50% { background-image: url('../../assets/gifts/atletismo.webp'); }
+  60% { background-image: url('../../assets/gifts/surf.gif'); }
+  70% { background-image: url('../../assets/gifts/curry.webp'); }
+  80% { background-image: url('../../assets/gifts/rugby.webp'); }
+  90% { background-image: url('../../assets/gifts/beisbol.webp'); }
+  100% { background-image: url('../../assets/gifts/volei.webp'); }
 }
 
 .overlay {

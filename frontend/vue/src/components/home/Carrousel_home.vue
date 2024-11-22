@@ -221,32 +221,32 @@ export default {
   line-height: 1.3;
 }
 
-.i1 { grid-area: item1; background-image: url('../assets/img_sports/basket.jpg'); }
-.i2 { grid-area: item2; background-image: url('../assets/img_sports/tecnification_basket.webp'); }
-.i3 { grid-area: item3; background-image: url('../assets/img_sports/fisico_basket.jpg'); }
-.i4 { grid-area: item4; background-image: url('../assets/img_sports/pistas_basket.webp'); }
+.i1 { grid-area: item1; background-image: url('../../assets/img_sports/basket.jpg'); }
+.i2 { grid-area: item2; background-image: url('../../assets/img_sports/tecnification_basket.webp'); }
+.i3 { grid-area: item3; background-image: url('../../assets/img_sports/fisico_basket.jpg'); }
+.i4 { grid-area: item4; background-image: url('../../assets/img_sports/pistas_basket.webp'); }
 .i5 { 
   grid-area: item5; 
-  background-image: url('../assets/img_sports/vereano_basket.webp');
+  background-image: url('../../assets/img_sports/vereano_basket.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-.i6 { grid-area: item6; background-image: url('../assets/img_sports/competicion_basket.jpg'); }
+.i6 { grid-area: item6; background-image: url('../../assets/img_sports/competicion_basket.jpg'); }
 
-.i7 { grid-area: item1; background-image: url('../assets/img_sports/voley_5.jpg'); }
-.i8 { grid-area: item2; background-image: url('../assets/img_sports/voley_4.jpg'); }
-.i9 { grid-area: item3; background-image: url('../assets/img_sports/fisico_basket.jpg'); }
-.i10 { grid-area: item4; background-image: url('../assets/img_sports/voley_2.avif'); }
+.i7 { grid-area: item1; background-image: url('../../assets/img_sports/voley_5.jpg'); }
+.i8 { grid-area: item2; background-image: url('../../assets/img_sports/voley_4.jpg'); }
+.i9 { grid-area: item3; background-image: url('../../assets/img_sports/fisico_basket.jpg'); }
+.i10 { grid-area: item4; background-image: url('../../assets/img_sports/voley_2.avif'); }
 .i11 {
   grid-area: item5; 
-  background-image: url('../assets/img_sports/volley_7.jpg');
+  background-image: url('../../assets/img_sports/volley_7.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.i12 { grid-area: item6; background-image: url('../assets/img_sports/voley_1.jpg'); }
+.i12 { grid-area: item6; background-image: url('../../assets/img_sports/voley_1.jpg'); }
 
 @media (max-width: 768px) {
   .grid-container {
