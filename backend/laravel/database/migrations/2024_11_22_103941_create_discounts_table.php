@@ -10,12 +10,9 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('partner_id');
             $table->string('description');
             $table->decimal('percentage', 5, 2);
             $table->timestamps();
-
-            $table->foreign('partner_id')->references('id')->on('partners')->onDelete('cascade');
         });
     }
 
