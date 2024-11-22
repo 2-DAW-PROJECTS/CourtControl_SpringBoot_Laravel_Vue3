@@ -88,6 +88,17 @@ services:
     networks:
       - app-network
 
+  react:
+    build:
+      context: ./frontend/react
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+
 
 volumes:
   db_data:

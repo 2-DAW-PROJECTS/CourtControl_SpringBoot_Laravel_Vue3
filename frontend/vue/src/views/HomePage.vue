@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import CarrouselHome from "@/components/Carrousel_home.vue";
+import CarrouselHome from "@/components/home/Carrousel_home.vue";
 // import CarrouselSimple from "@/components/Carrousel_simple.vue";
 // import HomeGifts from "@/components/Home_gifts.vue";
 
