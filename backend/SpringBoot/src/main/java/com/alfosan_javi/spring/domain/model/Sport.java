@@ -1,3 +1,4 @@
+// lombok - lombok - lombok - lombok
 package com.alfosan_javi.spring.domain.model;
 
 import jakarta.persistence.*;
@@ -188,7 +189,7 @@ public class Sport {
         this.updatedAt = updatedAt;
     }
 
-    // toString()
+    // toString() lombok
     @Override
     public String toString() {
         return "Sport{" +

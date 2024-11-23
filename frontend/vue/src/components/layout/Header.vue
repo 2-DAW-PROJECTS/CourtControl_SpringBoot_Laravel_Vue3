@@ -11,8 +11,8 @@
       </button>
       <nav class="nav" :class="{ 'nav-active': isMenuOpen }">
         <ul>
-          <li><router-link to="/" class="nav-link">Inicio</router-link></li>
-          <li><router-link to="/about" class="nav-link">Nosotros</router-link></li>
+          <li><router-link to="/home" class="nav-link">Inicio</router-link></li>
+          <li><router-link to="/shop" class="nav-link">Reserva</router-link></li>
           <li><router-link to="/services" class="nav-link">Servicios</router-link></li>
           <li><router-link to="/contact" class="nav-link">Contacto</router-link></li>
         </ul>

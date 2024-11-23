@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pistas Deportivas Premium</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+  body {
+      background: linear-gradient(to bottom, #0d0d0d, #1a1a1a);
+      color: #e0e0e0;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+  }
+
+  .list-content {
+      padding: 2rem;
+      min-height: 100vh;
+  }
+    
+  .header-section {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 3rem 0;
+      background: linear-gradient(135deg, #1abc9c, #16a085);
+      color: white;
+      border-radius: 25px;
+      box-shadow: 0 15px 30px rgba(22, 160, 133, 0.3);
+      position: relative;
+      overflow: hidden;
+  }
+    
+  .header-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+  }
+    
+  .header-section h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+      letter-spacing: 2px;
+  }
+    
+  .subtitle {
+      font-size: 1.4rem;
+      opacity: 0.95;
+      font-weight: 300;
+      letter-spacing: 1px;
+  }
+    
+  .courts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2.5rem;
+      padding: 1.5rem;
+  }
+    
+  .court-card {
+      background: rgba(42, 42, 42, 0.95);
+      border-radius: 30px;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(22, 160, 133, 0.2);
+      position: relative;
+  }
+    
+  .court-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 35px rgba(22, 160, 133, 0.3);
+      border-color: rgba(22, 160, 133, 0.5);
+  }
+    
+  .court-image {
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+  }
+    
+  .court-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+      filter: brightness(1.1) contrast(1.1);
+  }
+    
+  .court-card:hover .court-img {
+      transform: scale(1.1);
+  }
+    
+  .court-info {
+      padding: 2.2rem;
+      position: relative;
+  }
+    
+  .court-info h3 {
+      color: #1abc9c;
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+  }
+    
+  .court-details {
+      margin-bottom: 2rem;
+  }
+    
+  .badge {
+      background: linear-gradient(135deg, #1abc9c, #16a085);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      display: inline-block;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 5px 15px rgba(22, 160, 133, 0.3);
+      font-weight: 600;
+      letter-spacing: 1px;
+  }
+    
+  .description {
+      color: #d0d0d0;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      margin: 1rem 0;
+  }
+    
+  .court-details p {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0.8rem 0;
+      font-size: 1.1rem;
+  }
+    
+  .court-details i {
+      color: #1abc9c;
+      font-size: 1.2rem;
+  }
+    
+  .reserve-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: linear-gradient(135deg, #1abc9c, #16a085);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 20px rgba(22, 160, 133, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+  }
+    
+  .reserve-btn:hover {
+      background: linear-gradient(135deg, #16a085, #1abc9c);
+      box-shadow: 0 12px 25px rgba(22, 160, 133, 0.5);
+      transform: translateY(-3px);
+  }
+    
+  .no-courts {
+      text-align: center;
+      padding: 4rem;
+      background: rgba(42, 42, 42, 0.95);
+      border-radius: 25px;
+      box-shadow: 0 15px 30px rgba(22, 160, 133, 0.2);
+      border: 2px solid rgba(22, 160, 133, 0.2);
+      margin: 2rem 0;
+  }
+    
+  .no-courts i {
+      font-size: 4rem;
+      color: #1abc9c;
+      margin-bottom: 1.5rem;
+  }
+    
+  .no-courts p {
+      font-size: 1.4rem;
+      color: #d0d0d0;
+      font-weight: 300;
+      letter-spacing: 1px;
+  }
+    
+  @media (max-width: 768px) {
+      .courts-grid {
+          grid-template-columns: 1fr;
+      }
+        
+      .header-section h2 {
+          font-size: 2.5rem;
+      }
+        
+      .court-card {
+          margin: 0 1rem;
+      }
+  }
+  </style>
+</head>
+<body>
+  <div class="list-content">
+      <div class="header-section">
+          <h2>Instalaciones Deportivas Premium</h2>
+          <p class="subtitle">Experimenta la excelencia en nuestras instalaciones de clase mundial</p>
+      </div>
+        
+      <div class="courts-grid">
+        <div class="court-card">
+            <div class="court-image">
+                <img src="../../assets/img_courts/b_asfalto.jpg" alt="Pista Premium de Tenis" class="court-img">
+            </div>
+            <div class="court-info">
+                <span class="badge">Pista Premium</span>
+                <h3>Pista Profesional de Tenis</h3>
+                <div class="court-details">
+                    <p><i class="fas fa-ruler-combined"></i> Dimensiones: 23.77m x 10.97m</p>
+                    <p><i class="fas fa-layer-group"></i> Superficie: Asfalto Profesional</p>
+                    <p><i class="fas fa-clock"></i> Disponibilidad: 24/7</p>
+                    <p class="description"><i class="fas fa-star"></i> Pista de competición con iluminación LED y graderío</p>
+                </div>
+                <button class="reserve-btn">Reservar Pista Premium</button>
+            </div>
+        </div>
+        <div class="court-card">
+            <div class="court-image">
+                <img src="../../assets/img_courts/b_parquet.jpg" alt="Pista Indoor de Baloncesto" class="court-img">
+            </div>
+            <div class="court-info">
+                <span class="badge">Pista Indoor</span>
+                <h3>Pista Elite de Baloncesto</h3>
+                <div class="court-details">
+                    <p><i class="fas fa-ruler-combined"></i> Dimensiones: 28m x 15m</p>
+                    <p><i class="fas fa-layer-group"></i> Superficie: Parquet Profesional</p>
+                    <p><i class="fas fa-temperature-low"></i> Climatización controlada</p>
+                    <p class="description"><i class="fas fa-star"></i> Canastas regulables y marcador electrónico</p>
+                </div>
+                <button class="reserve-btn">Reservar Pista Elite</button>
+            </div>
+        </div>
+        <div class="court-card">
+            <div class="court-image">
+                <img src="../../assets/img_courts/v_playa.jpg" alt="Pista de Voley Playa" class="court-img">
+            </div>
+            <div class="court-info">
+                <span class="badge">Voley Playa</span>
+                <h3>Arena Premium Beach Volley</h3>
+                <div class="court-details">
+                    <p><i class="fas fa-ruler-combined"></i> Dimensiones: 16m x 8m</p>
+                    <p><i class="fas fa-water"></i> Arena certificada de competición</p>
+                    <p><i class="fas fa-umbrella-beach"></i> Zona de calentamiento</p>
+                    <p class="description"><i class="fas fa-star"></i> Red profesional y sistema de riego automático</p>
+                </div>
+                <button class="reserve-btn">Reservar Pista Beach</button>
+            </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
