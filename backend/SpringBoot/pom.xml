@@ -35,6 +35,12 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version> <!-- Use the latest version available -->
+			<scope>provided</scope>
+    	</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
