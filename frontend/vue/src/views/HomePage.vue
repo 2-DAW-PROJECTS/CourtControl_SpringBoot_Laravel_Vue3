@@ -17,11 +17,15 @@
   <!-- Carousel Home -->
   <CarrouselHome />
 
+  <!-- Card Description Home -->
+  <CardDescription_home />
+
 </div>
 </template>
 
 <script>
 import CarrouselHome from "@/components/home/Carrousel_home.vue";
+import CardDescription_home from "@/components/home/CardDescription_home.vue";
 // import CarrouselSimple from "@/components/Carrousel_simple.vue";
 // import HomeGifts from "@/components/Home_gifts.vue";
 
@@ -30,6 +34,7 @@ export default {
   components: {
     // HomeGifts,
     // CarrouselSimple,
+    CardDescription_home,
     CarrouselHome
   }
 };
