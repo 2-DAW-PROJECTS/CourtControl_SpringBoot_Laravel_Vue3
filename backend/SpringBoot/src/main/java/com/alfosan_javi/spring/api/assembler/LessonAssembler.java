@@ -21,6 +21,7 @@ public class LessonAssembler {
         model.setCoach(lesson.getCoach());
         model.setMaxCapacity(lesson.getMaxCapacity());
         model.setDescription(lesson.getDescription());
+        model.setImg(lesson.getImg());
         return model;
     }
 
@@ -38,6 +39,7 @@ public class LessonAssembler {
         lesson.setCoach(model.getCoach());
         lesson.setMaxCapacity(model.getMaxCapacity());
         lesson.setDescription(model.getDescription());
+        lesson.setImg(model.getImg());
         return lesson;
     }
 }

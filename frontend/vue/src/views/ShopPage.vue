@@ -3,18 +3,24 @@
         
       <!-- Lista de pistas -->
       <ListContent />
-  
+      <ListLessons />
+      <ListSummers />
+
 
     </div>
   </template>
   
   <script>
     import ListContent from "@/components/shop/ListContent.vue";
+    import ListLessons from "@/components/shop/ListLessons.vue";
+    import ListSummers from "@/components/shop/ListSummers.vue";
 
     export default {
     name: "ShopPage",
     components: {
         ListContent,
+        ListLessons,
+        ListSummers,
     },
     };
 

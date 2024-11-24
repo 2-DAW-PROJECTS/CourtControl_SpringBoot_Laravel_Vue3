@@ -21,4 +21,5 @@ public class LessonModel {
     private String coach;
     private int maxCapacity;
     private String description;
+    private String img;
 }

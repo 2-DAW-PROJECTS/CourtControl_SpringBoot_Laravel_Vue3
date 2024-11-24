@@ -56,4 +56,7 @@ public class Lesson {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "img")
+    private String img;
 }
