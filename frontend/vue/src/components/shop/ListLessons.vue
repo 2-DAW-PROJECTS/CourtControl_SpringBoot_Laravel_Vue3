@@ -109,14 +109,20 @@ export default {
   },
   data() {
     return {
-      lessons: this.data,
-      filteredLessons: this.data,
       loading: false,
       currentPage: 1,
       itemsPerPage: 2,
     };
   },
   computed: {
+    filteredLessons() {
+      return this.data.filter((lesson) => {
+        const matchesSport = this.filters.sport && this.filters.sport.length > 0
+          ? lesson.idSport === parseInt(this.filters.sport[0])
+          : true;
+        return matchesSport;
+      });
+    },
     totalPages() {
       return Math.ceil(this.filteredLessons.length / this.itemsPerPage);
     },
@@ -128,26 +134,12 @@ export default {
   },
   watch: {
     filters: {
-      handler(newFilters) {
-        this.applyFilters(newFilters);
+      handler() {
+        this.currentPage = 1;
       },
       deep: true,
     },
-  },
-  methods: {
-    applyFilters(filters) {
-      this.filteredLessons = this.lessons.filter((lesson) => {
-        // Filtrando las lecciones que coincidan con el deporte seleccionado
-        const matchesSport = filters.sport
-          ? lesson.idSport === parseInt(filters.sport)
-          : true;
-
-        return matchesSport;
-      });
-
-      this.currentPage = 1;
-    },
-  },
+  }
 };
 </script>
 
