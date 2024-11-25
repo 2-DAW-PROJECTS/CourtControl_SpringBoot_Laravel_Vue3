@@ -1,7 +1,5 @@
-
 <template>
   <div class="list-content">
-    <!-- Sección de encabezado -->
     <div class="header-section">
       <br><br><br>
       <h2>Nuestras Pistas Deportivas</h2>
@@ -53,25 +51,41 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
   name: "ListContent",
+  props: {
+    filters: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       courts: [],
+      filteredCourts: [],
       currentPage: 1,
-      itemsPerPage: 3
+      itemsPerPage: 3,
     };
+  },
+  watch: {
+    filters: {
+      handler(newFilters) {
+        this.applyFilters(newFilters);
+      },
+      deep: true,
+    },
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.courts.length / this.itemsPerPage);
+      return Math.ceil(this.filteredCourts.length / this.itemsPerPage);
     },
     paginatedCourts() {
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
-      return this.courts.slice(start, end);
-    }
+      return this.filteredCourts.slice(start, end);
+    },
   },
   mounted() {
     this.fetchCourts();
@@ -79,25 +93,43 @@ export default {
   methods: {
     async fetchCourts() {
       try {
-        const response = await fetch('http://localhost:8085/api/courts', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
+        const sportQuery = Array.isArray(this.filters.sport) && this.filters.sport.length > 0
+          ? this.filters.sport.join(',')
+          : '';
+
+        const response = await axios.get(`http://localhost:8085/api/courts`, {
+          params: {
+            sportIds: sportQuery,
+            category: this.filters.category,
           },
-          credentials: 'include'
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          this.courts = data;
+        if (response.status === 200) {
+          this.courts = response.data;
+          this.applyFilters(this.filters);  // Filtrar las pistas
         } else {
           console.error('Error fetching courts:', response.statusText);
         }
       } catch (error) {
         console.error('Error fetching courts:', error);
       }
-    }
-  }
+    },
+    applyFilters(filters) {
+      this.filteredCourts = this.courts.filter((court) => {
+        const matchesSport = filters.sport && filters.sport.length > 0
+          ? court.sportId === parseInt(filters.sport[0])
+          : true;
+
+        return matchesSport;
+      });
+
+      this.currentPage = 1;
+    },
+  },
 };
 </script>
 

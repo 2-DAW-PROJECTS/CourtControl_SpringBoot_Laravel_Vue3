@@ -2,6 +2,7 @@ package com.alfosan_javi.spring.api.assembler;
 
 import com.alfosan_javi.spring.api.model.LessonModel;
 import com.alfosan_javi.spring.domain.model.Lesson;
+import com.alfosan_javi.spring.domain.model.Sport;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +23,8 @@ public class LessonAssembler {
         model.setMaxCapacity(lesson.getMaxCapacity());
         model.setDescription(lesson.getDescription());
         model.setImg(lesson.getImg());
+        // Si el deporte está presente, asignar su ID
+        model.setIdSport(lesson.getSport() != null ? lesson.getSport().getId() : null);
         return model;
     }
 
@@ -40,6 +43,12 @@ public class LessonAssembler {
         lesson.setMaxCapacity(model.getMaxCapacity());
         lesson.setDescription(model.getDescription());
         lesson.setImg(model.getImg());
+        // Crear una entidad Sport con el ID proporcionado
+        if (model.getIdSport() != null) {
+            Sport sport = new Sport();
+            sport.setId(model.getIdSport());
+            lesson.setSport(sport);
+        }
         return lesson;
     }
 }

@@ -38,4 +38,10 @@ public class CourtService {
         }
         return false;
     }
+
+    public List<Court> getFilteredCourtsBySport(List<Long> sportIds) {
+        return courtRepository.findBySportIds(sportIds);
+    }
+
+
 }

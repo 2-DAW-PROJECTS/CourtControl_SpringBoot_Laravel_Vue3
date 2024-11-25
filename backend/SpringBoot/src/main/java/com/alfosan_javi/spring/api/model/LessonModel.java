@@ -22,4 +22,5 @@ public class LessonModel {
     private int maxCapacity;
     private String description;
     private String img;
+    private Long idSport;
 }

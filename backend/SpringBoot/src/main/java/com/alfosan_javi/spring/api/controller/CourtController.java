@@ -28,13 +28,13 @@ public class CourtController {
     private SportService sportService;
 
     // Obtener todos las pistas
-    @GetMapping
-    public List<CourtModel> getAllCourts() {
-        System.out.println("Getting all courts...");
-        return courtService.getAllCourts().stream()
-                .map(courtAssembler::toModel)
-                .collect(Collectors.toList());
-    }
+    // @GetMapping
+    // public List<CourtModel> getAllCourts() {
+    //     System.out.println("Getting all courts...");
+    //     return courtService.getAllCourts().stream()
+    //             .map(courtAssembler::toModel)
+    //             .collect(Collectors.toList());
+    // }
 
     // Obtener pista por ID
     @GetMapping("/{id}")
@@ -56,4 +56,20 @@ public class CourtController {
         Court savedCourt = courtService.saveCourt(court);
         return ResponseEntity.status(HttpStatus.CREATED).body(courtAssembler.toModel(savedCourt));
     }
+
+    // Filtro de pistas por deporte
+    @GetMapping
+    public List<CourtModel> getFilteredCourts(
+            @RequestParam(required = false) List<Long> sportIds) {
+        List<Court> courts = (sportIds == null || sportIds.isEmpty())
+                ? courtService.getAllCourts()
+                : courtService.getFilteredCourtsBySport(sportIds);
+        return courts.stream()
+                .map(courtAssembler::toModel)
+                .collect(Collectors.toList());
+    }
+
+
+
+
 }

@@ -37,4 +37,8 @@ public class LessonService {
     public boolean existsById(long id) {
         return lessonRepository.existsById(id);
     }
+
+    public List<Lesson> getFilteredLessonsBySport(List<Long> sportIds) {
+        return lessonRepository.findBySportIds(sportIds);
+    }
 }
