@@ -6,23 +6,26 @@
       <p class="subtitle">Descubre y únete a las mejores clases deportivas</p>
     </div>
 
+    <!-- Mostrar cargando -->
     <div v-if="loading" class="loading">
       <i class="fas fa-spinner fa-spin"></i>
       <p>Cargando clases...</p>
     </div>
 
-    <div v-if="!loading && lessons.length === 0" class="no-lessons">
+    <!-- Si no hay clases disponibles -->
+    <div v-if="!loading && filteredLessons.length === 0" class="no-lessons">
       <i class="fas fa-exclamation-circle"></i>
       <p>No hay clases disponibles en este momento.</p>
     </div>
 
-    <div class="lessons-grid" v-if="!loading && lessons.length > 0">
+    <!-- Mostrar clases disponibles -->
+    <div class="lessons-grid" v-if="!loading && filteredLessons.length > 0">
       <div v-for="lesson in paginatedLessons" :key="lesson.id" class="lesson-card">
         <div class="lesson-image">
           <div class="image-overlay">
             <button class="reserve-btn-overlay">¡Inscríbete Ahora!</button>
           </div>
-          <img :src="require(`@/assets/img_lessons/${lesson.img}.jpg`)" :alt="lesson.nameClass" class="lesson-img"/>
+          <img :src="require(`@/assets/img_lessons/${lesson.img}.jpg`)" :alt="lesson.nameClass" class="lesson-img" />
         </div>
         <div class="lesson-info">
           <div class="lesson-header">
@@ -78,7 +81,8 @@
       </div>
     </div>
 
-    <div class="pagination-controls" v-if="!loading && lessons.length > 0">
+    <!-- Controles de paginación -->
+    <div class="pagination-controls" v-if="!loading && filteredLessons.length > 0">
       <button :disabled="currentPage === 1" @click="currentPage--" class="pagination-btn">
         <i class="fas fa-chevron-left"></i> Anterior
       </button>
@@ -93,42 +97,61 @@
 <script>
 export default {
   name: "ListLessons",
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+    filters: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      lessons: [],
-      loading: true,
+      lessons: this.data,
+      filteredLessons: this.data,
+      loading: false,
       currentPage: 1,
-      itemsPerPage: 2
+      itemsPerPage: 2,
     };
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.lessons.length / this.itemsPerPage);
+      return Math.ceil(this.filteredLessons.length / this.itemsPerPage);
     },
     paginatedLessons() {
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
-      return this.lessons.slice(start, end);
-    }
-  },
-  methods: {
-    async fetchLessons() {
-      try {
-        const response = await fetch("http://localhost:8085/api/lessons");
-        const data = await response.json();
-        this.lessons = data;
-      } catch (error) {
-        console.error("Error al obtener las lecciones:", error);
-      } finally {
-        this.loading = false;
-      }
+      return this.filteredLessons.slice(start, end);
     },
   },
-  mounted() {
-    this.fetchLessons();
+  watch: {
+    filters: {
+      handler(newFilters) {
+        this.applyFilters(newFilters);
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    applyFilters(filters) {
+      this.filteredLessons = this.lessons.filter((lesson) => {
+        // Filtrando las lecciones que coincidan con el deporte seleccionado
+        const matchesSport = filters.sport
+          ? lesson.idSport === parseInt(filters.sport)
+          : true;
+
+        return matchesSport;
+      });
+
+      this.currentPage = 1;
+    },
   },
 };
 </script>
+
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 

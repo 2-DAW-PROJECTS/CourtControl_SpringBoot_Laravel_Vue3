@@ -5,18 +5,12 @@
 
     <!-- Contenido basado en el filtro -->
     <div v-if="loading">Cargando...</div>
-    <ListContent
-      v-if="!loading && filters.category === 'pistas'"
+
+    <component
+      v-if="!loading"
+      :is="getComponentByCategory(filters.category)"
       :data="filteredData"
       :filters="filters"
-    />
-    <ListLessons
-      v-if="!loading && filters.category === 'tecnificaciones'"
-      :data="filteredData"
-    />
-    <ListSummers
-      v-if="!loading && filters.category === 'academias'"
-      :data="filteredData"
     />
   </div>
 </template>
@@ -39,8 +33,8 @@ export default {
   data() {
     return {
       filters: {
-        category: "pistas",
-        sport: null,
+        category: "pistas", // Iniciar con "pistas"
+        sport: null, // El deporte inicialmente no está seleccionado
       },
       data: [],
       loading: false,
@@ -48,21 +42,7 @@ export default {
   },
   computed: {
     filteredData() {
-      if (!this.filters.sport && !this.filters.category) {
-        return this.data;
-      }
-
-      return this.data.filter((item) => {
-        const matchesCategory = this.filters.category
-          ? item.category === this.filters.category
-          : true;
-
-        const matchesSport = this.filters.sport
-          ? item.sportId === parseInt(this.filters.sport)
-          : true;
-
-        return matchesCategory && matchesSport;
-      });
+      return this.data; // Aquí no aplicamos más filtros, solo retornamos los datos obtenidos del backend
     },
   },
   watch: {
@@ -78,68 +58,86 @@ export default {
     this.initializeFilters();
   },
   methods: {
+    getComponentByCategory(category) {
+      switch (category) {
+        case "pistas":
+          return "ListContent";
+        case "tecnificaciones":
+          return "ListLessons";
+        case "academias":
+          return "ListSummers";
+        default:
+          return null;
+      }
+    },
+
+    // Actualizar la URL con los filtros seleccionados
     updateURL(filters) {
       const queryParams = new URLSearchParams();
 
-      // Añadir solo los filtros activos
+      // Aseguramos de agregar el filtro de categoría
       if (filters.category) {
         queryParams.append("category", filters.category);
       }
 
-      if (filters.sport && filters.sport.length > 0) {
-        queryParams.append("sport", filters.sport[0]);
+      // Si se selecciona un deporte, lo añadimos a los parámetros
+      if (filters.sport) {
+        queryParams.append("sportIds", filters.sport);  // sportIds=valor
       }
 
-      // Actualizar la URL sin recargar la página
+      // Actualizamos la URL sin recargar la página
       history.replaceState(null, "", `?${queryParams.toString()}`);
     },
-    initializeFilters() {
-      // Recuperar los filtros de la URL
-      const params = new URLSearchParams(window.location.search);
-      this.filters.category = params.get("category") || "pistas";
-      this.filters.sport = params.get("sport") ? [params.get("sport")] : [];
 
-      // Aplica los filtros y carga los datos
-      this.fetchData(this.filters);
+    // Inicializar los filtros a partir de la URL (si existen)
+    initializeFilters() {
+      const params = new URLSearchParams(window.location.search);
+      this.filters.category = params.get("category") || "pistas";  // Por defecto "pistas"
+      this.filters.sport = params.get("sportIds") || null;  // Deporte seleccionado (si existe)
+      this.fetchData(this.filters);  // Hacer la consulta inicial
     },
-  async fetchData(filters) {
-    this.loading = true;
-    try {
-      const sportQuery = filters.sport ? filters.sport : '';
-      const response = await axios.get("http://localhost:8085/api/courts", {
-        params: {
-          sportIds: sportQuery,
-          category: filters.category,
-        },
-      });
-      this.data = response.data;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      this.loading = false;
-    }
+
+    // Obtener los datos del backend basados en los filtros seleccionados
+    async fetchData(filters) {
+      this.loading = true;
+      try {
+        let url = "http://localhost:8085/api/lessons"; // URL base de la API
+        let params = {};
+
+        // Si se selecciona un deporte, lo pasamos en los parámetros de la API
+        if (filters.sport) {
+          params.sportIds = filters.sport; // sportIds=valor (sin el array)
+        }
+
+        // Hacer la solicitud a la API con los parámetros
+        const response = await axios.get(url, { params });
+        this.data = response.data; // Asignar los datos obtenidos al array data
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
-},
 };
 </script>
-  
-  <style scoped>
-  .shop {
-    padding: 20px;
-    background-color: #f9f9f9;
-    min-height: 100vh;
-  }
-  
-  h1 {
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  p {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #555;
-  }
-  </style>
-  
+
+<style scoped>
+.shop {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #555;
+}
+</style>
