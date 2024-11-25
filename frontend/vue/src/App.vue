@@ -23,9 +23,29 @@ export default {
 
 <style>
 /* Estilos globales para la app */
-#app {
+/* #app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+} */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+#app {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 </style>
