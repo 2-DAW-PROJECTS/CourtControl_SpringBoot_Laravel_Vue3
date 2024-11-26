@@ -88,7 +88,7 @@ export default {
 
 .filters {
   position: fixed;
-  top: 100px;
+  top: 70px;
   left: 0;
   right: 0;
   background-color: rgba(35, 35, 47, 0.8);

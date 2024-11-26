@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     filteredData() {
-      return this.data; // Aquí no aplicamos más filtros, solo retornamos los datos obtenidos del backend
+      return this.data;
     },
   },
   watch: {
@@ -75,21 +75,18 @@ export default {
     updateURL(filters) {
       const queryParams = new URLSearchParams();
 
-      // Aseguramos de agregar el filtro de categoría
       if (filters.category) {
         queryParams.append("category", filters.category);
       }
 
-      // Si se selecciona un deporte, lo añadimos a los parámetros
       if (filters.sport) {
-        queryParams.append("sportIds", filters.sport);  // sportIds=valor
+        queryParams.append("sportIds", filters.sport); // sportIds=valor
       }
 
-      // Actualizamos la URL sin recargar la página
       history.replaceState(null, "", `?${queryParams.toString()}`);
     },
 
-    // Inicializar los filtros a partir de la URL (si existen)
+    // Inicializar los filtros a partir de la URL
     initializeFilters() {
       const params = new URLSearchParams(window.location.search);
       this.filters.category = params.get("category") || "pistas";  // Por defecto "pistas"
@@ -104,12 +101,15 @@ export default {
         let url = "http://localhost:8085/api/lessons"; // URL base de la API
         let params = {};
 
-        // Si se selecciona un deporte, lo pasamos en los parámetros de la API
         if (filters.sport) {
-          params.sportIds = filters.sport; // sportIds=valor (sin el array)
+          params.sportIds = filters.sport;
         }
 
-        // Hacer la solicitud a la API con los parámetros
+        // Si la categoría es "academias", usamos la URL para academias de verano
+        if (filters.category === "academias") {
+          url = "http://localhost:8085/api/summers";
+        }
+
         const response = await axios.get(url, { params });
         this.data = response.data; // Asignar los datos obtenidos al array data
       } catch (error) {
@@ -121,7 +121,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .shop {
   padding: 20px;

@@ -6,8 +6,21 @@
       <p class="subtitle">Formación deportiva de alto rendimiento para jóvenes talentos</p>
     </div>
 
-    <div class="summers-grid">
-      <div v-for="summer in summers" :key="summer.id" class="summer-card">
+    <!-- Mostrar cargando -->
+    <div v-if="loading" class="loading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Cargando programas...</p>
+    </div>
+
+    <!-- Si no hay programas disponibles -->
+    <div v-if="!loading && filteredSummers.length === 0" class="no-lessons">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>No hay programas disponibles en este momento.</p>
+    </div>
+
+    <!-- Mostrar programas disponibles -->
+    <div class="summers-grid" v-if="!loading && filteredSummers.length > 0">
+      <div v-for="summer in paginatedSummers" :key="summer.id" class="summer-card">
         <div class="summer-image">
           <div class="image-overlay">
             <button class="reserve-btn-overlay">¡Inscríbete Ahora!</button>
@@ -61,33 +74,44 @@
 </template>
 
 <script>
-/* usa esta gama de colores y hazlo mucho mas bonito
-#f6f1de
-#23232f
-#525055
-#92d8be
-#9bada1
-#f5ce8d
-#fc9b70
-#eb6a65 */
 import axios from "axios";
 
 export default {
   name: "ListSummers",
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+    filters: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       summers: [],
+      loading: false,
+      currentPage: 1,
+      itemsPerPage: 2,
     };
   },
   methods: {
     fetchSummers() {
+      this.loading = true;
+      const params = {};
+      if (this.filters.sport && this.filters.sport.length > 0) {
+        params.id_sport = this.filters.sport[0];
+      }
       axios
-        .get("http://localhost:8085/api/summers")
+        .get("http://localhost:8085/api/summers", { params })
         .then((response) => {
           this.summers = response.data;
+          this.loading = false;
         })
         .catch((error) => {
           console.error("Error al obtener los programas deportivos:", error);
+          this.loading = false;
         });
     },
     formatDate(date) {
@@ -95,11 +119,34 @@ export default {
       return new Date(date).toLocaleDateString("es-ES", options);
     },
   },
+  computed: {
+    filteredSummers() {
+      return this.summers;
+    },
+    totalPages() {
+      return Math.ceil(this.filteredSummers.length / this.itemsPerPage);
+    },
+    paginatedSummers() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.filteredSummers.slice(start, end);
+    },
+  },
+  watch: {
+    filters: {
+      handler() {
+        this.currentPage = 1;
+        this.fetchSummers();
+      },
+      deep: true,
+    },
+  },
   mounted() {
     this.fetchSummers();
   },
 };
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
