@@ -1,7 +1,7 @@
 package com.alfosan_javi.spring.api.controller;
 
 import com.alfosan_javi.spring.api.assembler.SummerAssembler;
-import com.alfosan_javi.spring.api.model.SummerModel;
+import com.alfosan_javi.spring.api.dto.SummerDTO;
 import com.alfosan_javi.spring.domain.model.Sport;
 import com.alfosan_javi.spring.domain.model.Summer;
 import com.alfosan_javi.spring.domain.service.SportService;
@@ -28,24 +28,28 @@ public class SummerController {
     private SummerAssembler summerAssembler;
 
     @GetMapping
-    public List<SummerModel> getAllSummers() {
-        return summerService.getAllSummers().stream()
+    public List<SummerDTO> getFilteredSummers(
+            @RequestParam(required = false) List<Long> sportIds) {
+        List<Summer> summers = (sportIds == null || sportIds.isEmpty())
+                ? summerService.getAllSummers()
+                : summerService.getFilteredSummersBySport(sportIds);
+        return summers.stream()
                 .map(summerAssembler::toModel)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SummerModel> getSummerById(@PathVariable long id) {
+    public ResponseEntity<SummerDTO> getSummerById(@PathVariable long id) {
         return summerService.getSummerById(id)
                 .map(summer -> ResponseEntity.ok(summerAssembler.toModel(summer)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping
-    public ResponseEntity<SummerModel> createSummer(@RequestBody SummerModel summerModel) {
-        return sportService.getSportById(summerModel.getIdSport())
+    public ResponseEntity<SummerDTO> createSummer(@RequestBody SummerDTO summerDTO) {
+        return sportService.getSportById(summerDTO.getIdSport())
                 .map(sport -> {
-                    Summer summer = summerAssembler.toEntity(summerModel, sport);
+                    Summer summer = summerAssembler.toEntity(summerDTO, sport);
                     Summer createdSummer = summerService.saveSummer(summer);
                     return ResponseEntity.status(HttpStatus.CREATED).body(summerAssembler.toModel(createdSummer));
                 })
@@ -53,14 +57,14 @@ public class SummerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SummerModel> updateSummer(@PathVariable long id, @RequestBody SummerModel summerModel) {
+    public ResponseEntity<SummerDTO> updateSummer(@PathVariable long id, @RequestBody SummerDTO summerDTO) {
         if (!summerService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return sportService.getSportById(summerModel.getIdSport())
+        return sportService.getSportById(summerDTO.getIdSport())
                 .map(sport -> {
-                    summerModel.setId(id);
-                    Summer updatedSummer = summerService.saveSummer(summerAssembler.toEntity(summerModel, sport));
+                    summerDTO.setId(id);
+                    Summer updatedSummer = summerService.saveSummer(summerAssembler.toEntity(summerDTO, sport));
                     return ResponseEntity.ok(summerAssembler.toModel(updatedSummer));
                 })
                 .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());

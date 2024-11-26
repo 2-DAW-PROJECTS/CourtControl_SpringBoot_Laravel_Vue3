@@ -1,7 +1,7 @@
 package com.alfosan_javi.spring.api.controller;
 
 import com.alfosan_javi.spring.api.assembler.LessonAssembler;
-import com.alfosan_javi.spring.api.model.LessonModel;
+import com.alfosan_javi.spring.api.dto.LessonDTO;
 import com.alfosan_javi.spring.domain.model.Lesson;
 import com.alfosan_javi.spring.domain.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class LessonController {
 
     // Obtener todas las lecciones o filtrar por sportIds
     @GetMapping
-    public List<LessonModel> getFilteredLessons(
+    public List<LessonDTO> getFilteredLessons(
             @RequestParam(required = false) List<Long> sportIds) {
         List<Lesson> lessons = (sportIds == null || sportIds.isEmpty())
                 ? lessonService.getAllLessons()
@@ -36,7 +36,7 @@ public class LessonController {
 
     // Obtener una lección por ID
     @GetMapping("/{id}")
-    public ResponseEntity<LessonModel> getLessonById(@PathVariable long id) {
+    public ResponseEntity<LessonDTO> getLessonById(@PathVariable long id) {
         return lessonService.getLessonById(id)
                 .map(lesson -> ResponseEntity.ok(lessonAssembler.toModel(lesson)))
                 .orElse(ResponseEntity.status(404).build());
@@ -44,20 +44,20 @@ public class LessonController {
 
     // Crear una nueva lección
     @PostMapping
-    public ResponseEntity<LessonModel> createLesson(@RequestBody LessonModel lessonModel) {
-        Lesson lesson = lessonAssembler.toEntity(lessonModel);
+    public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonDTO lessonDTO) {
+        Lesson lesson = lessonAssembler.toEntity(lessonDTO);
         Lesson createdLesson = lessonService.saveLesson(lesson);
         return ResponseEntity.status(201).body(lessonAssembler.toModel(createdLesson));
     }
 
     // Actualizar una lección existente
     @PutMapping("/{id}")
-    public ResponseEntity<LessonModel> updateLesson(@PathVariable long id, @RequestBody LessonModel lessonModel) {
+    public ResponseEntity<LessonDTO> updateLesson(@PathVariable long id, @RequestBody LessonDTO lessonDTO) {
         if (!lessonService.existsById(id)) {
             return ResponseEntity.status(404).build();
         }
-        lessonModel.setId(id);
-        Lesson updatedLesson = lessonService.saveLesson(lessonAssembler.toEntity(lessonModel));
+        lessonDTO.setId(id);
+        Lesson updatedLesson = lessonService.saveLesson(lessonAssembler.toEntity(lessonDTO));
         return ResponseEntity.ok(lessonAssembler.toModel(updatedLesson));
     }
 

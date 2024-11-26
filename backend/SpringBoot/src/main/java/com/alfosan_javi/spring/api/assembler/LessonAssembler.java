@@ -1,6 +1,6 @@
 package com.alfosan_javi.spring.api.assembler;
 
-import com.alfosan_javi.spring.api.model.LessonModel;
+import com.alfosan_javi.spring.api.dto.LessonDTO;
 import com.alfosan_javi.spring.domain.model.Lesson;
 import com.alfosan_javi.spring.domain.model.Sport;
 import org.springframework.stereotype.Component;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class LessonAssembler {
 
-    public LessonModel toModel(Lesson lesson) {
-        LessonModel model = new LessonModel();
+    public LessonDTO toModel(Lesson lesson) {
+        LessonDTO model = new LessonDTO();
         model.setId(lesson.getId());
         model.setNameClass(lesson.getNameClass());
         model.setActive(lesson.isActive());
@@ -28,7 +28,7 @@ public class LessonAssembler {
         return model;
     }
 
-    public Lesson toEntity(LessonModel model) {
+    public Lesson toEntity(LessonDTO model) {
         Lesson lesson = new Lesson();
         lesson.setId(model.getId());
         lesson.setNameClass(model.getNameClass());

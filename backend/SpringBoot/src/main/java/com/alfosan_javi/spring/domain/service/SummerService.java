@@ -5,8 +5,8 @@ import com.alfosan_javi.spring.domain.repository.SummerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SummerService {
@@ -36,5 +36,9 @@ public class SummerService {
 
     public boolean existsById(long id) {
         return summerRepository.existsById(id);
+    }
+
+    public List<Summer> getFilteredSummersBySport(List<Long> sportIds) {
+        return summerRepository.findBySportIds(sportIds);
     }
 }
