@@ -23,11 +23,6 @@ export default {
 
 <style>
 /* Estilos globales para la app */
-/* #app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-} */
 
 * {
   margin: 0;
