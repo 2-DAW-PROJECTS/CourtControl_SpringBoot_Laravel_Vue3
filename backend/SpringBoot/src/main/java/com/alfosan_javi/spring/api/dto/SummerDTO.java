@@ -1,4 +1,4 @@
-package com.alfosan_javi.spring.api.model;
+package com.alfosan_javi.spring.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SummerModel {
+public class SummerDTO {
 
     private long id;
     private long idSport;

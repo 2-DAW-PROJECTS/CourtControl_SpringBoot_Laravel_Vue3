@@ -9,11 +9,7 @@ import java.util.List;
 
 public interface CourtRepository extends JpaRepository<Court, Long> {
 
-    @Query("SELECT c FROM Court c WHERE " +
-        "(:sportIds IS NULL OR c.sport.id IN :sportIds)")
-    List<Court> findBySportIds(
-            @Param("sportIds") List<Long> sportIds
-    );
-
+    @Query("SELECT c FROM Court c WHERE c.sport.id IN :sportIds")
+    List<Court> findBySportIds(@Param("sportIds") List<Long> sportIds);
 
 }

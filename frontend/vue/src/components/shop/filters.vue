@@ -91,7 +91,7 @@ export default {
   top: 100px;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(35, 35, 47, 0.8);
   padding: 0px 20px;
   backdrop-filter: blur(10px);
   z-index: 999;
@@ -114,8 +114,8 @@ export default {
 
 .dropdown-btn {
   font-family: 'Russo One', sans-serif;
-  background-color: #2ecc71;
-  color: white;
+  background-color: #92d8be;
+  color: #23232f;
   padding: 12px 25px;
   border: none;
   border-radius: 12px;
@@ -125,25 +125,25 @@ export default {
   gap: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+  box-shadow: 0 4px 15px rgba(146, 216, 190, 0.2);
 }
 
 .dropdown-btn:hover {
-  background-color: #27ae60;
+  background-color: #9bada1;
   transform: translateY(-2px);
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: rgba(35, 35, 47, 0.95);
   min-width: 250px;
-  box-shadow: 0 8px 20px rgba(46, 204, 113, 0.2);
+  box-shadow: 0 8px 20px rgba(146, 216, 190, 0.2);
   border-radius: 15px;
   padding: 15px;
   z-index: 1;
   margin-top: 10px;
-  border: 1px solid rgba(46, 204, 113, 0.2);
+  border: 1px solid rgba(146, 216, 190, 0.2);
 }
 
 .dropdown-content.show {
@@ -152,13 +152,13 @@ export default {
 
 .filter-section {
   padding: 15px 0;
-  border-bottom: 1px solid rgba(46, 204, 113, 0.2);
+  border-bottom: 1px solid rgba(146, 216, 190, 0.2);
 }
 
 .filter-section h4 {
   font-family: 'Russo One', sans-serif;
   margin: 0 0 15px 0;
-  color: #2ecc71;
+  color: #92d8be;
   font-size: 1.1rem;
   font-weight: 600;
 }
@@ -169,7 +169,7 @@ export default {
   position: relative;
   padding: 10px 0;
   margin: 5px 0;
-  color: #e0e0e0;
+  color: #f6f1de;
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -185,7 +185,7 @@ export default {
   width: 20px;
   height: 20px;
   margin-right: 10px;
-  border: 2px solid #2ecc71;
+  border: 2px solid #92d8be;
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -198,7 +198,7 @@ export default {
   transform: translate(-50%, -50%) scale(0);
   width: 10px;
   height: 10px;
-  background-color: #2ecc71;
+  background-color: #92d8be;
   border-radius: 50%;
   transition: transform 0.2s ease;
 }
@@ -208,12 +208,12 @@ export default {
 }
 
 .radio-container:hover {
-  color: #2ecc71;
+  color: #92d8be;
 }
 
 .radio-container:hover .radio-mark {
-  border-color: #27ae60;
-  box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+  border-color: #9bada1;
+  box-shadow: 0 0 5px rgba(146, 216, 190, 0.3);
 }
 
 .radio-text {
@@ -225,52 +225,52 @@ export default {
 .sport-select {
   font-family: 'Russo One', sans-serif;
   padding: 12px 25px;
-  border: 2px solid #2ecc71;
+  border: 2px solid #92d8be;
   border-radius: 12px;
   font-size: 1rem;
-  color: #e0e0e0;
-  background-color: rgba(0, 0, 0, 0.95);
+  color: #f6f1de;
+  background-color: rgba(35, 35, 47, 0.95);
   cursor: pointer;
   outline: none;
   transition: all 0.3s ease;
   min-width: 200px;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.1);
+  box-shadow: 0 4px 15px rgba(146, 216, 190, 0.1);
 }
 
 .sport-select:hover {
-  border-color: #27ae60;
+  border-color: #9bada1;
   transform: translateY(-2px);
 }
 
 .sport-select:focus {
-  border-color: #27ae60;
-  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+  border-color: #9bada1;
+  box-shadow: 0 0 0 2px rgba(146, 216, 190, 0.2);
 }
 
 .sport-select option {
-  background-color: #2a2a2a;
-  color: #e0e0e0;
+  background-color: #525055;
+  color: #f6f1de;
   padding: 12px;
 }
 
 .clear-filters {
   font-family: 'Russo One', sans-serif;
-  background-color: rgba(0, 0, 0, 0.95);
-  color: #2ecc71;
-  border: 2px solid #2ecc71;
+  background-color: rgba(35, 35, 47, 0.95);
+  color: #92d8be;
+  border: 2px solid #92d8be;
   padding: 12px 25px;
   border-radius: 12px;
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.1);
+  box-shadow: 0 4px 15px rgba(146, 216, 190, 0.1);
 }
 
 .clear-filters:hover {
-  background-color: #2ecc71;
-  color: white;
+  background-color: #92d8be;
+  color: #23232f;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.2);
+  box-shadow: 0 6px 20px rgba(146, 216, 190, 0.2);
 }
 
 @media (max-width: 1024px) {

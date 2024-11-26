@@ -1,14 +1,14 @@
 package com.alfosan_javi.spring.api.assembler;
 
-import com.alfosan_javi.spring.api.model.SportModel;
+import com.alfosan_javi.spring.api.dto.SportDTO;
 import com.alfosan_javi.spring.domain.model.Sport;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SportAssembler {
 
-    public SportModel toModel(Sport sport) {
-        SportModel model = new SportModel();
+    public SportDTO toModel(Sport sport) {
+        SportDTO model = new SportDTO();
         model.setId(sport.getId());
         model.setSportName(sport.getSportName());
         model.setPopularityLevel(sport.getPopularityLevel());
@@ -24,7 +24,7 @@ public class SportAssembler {
         return model;
     }
 
-    public Sport toEntity(SportModel model) {
+    public Sport toEntity(SportDTO model) {
         Sport sport = new Sport();
         sport.setId(model.getId());
         sport.setSportName(model.getSportName());

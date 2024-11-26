@@ -145,23 +145,33 @@ export default {
 
 
 <style scoped>
+
+/* usa esta gama de colores y hazlo mucho mas bonito
+#f6f1de
+#23232f
+#525055
+#92d8be
+#9bada1
+#f5ce8d
+#fc9b70
+#eb6a65 */
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 
 .list-content {
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #23232f;
   min-height: 100vh;
-  color: #e0e0e0;
+  color: #f6f1de;
 }
 
 .header-section {
   text-align: center;
   margin-bottom: 3rem;
   padding: 2rem 0;
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  color: white;
+  background: linear-gradient(135deg, #92d8be, #9bada1);
+  color: #23232f;
   border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(46, 204, 113, 0.2);
+  box-shadow: 0 8px 20px rgba(146, 216, 190, 0.2);
 }
 
 .header-section h2 {
@@ -190,20 +200,20 @@ export default {
 
 .lesson-card {
   display: flex;
-  background: #2a2a2a;
+  background: #525055;
   border-radius: 20px;
   overflow: hidden;
   transition: all 0.4s ease;
-  box-shadow: 0 6px 18px rgba(46, 204, 113, 0.1);
-  border: 1px solid rgba(46, 204, 113, 0.1);
+  box-shadow: 0 6px 18px rgba(146, 216, 190, 0.1);
+  border: 1px solid rgba(146, 216, 190, 0.1);
   width: 100%;
   min-height: 400px;
 }
 
 .lesson-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 25px rgba(46, 204, 113, 0.25);
-  border-color: rgba(46, 204, 113, 0.3);
+  box-shadow: 0 12px 25px rgba(146, 216, 190, 0.25);
+  border-color: rgba(146, 216, 190, 0.3);
 }
 
 .lesson-image {
@@ -219,7 +229,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(35, 35, 47, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,21 +245,21 @@ export default {
 .reserve-btn-overlay {
   font-family: 'Russo One', sans-serif;
   padding: 1rem 2rem;
-  background: #2ecc71;
-  color: white;
+  background: #92d8be;
+  color: #23232f;
   border: none;
   border-radius: 12px;
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+  box-shadow: 0 4px 15px rgba(146, 216, 190, 0.2);
 }
 
 .reserve-btn-overlay:hover {
-  background: #27ae60;
+  background: #9bada1;
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+  box-shadow: 0 6px 20px rgba(146, 216, 190, 0.4);
 }
 
 .lesson-img {
@@ -276,7 +286,7 @@ export default {
 
 .lesson-info h3 {
   font-family: 'Russo One', sans-serif;
-  color: #2ecc71;
+  color: #92d8be;
   font-size: 1.5rem;
   margin-top: 0.5rem;
   font-weight: 600;
@@ -294,26 +304,26 @@ export default {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  background: rgba(46, 204, 113, 0.1);
+  background: rgba(146, 216, 190, 0.1);
   border-radius: 8px;
 }
 
 .detail-item i {
-  color: #2ecc71;
+  color: #92d8be;
   width: 20px;
 }
 
 .detail-item span {
-  color: #b0b0b0;
+  color: #f6f1de;
 }
 
 .detail-item strong {
-  color: #e0e0e0;
+  color: #f6f1de;
   margin-left: 0.5rem;
 }
 
 .description-box {
-  background: rgba(46, 204, 113, 0.05);
+  background: rgba(146, 216, 190, 0.05);
   padding: 1rem;
   border-radius: 8px;
   margin-top: 1rem;
@@ -322,7 +332,7 @@ export default {
 }
 
 .description-box i {
-  color: #2ecc71;
+  color: #92d8be;
   margin-top: 0.2rem;
 }
 
@@ -332,21 +342,21 @@ export default {
   border-radius: 25px;
   font-size: 0.9rem;
   display: inline-block;
-  box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+  box-shadow: 0 4px 10px rgba(146, 216, 190, 0.2);
 }
 
 .active-badge {
-  background: #2ecc71;
-  color: white;
+  background: #92d8be;
+  color: #23232f;
 }
 
 .inactive-badge {
-  background: #e74c3c;
-  color: white;
+  background: #eb6a65;
+  color: #f6f1de;
 }
 
 .description {
-  color: #b0b0b0;
+  color: #f6f1de;
   line-height: 1.6;
   margin: 0;
 }
@@ -354,22 +364,22 @@ export default {
 .loading, .no-lessons {
   text-align: center;
   padding: 3rem;
-  background: #2a2a2a;
+  background: #525055;
   border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(46, 204, 113, 0.1);
-  border: 1px solid rgba(46, 204, 113, 0.1);
+  box-shadow: 0 8px 20px rgba(146, 216, 190, 0.1);
+  border: 1px solid rgba(146, 216, 190, 0.1);
 }
 
 .loading i, .no-lessons i {
   font-size: 3rem;
-  color: #2ecc71;
+  color: #92d8be;
   margin-bottom: 1rem;
 }
 
 .loading p, .no-lessons p {
   font-family: 'Russo One', sans-serif;
   font-size: 1.2rem;
-  color: #b0b0b0;
+  color: #f6f1de;
 }
 
 .pagination-controls {
@@ -383,8 +393,8 @@ export default {
 .pagination-btn {
   font-family: 'Russo One', sans-serif;
   padding: 0.8rem 1.5rem;
-  background: #2ecc71;
-  color: white;
+  background: #92d8be;
+  color: #23232f;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -395,19 +405,19 @@ export default {
 }
 
 .pagination-btn:disabled {
-  background: #1a1a1a;
+  background: #525055;
   cursor: not-allowed;
   opacity: 0.5;
 }
 
 .pagination-btn:not(:disabled):hover {
-  background: #27ae60;
+  background: #9bada1;
   transform: translateY(-2px);
 }
 
 .page-info {
   font-family: 'Russo One', sans-serif;
-  color: #e0e0e0;
+  color: #f6f1de;
   font-size: 1rem;
 }
 

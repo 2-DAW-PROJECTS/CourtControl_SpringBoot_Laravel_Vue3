@@ -1,6 +1,6 @@
 package com.alfosan_javi.spring.api.assembler;
 
-import com.alfosan_javi.spring.api.model.CourtModel;
+import com.alfosan_javi.spring.api.dto.CourtDTO;
 import com.alfosan_javi.spring.domain.model.Court;
 import com.alfosan_javi.spring.domain.model.Sport;
 import org.springframework.stereotype.Component;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CourtAssembler {
 
-    public CourtModel toModel(Court court) {
-        CourtModel model = new CourtModel();
+    public CourtDTO toModel(Court court) {
+        CourtDTO model = new CourtDTO();
         model.setId(court.getId());
         model.setSportId(court.getSport().getId());
         model.setTypePista(court.getTypePista());
@@ -21,7 +21,7 @@ public class CourtAssembler {
         return model;
     }
 
-    public Court toEntity(CourtModel model, Sport sport) {
+    public Court toEntity(CourtDTO model, Sport sport) {
         Court court = new Court();
         court.setId(model.getId());
         court.setSport(sport); // Asociamos el deporte

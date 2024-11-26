@@ -1,4 +1,4 @@
-package com.alfosan_javi.spring.api.model;
+package com.alfosan_javi.spring.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SportModel {
+public class SportDTO {
 
     private long id;
     private String sportName;

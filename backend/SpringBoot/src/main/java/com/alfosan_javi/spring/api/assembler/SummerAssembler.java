@@ -1,6 +1,6 @@
 package com.alfosan_javi.spring.api.assembler;
 
-import com.alfosan_javi.spring.api.model.SummerModel;
+import com.alfosan_javi.spring.api.dto.SummerDTO;
 import com.alfosan_javi.spring.domain.model.Summer;
 import com.alfosan_javi.spring.domain.model.Sport;
 import org.springframework.stereotype.Component;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SummerAssembler {
 
-    public SummerModel toModel(Summer summer) {
-        return new SummerModel(
+    public SummerDTO toModel(Summer summer) {
+        return new SummerDTO(
             summer.getId(),
             summer.getSport().getId(),
             summer.getImg(),
@@ -23,7 +23,7 @@ public class SummerAssembler {
         );
     }
 
-    public Summer toEntity(SummerModel model, Sport sport) {
+    public Summer toEntity(SummerDTO model, Sport sport) {
         return new Summer(
             model.getId(),
             sport,
