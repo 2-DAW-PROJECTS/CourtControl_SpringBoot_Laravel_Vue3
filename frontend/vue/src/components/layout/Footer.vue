@@ -5,7 +5,7 @@
         <div class="footer-brand">
           <img src="@/assets/logo.png" alt="Poliesportiu Logo" class="logo-glow bounce" />
           <div class="brand-text">
-            <p class="copyright">&copy; 2024 Poliesportiu</p>
+            <p class="copyright">&copy; 2024 CourtControl</p>
             <p class="slogan">Precisión en cada jugada, control en cada espacio.</p>
           </div>
         </div>
