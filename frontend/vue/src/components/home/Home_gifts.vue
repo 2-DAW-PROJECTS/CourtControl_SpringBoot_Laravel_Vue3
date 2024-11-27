@@ -8,12 +8,12 @@
         ref="backgroundVideo"
       >
         <source src="@/assets/banners_home/background-video.mp4" type="video/mp4" />
-        <img src="@/assets/banners_home/banner_5.jpg" alt="Banner de Emergencia">
+        <img src="@/assets/banners_home/banner_4.jpg" alt="Banner de Emergencia">
       </video>
       <!-- Fallback Image -->
       <img
         v-if="showFallbackImage"
-        src="@/assets/banners_home/banner_5.jpg"
+        src="@/assets/banners_home/banner_4.jpg"
         alt="Hero Fallback Background"
         class="hero-fallback-image"
       />
