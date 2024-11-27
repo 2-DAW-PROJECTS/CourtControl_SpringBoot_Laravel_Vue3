@@ -19,8 +19,20 @@ const router = createRouter({
       path: '/shop',
       name: 'shop',
       component: ShopPage // Define la nueva ruta
+    },
+    {
+      path: '/auth',
+      name: 'React-auth',
+      beforeEnter() {
+        window.location.href = 'http://localhost:3000'; // URL del frontend de React
+      }
     }
   ]
 });
+
+// const router = createRouter({
+//   history: createWebHistory(process.env.BASE_URL),
+//   routes
+// });
 
 export default router;
