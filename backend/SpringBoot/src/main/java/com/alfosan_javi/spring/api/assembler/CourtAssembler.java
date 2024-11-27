@@ -14,9 +14,10 @@ public class CourtAssembler {
         model.setSportId(court.getSport().getId());
         model.setTypePista(court.getTypePista());
         model.setNamePista(court.getNamePista());
+        model.setMaterial(court.getMaterial());
         model.setAncho(court.getAncho());
         model.setDescription(court.getDescription());
-        model.setImg(court.getImg()); // Aquí asignamos el valor a model
+        model.setImg(court.getImg());
         model.setTagCourt(court.getTagCourt());
         return model;
     }
@@ -24,9 +25,10 @@ public class CourtAssembler {
     public Court toEntity(CourtDTO model, Sport sport) {
         Court court = new Court();
         court.setId(model.getId());
-        court.setSport(sport); // Asociamos el deporte
+        court.setSport(sport);
         court.setTypePista(model.getTypePista());
         court.setNamePista(model.getNamePista());
+        court.setMaterial(model.getMaterial());
         court.setAncho(model.getAncho());
         court.setDescription(model.getDescription());
         court.setImg(model.getImg());

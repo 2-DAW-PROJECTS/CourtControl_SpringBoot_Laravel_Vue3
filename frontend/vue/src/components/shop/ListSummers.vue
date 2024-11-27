@@ -25,7 +25,8 @@
           <div class="image-overlay">
             <button class="reserve-btn-overlay">¡Inscríbete Ahora!</button>
           </div>
-          <img :src="require(`@/assets/img_summer/${summer.img}`)" :alt="summer.nameSummer" class="summer-img"/>
+          <!-- Aquí usamos require para cargar la imagen -->
+          <img :src="require(`@/assets/img_summer/${summer.img}`)" :alt="summer.nameSummer" class="summer-img" />
         </div>
         <div class="summer-info">
           <div class="summer-header">
@@ -33,13 +34,13 @@
           </div>
           <div class="details-grid">
             <div class="detail-item hover-effect">
-              <i class="fas fa-trophy"></i>
-              <span>Nivel:</span>
+              <i class="fas fa-child"></i>
+              <span>Edades:</span>
               <strong>{{ summer.categoryAge }}</strong>
             </div>
             <div class="detail-item hover-effect">
               <i class="fas fa-calendar-alt"></i>
-              <span>Inicio programa:</span>
+              <span>Inicio:</span>
               <strong>{{ formatDate(summer.startDate) }}</strong>
             </div>
             <div class="detail-item hover-effect">
@@ -49,7 +50,7 @@
             </div>
             <div class="detail-item hover-effect">
               <i class="fas fa-users-cog"></i>
-              <span>Capacidad elite:</span>
+              <span>Capacidad:</span>
               <strong>{{ summer.maxParticipants }}</strong>
             </div>
           </div>
@@ -59,7 +60,7 @@
           </div>
           <div class="activities-box hover-effect">
             <details class="activities">
-              <summary><i class="fas fa-dumbbell"></i> Programa de Alto Rendimiento</summary>
+              <summary><i class="fas fa-dumbbell"></i> Actividades</summary>
               <ul>
                 <li v-for="activity in summer.activities.split(':')" :key="activity">
                   <i class="fas fa-medal"></i> {{ activity }}
@@ -70,12 +71,21 @@
         </div>
       </div>
     </div>
+
+    <!-- Controles de paginación -->
+    <div class="pagination-controls" v-if="!loading && filteredSummers.length > 0">
+      <button :disabled="currentPage === 1" @click="currentPage--" class="pagination-btn">
+        <i class="fas fa-chevron-left"></i> Anterior
+      </button>
+      <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button :disabled="currentPage === totalPages" @click="currentPage++" class="pagination-btn">
+        Siguiente <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "ListSummers",
   props: {
@@ -90,38 +100,19 @@ export default {
   },
   data() {
     return {
-      summers: [],
       loading: false,
       currentPage: 1,
       itemsPerPage: 2,
     };
   },
-  methods: {
-    fetchSummers() {
-      this.loading = true;
-      const params = {};
-      if (this.filters.sport && this.filters.sport.length > 0) {
-        params.id_sport = this.filters.sport[0];
-      }
-      axios
-        .get("http://localhost:8085/api/summers", { params })
-        .then((response) => {
-          this.summers = response.data;
-          this.loading = false;
-        })
-        .catch((error) => {
-          console.error("Error al obtener los programas deportivos:", error);
-          this.loading = false;
-        });
-    },
-    formatDate(date) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      return new Date(date).toLocaleDateString("es-ES", options);
-    },
-  },
   computed: {
     filteredSummers() {
-      return this.summers;
+      return this.data.filter((summer) => {
+        const matchesSport = this.filters.sport && this.filters.sport.length > 0
+          ? summer.idSport === parseInt(this.filters.sport[0])
+          : true;
+        return matchesSport;
+      });
     },
     totalPages() {
       return Math.ceil(this.filteredSummers.length / this.itemsPerPage);
@@ -135,14 +126,16 @@ export default {
   watch: {
     filters: {
       handler() {
-        this.currentPage = 1;
-        this.fetchSummers();
+        this.currentPage = 1; // Reinicia la página cuando cambian los filtros
       },
       deep: true,
     },
   },
-  mounted() {
-    this.fetchSummers();
+  methods: {
+    formatDate(date) {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(date).toLocaleDateString("es-ES", options);
+    },
   },
 };
 </script>
@@ -168,6 +161,13 @@ export default {
   box-shadow: 0 8px 20px rgba(146, 216, 190, 0.2);
 }
 
+.summers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+}
+
 .header-section h2 {
   font-family: 'Russo One', sans-serif;
   font-size: 2.5rem;
@@ -180,13 +180,6 @@ export default {
   font-family: 'Russo One', sans-serif;
   font-size: 1.2rem;
   opacity: 0.9;
-}
-
-.summers-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 1rem;
 }
 
 .summer-card {

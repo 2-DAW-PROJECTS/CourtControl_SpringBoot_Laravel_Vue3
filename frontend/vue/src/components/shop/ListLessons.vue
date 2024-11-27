@@ -25,7 +25,7 @@
           <div class="image-overlay">
             <button class="reserve-btn-overlay">¡Inscríbete Ahora!</button>
           </div>
-          <img :src="require(`@/assets/img_lessons/${lesson.img}.jpg`)" :alt="lesson.nameClass" class="lesson-img" />
+          <img :src="require(`@/assets/img_lessons/${lesson.img}`)" :alt="lesson.nameClass" class="lesson-img" />
         </div>
         <div class="lesson-info">
           <div class="lesson-header">
@@ -135,11 +135,11 @@ export default {
   watch: {
     filters: {
       handler() {
-        this.currentPage = 1;
+        this.currentPage = 1; // Reinicia la página cuando cambian los filtros
       },
       deep: true,
     },
-  }
+  },
 };
 </script>
 
