@@ -1,22 +1,14 @@
 <template>
   <section class="hero-section">
       <!-- Background Video -->
-      <video
-        autoplay
-        muted
-        class="hero-video"
-        ref="backgroundVideo"
-      >
+      <video autoplay muted class="hero-video" ref="backgroundVideo">
         <source src="@/assets/banners_home/background-video.mp4" type="video/mp4" />
         <img src="@/assets/banners_home/banner_4.jpg" alt="Banner de Emergencia">
       </video>
       <!-- Fallback Image -->
-      <img
-        v-if="showFallbackImage"
-        src="@/assets/banners_home/banner_4.jpg"
-        alt="Hero Fallback Background"
-        class="hero-fallback-image"
-      />
+      <img v-if="showFallbackImage" src="@/assets/banners_home/banner_4.jpg" 
+        alt="Hero Fallback Background" class="hero-fallback-image"/>
+
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <img src="@/assets/logo.png" alt="App Logo" class="hero-logo" />
@@ -26,26 +18,51 @@
       <p class="hero-subtitle">
         Precisión en cada jugada, control en cada espacio.
       </p>
-      <form class="hero-search">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Encuentra tu Prime..."
-        />
-        <!-- <button type="submit" class="search-button">Explorar</button> -->
-      </form>
+      <SearchBar @search="handleSearch" />
     </div>
   </section>
 </template>
+
+
 <script>
+import SearchBar from '@/components/search/SearchBar.vue';
 export default {
+  components: {
+    SearchBar
+  },
   data() {
     return {
       showFallbackImage: false,
     };
   },
+  methods: {
+    handleSearch(searchQuery) {
+      // console.log('Search query:', searchQuery);
+      // Redirigir a la página de Shop con el término de búsqueda en la URL
+      this.$router.push({ name: 'shop', query: { search: searchQuery } });
+    }
+  },
+  // mounted() {
+  //   const video = this.$refs.backgroundVideo;
+  //   video.addEventListener('ended', () => {
+  //     this.showFallbackImage = true;
+  //     video.style.display = 'none';
+  //   });
+  // }
   mounted() {
     const video = this.$refs.backgroundVideo;
+    
+    // Set a timeout to show fallback image if video takes too long
+    const timeoutId = setTimeout(() => {
+      this.showFallbackImage = true;
+      video.style.display = 'none';
+    }, 1000); // 1 seconds timeout
+
+    // If video loads successfully before timeout, clear the timeout
+    video.addEventListener('canplay', () => {
+      clearTimeout(timeoutId);
+    });
+
     video.addEventListener('ended', () => {
       this.showFallbackImage = true;
       video.style.display = 'none';
@@ -81,18 +98,37 @@ export default {
   left: 0;
 }
 
-.hero-overlay {
+/* .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
   z-index: -1;
+} */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg, 
+    rgba(0, 0, 0, 0.292), 
+    rgba(0, 0, 0, 0.148)
+  );
+  z-index: 1;
 }
 
-.hero-content {
+/* .hero-content {
   text-align: center;
   color: #f6f1de;
   z-index: 1;
   animation: fadeIn 1.5s ease-in-out;
+} */
+.hero-content {
+  position: relative;
+  text-align: center;
+  color: #f6f1de;
+  z-index: 2;
+  padding: 2rem;
+  animation: fadeIn 1.5s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-logo {
@@ -101,21 +137,61 @@ export default {
   animation: pulse 3s infinite;
 }
 
-.hero-title {
+/* .hero-title {
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
   letter-spacing: -0.05em;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+} */
+.hero-title {
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.05em;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transform-style: preserve-3d;
+  animation: titleEntrance 1.5s ease-out;
 }
 
-.gradient-text {
+/* .gradient-text {
   background: linear-gradient(90deg, #f6f1de, #92d8be, #9bada1, #f5ce8d, #fc9b70, #eb6a65);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   background-size: 800% 100%;
   animation: gradient 8s linear infinite;
+} */
+.gradient-text {
+  background: linear-gradient(
+    90deg, 
+    #f6f1de, 
+    #92d8be, 
+    #9bada1, 
+    #f5ce8d, 
+    #fc9b70, 
+    #eb6a65,
+    #f6f1de
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 300% 100%;
+  animation: gradient 8s linear infinite;
+}
+
+@keyframes titleEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-50px);
+  }
+  50% {
+    transform: scale(1.1) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 @keyframes gradient {
