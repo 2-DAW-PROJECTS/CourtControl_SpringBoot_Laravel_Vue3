@@ -67,6 +67,7 @@ export default {
       filteredCourts: [],
       currentPage: 1,
       itemsPerPage: 3,
+      loading: false,
     };
   },
   watch: {
@@ -92,22 +93,22 @@ export default {
   },
   methods: {
     async fetchCourts() {
+      this.loading = true;
       try {
         const sportQuery = Array.isArray(this.filters.sport) && this.filters.sport.length > 0
           ? this.filters.sport.join(',')
           : '';
-
         const response = await axios.get(`http://localhost:8085/api/courts`, {
           params: {
             sportIds: sportQuery,
             category: this.filters.category,
+            search: this.filters.search, // Añadir el parámetro de búsqueda
           },
           headers: {
             'Content-Type': 'application/json',
           },
           withCredentials: true,
         });
-
         if (response.status === 200) {
           this.courts = response.data;
           this.applyFilters(this.filters);  // Filtrar las pistas
@@ -116,19 +117,25 @@ export default {
         }
       } catch (error) {
         console.error('Error fetching courts:', error);
+      } finally {
+        this.loading = false;
       }
     },
+
     applyFilters(filters) {
       this.filteredCourts = this.courts.filter((court) => {
         const matchesSport = filters.sport && filters.sport.length > 0
           ? court.sportId === parseInt(filters.sport[0])
           : true;
-
-        return matchesSport;
+        const matchesSearch = filters.search
+          ? (court.namePista && court.namePista.toLowerCase().includes(filters.search.toLowerCase())) ||
+            (court.tagCourt && court.tagCourt.toLowerCase().includes(filters.search.toLowerCase()))
+          : true;
+        return matchesSport && matchesSearch;
       });
-
       this.currentPage = 1;
     },
+
   },
 };
 </script>
@@ -150,7 +157,7 @@ export default {
   padding: 2.5rem;
   background: linear-gradient(to bottom, #23232f, #2a2a38);
   min-height: 100vh;
-  color: #f6f1de;
+  color: #ffffff;
 }
 
 .header-section {

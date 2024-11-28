@@ -11,10 +11,10 @@
         </div>
         
         <div class="footer-links">
-          <router-link to="/privacy-policy" class="link-hover">Privacidad</router-link>
-          <router-link to="/terms" class="link-hover">Términos</router-link>
-          <router-link to="/contact" class="link-hover">Contacto</router-link>
-          <router-link to="/about" class="link-hover">Sobre Nosotros</router-link>
+          <router-link to="#" class="link-hover">Privacidad</router-link>
+          <router-link to="#" class="link-hover">Términos</router-link>
+          <router-link to="#" class="link-hover">Contacto</router-link>
+          <router-link to="#" class="link-hover">Sobre Nosotros</router-link>
         </div>
 
         <div class="footer-social">
