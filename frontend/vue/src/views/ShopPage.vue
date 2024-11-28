@@ -35,6 +35,7 @@ export default {
       filters: {
         category: "pistas", // Iniciar con "pistas"
         sport: null, // El deporte inicialmente no está seleccionado
+        search: "", // Búsqueda por defecto vacía
       },
       data: [],
       loading: false,
@@ -83,15 +84,32 @@ export default {
         queryParams.append("sportIds", filters.sport); // sportIds=valor
       }
 
+      if (filters.search) {
+        queryParams.append("search", filters.search);
+      }
+
       history.replaceState(null, "", `?${queryParams.toString()}`);
     },
 
     // Inicializar los filtros a partir de la URL
+    // initializeFilters() {
+    //   const params = new URLSearchParams(window.location.search);
+    //   this.filters.category = params.get("category") || "pistas";  // Por defecto "pistas"
+    //   this.filters.sport = params.get("sportIds") || null;  // Deporte seleccionado (si existe)
+    //   this.fetchData(this.filters);  // Hacer la consulta inicial
+    // },
     initializeFilters() {
       const params = new URLSearchParams(window.location.search);
-      this.filters.category = params.get("category") || "pistas";  // Por defecto "pistas"
-      this.filters.sport = params.get("sportIds") || null;  // Deporte seleccionado (si existe)
-      this.fetchData(this.filters);  // Hacer la consulta inicial
+      if (params.has("category")) {
+        this.filters.category = params.get("category");
+      }
+      if (params.has("sportIds")) {
+        this.filters.sport = params.get("sportIds").split(",");
+      }
+      if (params.has("search")) {
+        this.filters.search = params.get("search");
+      }
+      this.fetchData(this.filters);
     },
 
     // Obtener los datos del backend basados en los filtros seleccionados
@@ -108,6 +126,10 @@ export default {
         // Si la categoría es "academias", usamos la URL para academias de verano
         if (filters.category === "academias") {
           url = "http://localhost:8085/api/summers";
+        }
+
+        if (filters.search) {
+          params.search = filters.search; // Filtrar por término de búsqueda
         }
 
         const response = await axios.get(url, { params });
