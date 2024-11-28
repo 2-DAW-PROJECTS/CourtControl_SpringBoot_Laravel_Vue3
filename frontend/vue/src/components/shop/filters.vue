@@ -66,6 +66,7 @@ export default {
       this.$emit("update:modelValue", {
         ...this.filters,
         sport: [],
+        search: "",
       });
       this.selectedSport = "";
     },
