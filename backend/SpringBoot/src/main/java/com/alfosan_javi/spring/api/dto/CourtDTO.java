@@ -14,6 +14,7 @@ public class CourtDTO {
     private String typePista;
     private String namePista;
     private String ancho;
+    private String material;
     private String description;
     private String img;
     private String tagCourt;

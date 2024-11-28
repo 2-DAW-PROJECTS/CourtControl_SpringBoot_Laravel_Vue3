@@ -10,28 +10,38 @@
           <div class="filter-section">
             <h4>Categorías</h4>
             <label class="radio-container">
-              <input type="radio" v-model="filters.category" value="pistas" />
+              <input type="radio" v-model="filters.category" value="pistas" @change="handleCategoryChange" />
               <span class="radio-mark"></span>
               <span class="radio-text">Pistas</span>
             </label>
             <label class="radio-container">
-              <input type="radio" v-model="filters.category" value="tecnificaciones" />
+              <input type="radio" v-model="filters.category" value="tecnificaciones" @change="handleCategoryChange" />
               <span class="radio-mark"></span>
               <span class="radio-text">Tecnificaciones</span>
             </label>
             <label class="radio-container">
-              <input type="radio" v-model="filters.category" value="academias" />
+              <input type="radio" v-model="filters.category" value="academias" @change="handleCategoryChange" />
               <span class="radio-mark"></span>
               <span class="radio-text">Academias de Verano</span>
             </label>
           </div>
         </div>
       </div>
+
       <select v-model="selectedSport" class="sport-select" @change="updateSportFilter">
         <option value="" disabled selected>Seleccione deporte</option>
         <option value="1">Volei</option>
         <option value="2">Basket</option>
       </select>
+
+      <!-- Filtro de material solo cuando la categoría es 'pistas' -->
+      <select v-if="filters.category === 'pistas'" v-model="selectedMaterial" class="sport-select" @change="updateMaterialFilter">
+        <option value="" disabled selected>Seleccione material</option>
+        <option v-for="(material, index) in materials" :key="index" :value="material">
+          {{ material }}
+        </option>
+      </select>
+
       <button class="clear-filters" @click="clearFilters">Limpiar Filtros</button>
     </div>
   </div>
@@ -50,27 +60,63 @@ export default {
     return {
       isOpen: false,
       selectedSport: "",
+      selectedMaterial: "",
+      materials: [], // Aquí se guardarán los materiales que recibimos de la API
     };
   },
+  async created() {
+    await this.fetchMaterials();
+  },
   methods: {
+    // Fetch para obtener los materiales desde la API
+    async fetchMaterials() {
+      try {
+        const response = await fetch('/api/courts/materials'); // Ajusta la URL según tu API
+        this.materials = await response.json();
+      } catch (error) {
+        console.error('Error al cargar materiales:', error);
+      }
+    },
+
     toggleDropdown() {
       this.isOpen = !this.isOpen;
     },
+
+    // Método para actualizar el filtro de deporte
     updateSportFilter() {
       this.$emit("update:modelValue", {
         ...this.filters,
         sport: this.selectedSport ? [this.selectedSport] : [],
       });
     },
+
+    // Método para actualizar el filtro de material
+    updateMaterialFilter() {
+      this.$emit("update:modelValue", {
+        ...this.filters,
+        material: this.selectedMaterial,
+      });
+    },
+
+    // Limpiar todos los filtros
     clearFilters() {
       this.$emit("update:modelValue", {
         ...this.filters,
         sport: [],
         search: "",
+        material: "",
+
       });
       this.selectedSport = "";
+      this.selectedMaterial = "";
+    },
+
+    handleCategoryChange() {
+      this.$emit("update:modelValue", this.filters);
+      window.location.reload();
     },
   },
+
   computed: {
     filters: {
       get() {

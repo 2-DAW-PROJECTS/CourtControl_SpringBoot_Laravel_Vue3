@@ -32,6 +32,9 @@ public class Court {
     @Column(name = "ancho")
     private String ancho;
 
+    @Column(name = "material")
+    private String material;
+
     @Column(name = "description")
     private String description;
 
