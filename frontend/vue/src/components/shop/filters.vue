@@ -71,10 +71,12 @@ export default {
     // Fetch para obtener los materiales desde la API
     async fetchMaterials() {
       try {
-        const response = await fetch('/api/courts/materials'); // Ajusta la URL según tu API
+        // Cambié la URL para que apunte al servidor correcto (puerto 8085)
+        const response = await fetch('http://localhost:8085/api/courts/materials');
         this.materials = await response.json();
       } catch (error) {
         console.error('Error al cargar materiales:', error);
+        // Puedes añadir un manejo de errores aquí para alertar al usuario si ocurre un fallo
       }
     },
 
