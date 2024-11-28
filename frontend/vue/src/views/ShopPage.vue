@@ -90,14 +90,6 @@ export default {
 
       history.replaceState(null, "", `?${queryParams.toString()}`);
     },
-
-    // Inicializar los filtros a partir de la URL
-    // initializeFilters() {
-    //   const params = new URLSearchParams(window.location.search);
-    //   this.filters.category = params.get("category") || "pistas";  // Por defecto "pistas"
-    //   this.filters.sport = params.get("sportIds") || null;  // Deporte seleccionado (si existe)
-    //   this.fetchData(this.filters);  // Hacer la consulta inicial
-    // },
     initializeFilters() {
       const params = new URLSearchParams(window.location.search);
       if (params.has("category")) {

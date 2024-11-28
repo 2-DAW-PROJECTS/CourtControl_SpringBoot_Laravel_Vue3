@@ -121,45 +121,7 @@ export default {
         this.loading = false;
       }
     },
-    // async fetchCourts() {
-    //   try {
-    //     const sportQuery = Array.isArray(this.filters.sport) && this.filters.sport.length > 0
-    //       ? this.filters.sport.join(',')
-    //       : '';
-    //     const response = await axios.get(`http://localhost:8085/api/courts`, {
-    //       params: {
-    //         sportIds: sportQuery,
-    //         category: this.filters.category,
-    //         search: this.filters.search, // Añadir el parámetro de búsqueda
-    //       },
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       withCredentials: true,
-    //     });
-    //     if (response.status === 200) {
-    //       this.courts = response.data;
-    //       this.applyFilters(this.filters);  // Filtrar las pistas
-    //     } else {
-    //       console.error('Error fetching courts:', response.statusText);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching courts:', error);
-    //   }
-    // },
-    
-    // applyFilters(filters) {
-    //   this.filteredCourts = this.courts.filter((court) => {
-    //       const matchesSport = filters.sport && filters.sport.length > 0
-    //         ? court.sportId === parseInt(filters.sport[0])
-    //         : true;
-    //       const matchesSearch = filters.search
-    //         ? court.name.toLowerCase().includes(filters.search.toLowerCase())
-    //         : true;
-    //     return matchesSport && matchesSearch;
-    //   });
-    //   this.currentPage = 1;
-    // },
+
     applyFilters(filters) {
       this.filteredCourts = this.courts.filter((court) => {
         const matchesSport = filters.sport && filters.sport.length > 0
@@ -173,20 +135,7 @@ export default {
       });
       this.currentPage = 1;
     },
-    // applyFilters(filters) {
-    //   this.filteredCourts = this.courts.filter((court) => {
-    //     console.log("ListContent 163:", court);
 
-    //     const matchesSport = filters.sport && filters.sport.length > 0
-    //       ? court.sportId === parseInt(filters.sport[0])
-    //       : true;
-    //     const matchesSearch = filters.search
-    //       ? court.namePista && court.namePista.toLowerCase().includes(filters.search.toLowerCase())
-    //       : true;
-    //     return matchesSport && matchesSearch;
-    //   });
-    //   this.currentPage = 1;
-    // },
   },
 };
 </script>
