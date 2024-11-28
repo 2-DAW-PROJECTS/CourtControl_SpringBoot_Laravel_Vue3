@@ -34,8 +34,10 @@ export default {
   data() {
     return {
       filters: {
-        category: "pistas",
-        sport: null,
+        category: "pistas", // Iniciar con "pistas"
+        sport: null, // El deporte inicialmente no está seleccionado
+        search: "", // Búsqueda por defecto vacía
+
       },
       data: [],
       loading: false,
@@ -88,13 +90,25 @@ export default {
         queryParams.append("sportIds", filters.sport);
       }
 
+      if (filters.search) {
+        queryParams.append("search", filters.search);
+      }
+
       history.replaceState(null, "", `?${queryParams.toString()}`);
     },
 
     initializeFilters() {
       const params = new URLSearchParams(window.location.search);
-      this.filters.category = params.get("category") || "pistas";
-      this.filters.sport = params.get("sportIds") || null;
+      if (params.has("category")) {
+        this.filters.category = params.get("category") || "pistas";
+      }
+      if (params.has("sportIds")) {
+        this.filters.sport = params.get("sportIds").split(",") || null;
+      }
+      if (params.has("search")) {
+        this.filters.search = params.get("search");
+      }
+
       this.fetchData(this.filters);
     },
 
@@ -110,6 +124,10 @@ export default {
 
         if (filters.category === "academias") {
           url = "http://localhost:8085/api/summers";
+        }
+
+        if (filters.search) {
+          params.search = filters.search; // Filtrar por término de búsqueda
         }
 
         const response = await axios.get(url, { params });
