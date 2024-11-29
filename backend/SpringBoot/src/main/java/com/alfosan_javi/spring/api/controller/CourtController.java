@@ -31,16 +31,19 @@ public class CourtController {
             @RequestParam(required = false) String material) {
 
         List<Court> courts = courtService.getFilteredCourts(sportIds, material);
-
         return courts.stream()
-                .map(courtAssembler::toModel)
-                .collect(Collectors.toList());
+                    .map(courtAssembler::toModel)
+                    .collect(Collectors.toList());
     }
 
     // Obtener los materiales disponibles
     @GetMapping("/materials")
-    public List<String> getAvailableMaterials() {
-        return courtService.getDistinctMaterials();
+    public List<String> getMaterialsBySport(@RequestParam(required = false) Long sportId) {
+        if (sportId != null) {
+            return courtService.getMaterialsBySport(sportId);
+        } else {
+            return courtService.getAllMaterials();
+        }
     }
 
     // Obtener una pista por ID

@@ -6,13 +6,11 @@
       <p class="subtitle">Descubre y reserva las mejores instalaciones deportivas</p>
     </div>
 
-    <!-- Si no hay pistas, mostramos un mensaje -->
     <div v-if="courts.length === 0" class="no-courts">
       <i class="fas fa-exclamation-circle"></i>
       <p>No hay pistas disponibles en este momento.</p>
     </div>
 
-    <!-- Mostrar las pistas disponibles -->
     <div class="courts-grid" v-if="courts.length > 0">
       <div v-for="court in paginatedCourts" :key="court.id" class="court-card">
         <div class="court-image">
@@ -37,7 +35,6 @@
       </div>
     </div>
 
-    <!-- Controles de paginación -->
     <div class="pagination-controls" v-if="courts.length > 0">
       <button :disabled="currentPage === 1" @click="currentPage--" class="pagination-btn">
         <i class="fas fa-chevron-left"></i> Anterior
@@ -101,17 +98,16 @@ export default {
         const response = await axios.get(`http://localhost:8085/api/courts`, {
           params: {
             sportIds: sportQuery,
+            material: this.filters.material,
             category: this.filters.category,
-            search: this.filters.search, // Añadir el parámetro de búsqueda
+            search: this.filters.search,
           },
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
         });
         if (response.status === 200) {
           this.courts = response.data;
-          this.applyFilters(this.filters);  // Filtrar las pistas
+          this.applyFilters(this.filters);
         } else {
           console.error('Error fetching courts:', response.statusText);
         }
@@ -121,24 +117,26 @@ export default {
         this.loading = false;
       }
     },
-
     applyFilters(filters) {
       this.filteredCourts = this.courts.filter((court) => {
         const matchesSport = filters.sport && filters.sport.length > 0
-          ? court.sportId === parseInt(filters.sport[0])
+          ? filters.sport.includes(court.sportId.toString())
+          : true;
+        const matchesMaterial = filters.material
+          ? court.material === filters.material
           : true;
         const matchesSearch = filters.search
           ? (court.namePista && court.namePista.toLowerCase().includes(filters.search.toLowerCase())) ||
             (court.tagCourt && court.tagCourt.toLowerCase().includes(filters.search.toLowerCase()))
           : true;
-        return matchesSport && matchesSearch;
+        return matchesSport && matchesMaterial && matchesSearch;
       });
       this.currentPage = 1;
     },
-
   },
 };
 </script>
+
 
 <style scoped>
 /* usa esta gama de colores y hazlo mucho mas bonito:

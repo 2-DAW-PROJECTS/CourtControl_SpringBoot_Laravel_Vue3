@@ -32,9 +32,9 @@
         <option value="" disabled selected>Seleccione deporte</option>
         <option value="1">Volei</option>
         <option value="2">Basket</option>
-      </select>
+    </select>
 
-      <!-- Filtro de material solo cuando la categoría es 'pistas' -->
+      <!-- Filtro de material dinámico -->
       <select v-if="filters.category === 'pistas'" v-model="selectedMaterial" class="sport-select" @change="updateMaterialFilter">
         <option value="" disabled selected>Seleccione material</option>
         <option v-for="(material, index) in materials" :key="index" :value="material">
@@ -61,64 +61,56 @@ export default {
       isOpen: false,
       selectedSport: "",
       selectedMaterial: "",
-      materials: [], // Aquí se guardarán los materiales que recibimos de la API
+      materials: [], // Aquí se guardarán los materiales según el deporte seleccionado
     };
   },
   async created() {
-    await this.fetchMaterials();
+    await this.fetchMaterials(); // Carga inicial (todos los materiales)
   },
   methods: {
-    // Fetch para obtener los materiales desde la API
-    async fetchMaterials() {
-      try {
-        // Cambié la URL para que apunte al servidor correcto (puerto 8085)
-        const response = await fetch('http://localhost:8085/api/courts/materials');
-        this.materials = await response.json();
-      } catch (error) {
-        console.error('Error al cargar materiales:', error);
-        // Puedes añadir un manejo de errores aquí para alertar al usuario si ocurre un fallo
-      }
+    async fetchMaterials(sportId = null) {
+        try {
+            const url = sportId
+                ? `http://localhost:8085/api/courts/materials?sportId=${sportId}`
+                : `http://localhost:8085/api/courts/materials`;
+            const response = await fetch(url);
+            this.materials = await response.json();
+        } catch (error) {
+            console.error('Error al cargar materiales:', error);
+        }
     },
-
     toggleDropdown() {
       this.isOpen = !this.isOpen;
     },
-
-    // Método para actualizar el filtro de deporte
-    updateSportFilter() {
-      this.$emit("update:modelValue", {
-        ...this.filters,
-        sport: this.selectedSport ? [this.selectedSport] : [],
-      });
+    async updateSportFilter() {
+        await this.fetchMaterials(this.selectedSport); // Actualiza materiales según deporte
+        this.$emit("update:modelValue", {
+            ...this.filters,
+            sport: this.selectedSport ? [this.selectedSport] : [],
+        });
     },
-
-    // Método para actualizar el filtro de material
     updateMaterialFilter() {
       this.$emit("update:modelValue", {
         ...this.filters,
         material: this.selectedMaterial,
       });
     },
-
-    // Limpiar todos los filtros
     clearFilters() {
       this.$emit("update:modelValue", {
         ...this.filters,
         sport: [],
-        search: "",
         material: "",
-
+        search: "",
       });
       this.selectedSport = "";
       this.selectedMaterial = "";
+      this.fetchMaterials(); // Restablece los materiales
     },
-
     handleCategoryChange() {
       this.$emit("update:modelValue", this.filters);
       window.location.reload();
     },
   },
-
   computed: {
     filters: {
       get() {

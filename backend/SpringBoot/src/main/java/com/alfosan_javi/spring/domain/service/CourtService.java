@@ -8,10 +8,9 @@ import com.alfosan_javi.spring.domain.repository.SportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import jakarta.persistence.criteria.Predicate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CourtService {
@@ -40,8 +39,22 @@ public class CourtService {
         });
     }
 
-    public List<String> getDistinctMaterials() {
-        return courtRepository.findDistinctMaterials();
+    public List<String> getMaterialsBySport(Long sportId) {
+        return courtRepository.findAll((root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get("sport").get("id"), sportId))
+                .stream()
+                .map(Court::getMaterial)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+
+    public List<String> getAllMaterials() {
+        return courtRepository.findAll()
+                .stream()
+                .map(Court::getMaterial)
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     public Optional<Court> getCourtById(long id) {
@@ -54,7 +67,7 @@ public class CourtService {
             return null;
         }
         Court court = new Court();
-        court.setNamePista(courtDTO.getNamePista()); // Cambiado a setNamePista
+        court.setNamePista(courtDTO.getNamePista());
         court.setMaterial(courtDTO.getMaterial());
         court.setSport(sport);
         return courtRepository.save(court);
@@ -70,12 +83,12 @@ public class CourtService {
         if (sport == null) {
             return null;
         }
-        court.setNamePista(courtDTO.getNamePista()); // Cambiado a setNamePista
+        court.setNamePista(courtDTO.getNamePista());
         court.setMaterial(courtDTO.getMaterial());
         court.setSport(sport);
         return courtRepository.save(court);
     }
-    
+
     public boolean deleteCourt(long id) {
         if (courtRepository.existsById(id)) {
             courtRepository.deleteById(id);
