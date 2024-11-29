@@ -139,6 +139,11 @@ export default {
     #f5ce8d, 
     #fc9b70, 
     #eb6a65,
+    #eb6a65,
+    #fc9b70, 
+    #f5ce8d, 
+    #9bada1, 
+    #92d8be, 
     #f6f1de
   );
   -webkit-background-clip: text;
