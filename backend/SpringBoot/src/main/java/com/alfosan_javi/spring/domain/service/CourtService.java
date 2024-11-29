@@ -48,14 +48,14 @@ public class CourtService {
     //             .collect(Collectors.toList());
     // }
     public List<String> getMaterialsBySport(Integer sportId) {
-        System.out.println("Getting materials for sportId: " + sportId);
+        // System.out.println("Getting materials for sportId: " + sportId);
         List<String> materials = courtRepository.findAll((root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("sport").get("id"), sportId))
                 .stream()
                 .map(Court::getMaterial)
                 .distinct()
                 .collect(Collectors.toList());
-        System.out.println("Materials for sportId " + sportId + ": " + materials);
+        // System.out.println("Materials for sportId " + sportId + ": " + materials);
         return materials;
     }
 
@@ -68,13 +68,13 @@ public class CourtService {
     //             .collect(Collectors.toList());
     // }
     public List<String> getAllMaterials() {
-        System.out.println("Getting all materials");
+        // System.out.println("Getting all materials");
         List<String> materials = courtRepository.findAll()
                 .stream()
                 .map(Court::getMaterial)
                 .distinct()
                 .collect(Collectors.toList());
-        System.out.println("All materials: " + materials);
+        // System.out.println("All materials: " + materials);
         return materials;
     }
 

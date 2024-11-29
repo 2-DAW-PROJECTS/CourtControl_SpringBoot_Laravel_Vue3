@@ -48,7 +48,7 @@
 
       <div class="panel">
         <div class="grid-container">
-          <div class="grid-item i7" @click="navigateToShop('volleyball')" >
+          <div class="grid-item i7" @click="navigateToShop(2)">
             <div class="content-overlay"></div>
             <h2>Volley Mania</h2>
             <p>¡Aprende, salta y diviértete con nuestro método único!</p>
@@ -100,9 +100,11 @@ export default {
     };
   },
   methods: {
-    navigateToShop(sport) {
-      console.log("Navigating to shop with sport:", sport);
-      this.$router.push({ path: '/shop', query: { sport } });
+    navigateToShop(sportId) {
+      this.$router.push({
+        path: '/shop',
+        query: { sport: sportId }
+      })
     }
   }
 };

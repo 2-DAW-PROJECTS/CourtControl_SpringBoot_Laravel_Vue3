@@ -50,10 +50,10 @@ public class CourtController {
     // }
     @GetMapping("/materials")
     public List<String> getMaterialsBySport(@RequestParam(required = false) Integer sportId) {
-        System.out.println("ESTOY EN EL CONTROLLER MATERIALS");
+        // System.out.println("ESTOY EN EL CONTROLLER MATERIALS");
 
         if (sportId != null) {
-            System.out.println("ESTOY EN EL CONTROLLER CON UN ID DE DEPROTIVO: " + sportId);
+            // System.out.println("ESTOY EN EL CONTROLLER CON UN ID DE DEPROTIVO: " + sportId);
             return courtService.getMaterialsBySport(sportId);
         }
         return courtService.getAllMaterials();

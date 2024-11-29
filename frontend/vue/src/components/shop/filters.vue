@@ -88,15 +88,14 @@ export default {
               ? `http://localhost:8085/api/courts/materials?sportId=${Number(sportId)}`
               : `http://localhost:8085/api/courts/materials`;
 
-          console.log('Fetching materials from URL:', url); // Log para verificar la URL
+          // console.log('Fetching materials from URL:', url); // Log para verificar la URL
           const response = await fetch(url);
 
-          console.log('number(sportId):', Number(sportId));
-          console.log('Response status:', response.status);
-          console.log('Response headers:', response.headers);
-          console.log('Response type:', response.type);
-          console.log('Response body:', await response.clone().text());
-
+          // console.log('number(sportId):', Number(sportId));
+          // console.log('Response status:', response.status);
+          // console.log('Response headers:', response.headers);
+          // console.log('Response type:', response.type);
+          // console.log('Response body:', await response.clone().text());
 
           if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -107,7 +106,7 @@ export default {
           console.error('Error al cargar materiales:', error);
       }
     },
-///////////////////////////////////////////////////////////////////////////////
+
     toggleDropdown() {
       this.isOpen = !this.isOpen;
     },
