@@ -43,6 +43,12 @@ export default {
       loading: false,
     };
   },
+  created() {
+    const sport = this.$route.query.sport;
+    if (sport) {
+      this.filters.sport = sport;
+    }
+  },
   computed: {
     filteredData() {
       return this.data;
