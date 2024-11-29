@@ -39,22 +39,43 @@ public class CourtService {
         });
     }
 
-    public List<String> getMaterialsBySport(Long sportId) {
-        return courtRepository.findAll((root, query, criteriaBuilder) ->
+    // public List<String> getMaterialsBySport(Long sportId) {
+    //     return courtRepository.findAll((root, query, criteriaBuilder) ->
+    //                     criteriaBuilder.equal(root.get("sport").get("id"), sportId))
+    //             .stream()
+    //             .map(Court::getMaterial)
+    //             .distinct()
+    //             .collect(Collectors.toList());
+    // }
+    public List<String> getMaterialsBySport(Integer sportId) {
+        System.out.println("Getting materials for sportId: " + sportId);
+        List<String> materials = courtRepository.findAll((root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("sport").get("id"), sportId))
                 .stream()
                 .map(Court::getMaterial)
                 .distinct()
                 .collect(Collectors.toList());
+        System.out.println("Materials for sportId " + sportId + ": " + materials);
+        return materials;
     }
 
 
+    // public List<String> getAllMaterials() {
+    //     return courtRepository.findAll()
+    //             .stream()
+    //             .map(Court::getMaterial)
+    //             .distinct()
+    //             .collect(Collectors.toList());
+    // }
     public List<String> getAllMaterials() {
-        return courtRepository.findAll()
+        System.out.println("Getting all materials");
+        List<String> materials = courtRepository.findAll()
                 .stream()
                 .map(Court::getMaterial)
                 .distinct()
                 .collect(Collectors.toList());
+        System.out.println("All materials: " + materials);
+        return materials;
     }
 
     public Optional<Court> getCourtById(long id) {

@@ -3,11 +3,8 @@ package com.alfosan_javi.spring.api.controller;
 import com.alfosan_javi.spring.api.assembler.CourtAssembler;
 import com.alfosan_javi.spring.api.dto.CourtDTO;
 import com.alfosan_javi.spring.domain.model.Court;
-import com.alfosan_javi.spring.domain.model.Sport;
 import com.alfosan_javi.spring.domain.service.CourtService;
-import com.alfosan_javi.spring.domain.service.SportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,13 +34,29 @@ public class CourtController {
     }
 
     // Obtener los materiales disponibles
+    // @GetMapping("/materials")
+    // public List<String> getMaterialsBySport(@RequestParam(required = false) Long sportId) {
+    //     System.out.println("Received sportId: " + sportId);
+
+    //     List<String> materials;
+    //     if (sportId != null) {
+    //         materials = courtService.getMaterialsBySport(sportId);
+    //         System.out.println("Materials for sport " + sportId + ": " + materials);
+    //     } else {
+    //         materials = courtService.getAllMaterials();
+    //         System.out.println("All materials: " + materials);
+    //     }
+    //     return materials;
+    // }
     @GetMapping("/materials")
-    public List<String> getMaterialsBySport(@RequestParam(required = false) Long sportId) {
+    public List<String> getMaterialsBySport(@RequestParam(required = false) Integer sportId) {
+        System.out.println("ESTOY EN EL CONTROLLER MATERIALS");
+
         if (sportId != null) {
+            System.out.println("ESTOY EN EL CONTROLLER CON UN ID DE DEPROTIVO: " + sportId);
             return courtService.getMaterialsBySport(sportId);
-        } else {
-            return courtService.getAllMaterials();
         }
+        return courtService.getAllMaterials();
     }
 
     // Obtener una pista por ID
