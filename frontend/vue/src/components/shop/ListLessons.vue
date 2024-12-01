@@ -164,7 +164,7 @@ export default {
   color: #f6f1de;
 }
 
-.header-section {
+/* .header-section {
   text-align: center;
   margin-bottom: 3rem;
   padding: 2rem 0;
@@ -172,6 +172,20 @@ export default {
   color: #23232f;
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(146, 216, 190, 0.2);
+} */
+.header-section {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 200px;
+  background: linear-gradient(135deg, #92d8be, #9bada1, #92d8be);
+  color: #23232f;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(146, 216, 190, 0.3);
+  position: relative;
+  overflow: hidden;
+  margin-top: 120px;
 }
 
 .header-section h2 {
@@ -429,6 +443,11 @@ export default {
 
   .lesson-image {
     flex: 0 0 300px;
+  }
+
+  .header-section {
+    margin-top: 200px;
+    padding-bottom: 20px;
   }
 
   .header-section h2 {

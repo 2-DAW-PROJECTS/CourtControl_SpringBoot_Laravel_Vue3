@@ -160,14 +160,17 @@ export default {
 
 .header-section {
   text-align: center;
-  margin-bottom: 3.5rem;
-  padding: 2.5rem 0;
+  margin-bottom: 1.5rem;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 200px;
   background: linear-gradient(135deg, #92d8be, #9bada1, #92d8be);
   color: #23232f;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(146, 216, 190, 0.3);
   position: relative;
   overflow: hidden;
+  margin-top: 120px;
 }
 
 .header-section::before {
@@ -393,6 +396,11 @@ export default {
   .courts-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .header-section {
+    margin-top: 250px;
+    padding-bottom: 20px;
   }
   
   .header-section h2 {
