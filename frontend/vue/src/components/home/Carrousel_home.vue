@@ -11,9 +11,9 @@
       :plugins="plugins"
       class="flicking-viewport"
     >
-      <div class="panel">
-        <div class="grid-container">
-          <div class="grid-item i1">
+      <div class="panel" key="panel-1">
+        <div class="grid-container" @click.stop>
+          <div class="grid-item i1" @click="navigateToShop(2)">
             <div class="content-overlay"></div>
             <h2>Basket Mania </h2>
             <p>¡Ven a botar con nosotros en nuestras increíbles instalaciones! </p>
@@ -46,9 +46,9 @@
         </div>
       </div>
 
-      <div class="panel">
-        <div class="grid-container">
-          <div class="grid-item i7" @click="navigateToShop(2)">
+      <div class="panel" key="panel-2">
+        <div class="grid-container" @click.stop>
+          <div class="grid-item i7" @click="navigateToShop(1)">
             <div class="content-overlay"></div>
             <h2>Volley Mania</h2>
             <p>¡Aprende, salta y diviértete con nuestro método único!</p>
