@@ -1,86 +1,86 @@
 <template>
   <div class="flicking-section">
-    <Flicking
+  <Flicking
       :options="{
         circular: true,
-        duration: 3000,
+        duration: 1000,
         panelsPerView: 1,
         align: 'center',
-        moveType: 'snap'
+        moveType: 'snap',
       }"
       :plugins="plugins"
       class="flicking-viewport"
     >
-      <div class="panel" key="panel-1">
-        <div class="grid-container" @click.stop>
-          <div class="grid-item i1" @click="navigateToShop(2)">
-            <div class="content-overlay"></div>
-            <h2>Basket Mania </h2>
-            <p>¡Ven a botar con nosotros en nuestras increíbles instalaciones! </p>
-          </div>
-          <div class="grid-item i2">
-            <div class="content-overlay"></div>
-            <h3>¡Tecnificaciones!</h3>
-            <p align="center"> Tiro | Bote | Pase  <br> Salto </p>
-          </div>
-          <div class="grid-item i3">
-            <div class="content-overlay"></div>
-            <h3>¡Ponte en Forma!</h3>
-            <p>¡Prepárate para ser imparable!</p>
-          </div>
-          <div class="grid-item i4">
-            <div class="content-overlay"></div>
-            <h3>¡Tu Cancha te Espera!</h3>
-            <p>¡Elige tu terreno de juego favorito y a divertirse!</p>
-          </div>
-          <div class="grid-item i5">
-            <div class="content-overlay"></div>
-            <h3>¡Veranos Inolvidables!</h3>
-            <p>¡Diversión sin límites para todas las edades! ¡Únete a la aventura! 🌞</p>
-          </div>
-          <div class="grid-item i6">
-            <div class="content-overlay"></div>
-            <h3>Eventos</h3>
-            <p>Competiciones y Torneos 🏆</p>
-          </div>
+    <div class="panel" key="panel-1">
+      <div class="grid-container" @click.stop>
+        <div class="grid-item i1" @click="navigateToShop(2)">
+          <div class="content-overlay"></div>
+          <h2>Basket Mania </h2>
+          <p>¡Ven a botar con nosotros en nuestras increíbles instalaciones! </p>
+        </div>
+        <div class="grid-item i2" @click="navigateToShop(2, 'tecnificaciones')">
+          <div class="content-overlay"></div>
+          <h3>¡Tecnificaciones!</h3>
+          <p align="center"> Tiro | Bote | Pase  <br> Salto </p>
+        </div>
+        <div class="grid-item i3" @click="navigateToShop(2, 'tecnificaciones')">
+          <div class="content-overlay"></div>
+          <h3>¡Ponte en Forma!</h3>
+          <p>¡Prepárate para ser imparable!</p>
+        </div>
+        <div class="grid-item i4" @click="navigateToShop(2, 'pistas')">
+          <div class="content-overlay"></div>
+          <h3>¡Tu Cancha te Espera!</h3>
+          <p>¡Elige tu terreno de juego favorito y a divertirse!</p>
+        </div>
+        <div class="grid-item i5" @click="navigateToShop(2, 'academias')">
+          <div class="content-overlay"></div>
+          <h3>¡Veranos Inolvidables!</h3>
+          <p>¡Diversión sin límites para todas las edades! ¡Únete a la aventura! 🌞</p>
+        </div>
+        <div class="grid-item i6" @click="navigateToShop(2)">
+          <div class="content-overlay"></div>
+          <h3>Eventos</h3>
+          <p>Competiciones y Torneos 🏆</p>
         </div>
       </div>
-
-      <div class="panel" key="panel-2">
-        <div class="grid-container" @click.stop>
-          <div class="grid-item i7" @click="navigateToShop(1)">
-            <div class="content-overlay"></div>
-            <h2>Volley Mania</h2>
-            <p>¡Aprende, salta y diviértete con nuestro método único!</p>
-          </div>
-          <div class="grid-item i8">
-            <div class="content-overlay"></div>
-            <h3>¡Tecnificaciones!</h3>
-            <p align="center"> Saque | Bloqueo | Remate  <br> Colocación | Defensa </p>
-          </div>
-          <div class="grid-item i9">
-            <div class="content-overlay"></div>
-            <h3>¡Ponte en Forma!</h3>
-            <p>¡Prepárate para volar! </p>
-          </div>
-          <div class="grid-item i10">
-            <div class="content-overlay"></div>
-            <h3>¡Tu Espacio de Juego!</h3>
-            <p>¡De la arena a la pista, la diversión no para! </p>
-          </div>
-          <div class="grid-item i11">
-            <div class="content-overlay"></div>
-            <h3>¡Verano de Campeones!</h3>
-            <p>¡Diversión asegurada para todos! ¡Ven a vivir la experiencia! 🌞</p>
-          </div>
-          <div class="grid-item i12">
-            <div class="content-overlay"></div>
-            <h3>Eventos</h3>
-            <p>Competiciones y Torneos 🏆</p>
-          </div>
+    </div>
+    
+    <div class="panel" key="panel-2">
+      <div class="grid-container" @click.stop>
+        <div class="grid-item i7" @click="navigateToShop(1)">
+          <div class="content-overlay"></div>
+          <h2>Volley Mania</h2>
+          <p>¡Aprende, salta y diviértete con nuestro método único!</p>
+        </div>
+        <div class="grid-item i8" @click="navigateToShop(1, 'tecnificaciones')">
+          <div class="content-overlay"></div>
+          <h3>¡Tecnificaciones!</h3>
+          <p align="center"> Saque | Bloqueo | Remate  <br> Colocación | Defensa </p>
+        </div>
+        <div class="grid-item i9" @click="navigateToShop(1, 'tecnificaciones')">
+          <div class="content-overlay"></div>
+          <h3>¡Ponte en Forma!</h3>
+          <p>¡Prepárate para volar! </p>
+        </div>
+        <div class="grid-item i10" @click="navigateToShop(1, 'pistas')">
+          <div class="content-overlay"></div>
+          <h3>¡Tu Espacio de Juego!</h3>
+          <p>¡De la arena a la pista, la diversión no para! </p>
+        </div>
+        <div class="grid-item i11" @click="navigateToShop(1, 'academias')">
+          <div class="content-overlay"></div>
+          <h3>¡Verano de Campeones!</h3>
+          <p>¡Diversión asegurada para todos! ¡Ven a vivir la experiencia! 🌞</p>
+        </div>
+        <div class="grid-item i12" @click="navigateToShop(1)">
+          <div class="content-overlay"></div>
+          <h3>Eventos</h3>
+          <p>Competiciones y Torneos 🏆</p>
         </div>
       </div>
-    </Flicking>
+    </div>
+  </Flicking>
   </div>
 </template>
 
@@ -100,11 +100,24 @@ export default {
     };
   },
   methods: {
-    navigateToShop(sportId) {
-      this.$router.push({
-        path: '/shop',
-        query: { sport: sportId }
-      })
+    // navigateToShop(sportId) {
+    //   this.$router.push({
+    //     path: '/shop',
+    //     query: { sport: sportId }
+    //   })
+    // }
+      navigateToShop(sportId, category) {
+        const query = {
+          sport: [sportId]
+        }
+        if (category) {
+          query.category = category
+        }
+        // console.log(query);
+        this.$router.push({
+          path: '/shop',
+          query: query
+        })
     }
   }
 };

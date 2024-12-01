@@ -59,36 +59,50 @@ export default {
   data() {
     return {
       isOpen: false,
-      selectedSport: "",
+      selectedSport: this.$route.query.sport ? this.$route.query.sport[0] : "",
       selectedMaterial: "",
-      materials: [], // Aquí se guardarán los materiales según el deporte seleccionado
+      materials: [],
     };
   },
   async created() {
-     await this.fetchMaterials(); // Carga inicial (todos los materiales)
+    if (this.$route.query.sport) {
+      await this.fetchMaterials(this.$route.query.sport[0]);
+    } else {
+      await this.fetchMaterials();
+    }
+    
+    if (this.$route.query.category) {
+      this.$emit("update:modelValue", {
+        ...this.modelValue,
+        category: this.$route.query.category
+      });
+    }
+  },
+  watch: {
+    '$route.query': {
+      immediate: true,
+      handler(query) {
+        if (query.category) {
+          this.$emit("update:modelValue", {
+            ...this.modelValue,
+            category: query.category
+          });
+        }
+        if (query.sport) {
+          this.selectedSport = query.sport[0];
+          this.updateSportFilter();
+        }
+      }
+    }
   },
   methods: {
-    // async fetchMaterials(sportId = null) {
-    //     try {
-    //         const url = sportId
-    //             ? `http://localhost:8085/api/courts/materials?sportId=${sportId}`
-    //             : `http://localhost:8085/api/courts/materials`;
-    //         const response = await fetch(url);
-    //         this.materials = await response.json();
-    //     } catch (error) {
-    //         console.error('Error al cargar materiales:', error);
-    //     }
-    // },
-    // toggleDropdown() {
-    //   this.isOpen = !this.isOpen;
-    // },
     async fetchMaterials(sportId = null) {
       try {
           const url = sportId !== null
               ? `http://localhost:8085/api/courts/materials?sportId=${Number(sportId)}`
               : `http://localhost:8085/api/courts/materials`;
 
-          // console.log('Fetching materials from URL:', url); // Log para verificar la URL
+          // console.log('Fetching materials from URL:', url); 
           const response = await fetch(url);
 
           // console.log('number(sportId):', Number(sportId));
@@ -101,7 +115,7 @@ export default {
               throw new Error(`HTTP error! status: ${response.status}`);
           }
           this.materials = await response.json();
-          console.log('Fetched materials:', this.materials); // Log para verificar la respuesta
+          // console.log('Fetched materials:', this.materials);
       } catch (error) {
           console.error('Error al cargar materiales:', error);
       }
@@ -111,7 +125,7 @@ export default {
       this.isOpen = !this.isOpen;
     },
     async updateSportFilter() {
-        await this.fetchMaterials(this.selectedSport); // Actualiza materiales según deporte
+        await this.fetchMaterials(this.selectedSport); 
         this.$emit("update:modelValue", {
             ...this.filters,
             sport: this.selectedSport ? [this.selectedSport] : [],
@@ -126,15 +140,17 @@ export default {
     clearFilters() {
       this.$emit("update:modelValue", {
         ...this.filters,
+        category: 'pistas',
         sport: [],
         material: "",
         search: "",
       });
       this.selectedSport = "";
       this.selectedMaterial = "";
-      this.fetchMaterials(); // Restablece los materiales
+      this.fetchMaterials();
     },
     handleCategoryChange() {
+      // console.log(this.filters.category);
       this.$emit("update:modelValue", this.filters);
       window.location.reload();
     },
