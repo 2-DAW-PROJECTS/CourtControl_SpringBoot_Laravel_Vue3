@@ -1,4 +1,10 @@
-    <template>
+
+<!-- Quiero este scroll mucho mas profesional y bonito, quiero que me cargues los datos de todas las pistas, de esta manera:
+http://localhost:8085/api/courts:
+donde te retornara esto:
+[{"id":1,"sportId":1,"typePista":"v_playa","namePista":"Arena Premium Beach Volley","ancho":"16 x 8","material":"Playa","description":"Juega al sol con tu colega más cercano","img":"/src/assets/img_courts/v_playa.jpg","tagCourt":"Voley Playa"},{"id":2,"sportId":1,"typePista":"v_pista","namePista":"Hard Volley Supreme","ancho":"18 x 9 ","material":"Pista","description":"Pista de voleibol en pista cubierta","img":"../../assets/img_courts/v_pista.jpeg","tagCourt":"Pista Indoor"},{"id":3,"sportId":1,"typePista":"v_asfalto","namePista":"Amateur court Volley","ancho":"18 x 9 ","material":"Asfalto","description":"Pista perfecta para empezar a entrenar","img":"../../assets/img_courts/v_lija.jpg","tagCourt":"Pista Indoor"},{"id":4,"sportId":1,"typePista":"v_parquet","namePista":"Professional Volley court","ancho":"18 x 9","material":"Parquet","description":"Pista echa de parquet de roble amazonico","img":"../../assets/img_courts/v_parquet.jpg","tagCourt":"Pista Profesional Indoor"},{"id":5,"sportId":2,"typePista":"b_parquet","namePista":"Court Elite Basket","ancho":"28 x 15","material":"Parquet","description":"Pista de baloncesto en parquet.","img":"../../assets/img_courts/b_parquet.jpg","tagCourt":"Pista Premium Indoor"},{"id":6,"sportId":2,"typePista":"b_asfalto","namePista":"Basket Junior Court","ancho":"28 x 15","material":"Asfalto","description":"Pista de baloncesto en asfalto.","img":"../../assets/img_courts/b_asfalto.jpg","tagCourt":"Pista Junior Exterior"},{"id":7,"sportId":2,"typePista":"b_3x3","namePista":"3 vs 3 Basketmania","ancho":"14 x 15 ","material":"Asfalto","description":"Pista de baloncesto 3x3.","img":"../../assets/img_courts/b_3x3.jpeg","tagCourt":"Pista 3x3 Exterior"}] -->
+
+<template>
         <div class="list-content">
         <div class="header-section">
             <br><br><br>
@@ -6,6 +12,7 @@
             <p class="subtitle">Espacios de alto rendimiento para tu desarrollo deportivo</p>
         </div>
     
+        <div class="pin"><img src="" alt=""></div>
         <div class="courts-grid">
             <div v-for="court in courts" :key="court.id" class="sports-card">
             <div class="image-section">
@@ -135,174 +142,216 @@
         }
         };
     </script>
-          <style scoped>
-          .list-content {
-              padding: 2rem;
-              background-color: #121212;
-              min-height: 100vh;
-              color: #f0f0f0;
-          }
+    <style scoped>
+        .list-content {
+            padding: 2rem;
+            background: rgb(26, 26, 26);
+            min-height: 100vh;
+        }
 
-          .header-section {
-              text-align: center;
-              margin-bottom: 3rem;
-              padding: 2rem 0;
-          }
+        .header-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
 
-          .header-section .title {
-              font-size: 3.5rem;
-              color: #ff6f61;
-              margin-bottom: 1.5rem;
-              font-weight: 800;
-              text-transform: uppercase;
-              letter-spacing: 3px;
-              text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
-          }
+        .header-section .title {
+            font-size: 3.5rem;
+            color: #ecf0f1;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
 
-          .subtitle {
-              font-size: 1.6rem;
-              color: #e0e0e0;
-              line-height: 1.8;
-              font-weight: 400;
-          }
+        .subtitle {
+            font-size: 1.6rem;
+            color: #bdc3c7;
+        }
 
-          .courts-grid {
-              display: grid;
-              grid-template-columns: repeat(2, 1fr);
-              gap: 3rem;
-              padding: 2rem;
-              max-width: 1400px;
-              margin: 0 auto;
-          }
+        .courts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-          .sports-card {
-              background: linear-gradient(165deg, #1e1e1e, #2a2a2a);
-              border-radius: 20px;
-              overflow: hidden;
-              box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-              transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-          }
+        .sports-card {
+            background: #fff9c4;
+            border-radius: 8px;
+            position: relative;
+            transform: rotate(-1deg);
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 1px 1px rgba(0,0,0,0.15),
+                0 10px 0 -5px #34495e,
+                0 10px 1px -4px rgba(0,0,0,0.15),
+                0 20px 0 -10px #34495e,
+                0 20px 1px -9px rgba(0,0,0,0.15);
+            padding: 1.5rem;
+        }
 
-          .sports-card:hover {
-              transform: translateY(-10px);
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-          }
+        .sports-card:nth-child(even) {
+            transform: rotate(1deg);
+            background: #ffecb3;
+        }
 
-          .image-section {
-              position: relative;
-              overflow: hidden;
-          }
+        .sports-card:hover {
+            transform: scale(1.03) rotate(0);
+            z-index: 1;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
 
-          .image-overlay {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background: rgba(0, 0, 0, 0.7);
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              opacity: 0;
-              transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-              backdrop-filter: blur(4px);
-          }
 
-          .image-section:hover .image-overlay {
-              opacity: 1;
-          }
 
-          .reserve-btn-overlay {
-              background: linear-gradient(145deg, #ff6f61, #ff8a75);
-              color: #fff;
-              border: none;
-              padding: 1rem 2rem;
-              cursor: pointer;
-              border-radius: 30px;
-              font-weight: 700;
-              text-transform: uppercase;
-              letter-spacing: 1.5px;
-              transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-              box-shadow: 0 6px 20px rgba(255, 111, 97, 0.4);
-          }
+        .image-section {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
 
-          .reserve-btn-overlay:hover {
-              transform: scale(1.1);
-              box-shadow: 0 8px 25px rgba(255, 111, 97, 0.5);
-          }
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
 
-          .img-responsive {
-              width: 100%;
-              height: 300px;
-              object-fit: cover;
-              transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-          }
+        .image-section:hover .image-overlay {
+            opacity: 1;
+        }
 
-          .image-section:hover .img-responsive {
-              transform: scale(1.15);
-          }
+        .reserve-btn-overlay {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-          .content-section {
-              padding: 2rem;
-          }
+        .reserve-btn-overlay:hover {
+            background: #c0392b;
+            transform: translateY(0) scale(1.05);
+        }
 
-          .court-header .title {
-              font-size: 2rem;
-              color: #ff6f61;
-              margin-bottom: 1.2rem;
-              font-weight: 700;
-              letter-spacing: 1px;
-          }
+        .image-section:hover .reserve-btn-overlay {
+            transform: translateY(0);
+        }
 
-          .details-grid {
-              display: grid;
-              grid-template-columns: repeat(2, 1fr);
-              gap: 1.5rem;
-              margin: 1.8rem 0;
-          }
+        .img-responsive {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
 
-          .detail-item {
-              display: flex;
-              align-items: center;
-              color: #e0e0e0;
-              font-size: 1.2rem;
-              font-weight: 500;
-          }
+        .image-section:hover .img-responsive {
+            transform: scale(1.1);
+        }
 
-          .detail-item i {
-              margin-right: 1rem;
-              color: #ff6f61;
-              font-size: 1.4rem;
-          }
+        .content-section {
+            padding: 2rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            min-height: 250px;
+        }
 
-          .description {
-              margin-top: 1.8rem;
-              color: #e0e0e0;
-              line-height: 1.8;
-              font-size: 1.2rem;
-              font-weight: 400;
-          }
+        .court-header .title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 0.5rem;
+        }
 
-          .loading {
-              text-align: center;
-              color: #e0e0e0;
-              padding: 3rem;
-              font-size: 1.4rem;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              gap: 1.5rem;
-          }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
 
-          @keyframes pulse {
-              0% { opacity: 0.5; transform: scale(0.95); }
-              50% { opacity: 1; transform: scale(1.05); }
-              100% { opacity: 0.5; transform: scale(0.95); }
-          }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #34495e;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.7);
+            border-radius: 4px;
+            transition: transform 0.2s ease;
+        }
 
-          .loading i {
-              animation: pulse 1.8s infinite;
-              color: #ff6f61;
-              font-size: 1.6rem;
-          }
-          </style>
+        .detail-item:hover {
+            transform: translateX(5px);
+        }
+
+        .detail-item i {
+            margin-right: 0.8rem;
+            color: #e74c3c;
+            font-size: 1.2rem;
+        }
+
+        .description {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #34495e;
+            line-height: 1.8;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .loading {
+            text-align: center;
+            color: #ecf0f1;
+            padding: 4rem;
+            font-size: 1.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.5; transform: scale(0.9); }
+        }
+
+        .loading i {
+            animation: pulse 2s infinite;
+            color: #92d8be;
+            font-size: 2rem;
+            text-shadow: 0 0 15px rgba(146, 216, 190, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .courts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-section {
+                min-height: 200px;
+            }
+        }
+    </style>
+

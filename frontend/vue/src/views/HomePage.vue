@@ -10,11 +10,14 @@
   <!-- Carousel Home -->
   <CarrouselHome /> 
 
+  <!-- BKPLLORENÇ -->
+    <!-- <BKPLLORENÇ /> -->
+
   <!-- Card Description Home -->
   <CardDescription_home />
 
-    <!-- InfiniteScrollCourts Home -->
-    <!-- <InfiniteScrollCourts /> -->
+    <!-- InfiniteScrollCourts Home
+    <InfiniteScrollCourts /> -->
 
   <!-- Infinity Scroll Summer -->
   <InfinityScrollCourts />
@@ -26,7 +29,7 @@ import CarrouselHome from "@/components/home/Carrousel_home.vue";
 import CardDescription_home from "@/components/home/CardDescription_home.vue";
 // import CarrouselSimple from "@/components/Carrousel_simple.vue";
 import HomeGifts from "@/components/home/Home_gifts.vue";
-// import InfiniteScrollCourts from "@/components/home/Infinit_Scroll_courts.vue";
+// import BKPLLORENÇ from "@/components/home/bkp_llorenç.vue";
 import InfinityScrollCourts from "@/components/home/InfinityScrollCourts.vue";
 
 export default {
@@ -36,6 +39,7 @@ export default {
     // CarrouselSimple,
     CardDescription_home,
     // InfiniteScrollCourts,
+    // BKPLLORENÇ,
     CarrouselHome,
     InfinityScrollCourts
   }
