@@ -13,11 +13,13 @@
     "@egjs/vue3-flicking": "^4.11.4",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/vue-splide": "^0.6.12",
+    "@vueuse/core": "^12.0.0",
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-router": "^4.4.5",
-    "vue3-carousel": "^0.7.1"
+    "vue3-carousel": "^0.7.1",
+    "vue3-infinite-loading": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
