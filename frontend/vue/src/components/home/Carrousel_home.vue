@@ -97,7 +97,7 @@ export default {
   },
   data() {
     return {
-      plugins: [new AutoPlay({ duration: 3000, direction: "NEXT", stopOnHover: true })],
+      plugins: [new AutoPlay({ duration: 2000, direction: "NEXT", stopOnHover: true })],
     };
   },
   methods: {
