@@ -1,0 +1,23 @@
+const Constant = {
+    // Loading states
+    SET_LOADING: 'SET_LOADING',
+    SET_ERROR: 'SET_ERROR',
+    
+    // Sport actions
+    INITIALIZE_SPORT: 'INITIALIZE_SPORT',
+    INITIALIZE_ONE_SPORT: 'INITIALIZE_ONE_SPORT',
+    DELETE_SPORT: 'DELETE_SPORT',
+    UPDATE_SPORT: 'UPDATE_SPORT',
+    ADD_SPORT: 'ADD_SPORT',
+    
+    // Dashboard specific
+    FETCH_DASHBOARD_SPORTS: 'FETCH_DASHBOARD_SPORTS',
+    SET_DASHBOARD_MODE: 'SET_DASHBOARD_MODE',
+    
+    // API Status codes
+    STATUS_OK: 200,
+    STATUS_CREATED: 201,
+    STATUS_BAD_REQUEST: 400
+};
+
+export default Constant;
