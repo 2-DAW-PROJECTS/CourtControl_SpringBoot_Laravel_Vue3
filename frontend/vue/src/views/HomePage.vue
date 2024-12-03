@@ -27,7 +27,7 @@ import CardDescription_home from "@/components/home/CardDescription_home.vue";
 // import CarrouselSimple from "@/components/Carrousel_simple.vue";
 import HomeGifts from "@/components/home/Home_gifts.vue";
 // import InfiniteScrollCourts from "@/components/home/Infinit_Scroll_courts.vue";
-import InfinityScrollCourts from "@/components/home/InfinityScrollCourts.vue";
+import InfinityScrollCourts from "@/components/home/bkp_llorenç.vue";
 
 export default {
   name: "HomePage",
