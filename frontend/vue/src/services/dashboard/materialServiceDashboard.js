@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8085/api/dashboard/materials';
-
+const API_URL = 'http://localhost:8085/api/courts/materials';
 class MaterialServiceDashboard {
     constructor() {
         this.axios = axios.create({
@@ -43,23 +42,10 @@ class MaterialServiceDashboard {
         );
     }
 
-    // Advanced dashboard-specific methods
-    async getMaterialsStats() {
-        return await this.handleRequest(
-            this.axios.get('/stats')
-        );
-    }
-
-    async bulkUpdateMaterials(materialsData) {
-        return await this.handleRequest(
-            this.axios.patch('/bulk-update', materialsData)
-        );
-    }
-
     async handleRequest(requestPromise) {
         try {
             const response = await requestPromise;
-            return response;
+            return response.data;
         } catch (error) {
             if (error.response) {
                 switch (error.response.status) {

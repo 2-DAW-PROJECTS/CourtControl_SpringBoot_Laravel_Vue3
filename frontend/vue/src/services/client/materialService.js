@@ -1,83 +1,56 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8085/api/materials';
+const API_URL = 'http://localhost:8085/api/courts/materials';
 
 class MaterialService {
     constructor() {
         this.axios = axios.create({
             baseURL: API_URL,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         });
+
+        // Add request interceptor
+        this.axios.interceptors.request.use(
+            config => config,
+            error => {
+                console.error('Request Error:', error);
+                return Promise.reject(error);
+            }
+        );
+
+        // Add response interceptor
+        this.axios.interceptors.response.use(
+            response => response,
+            error => {
+                if (error.code === 'ERR_NETWORK') {
+                    console.error('Network Error - Please check if the backend server is running');
+                }
+                return Promise.reject(error);
+            }
+        );
     }
 
-    // Client-side methods
-    async getMaterials() {
-        return await this.handleRequest(this.axios.get('/'));
+    async GetMaterials(url) {
+        return await this.handleRequest(this.axios.get(url));
     }
 
-    async getMaterialById(id) {
-        return await this.handleRequest(this.axios.get(`/${id}`));
-    }
-
-    // Dashboard methods
-    async GetMaterials() {
-        return await this.handleRequest(this.axios.get('/dashboard'));
+    async GetMaterialsPaginate(page = 1) {
+        return await this.handleRequest(this.axios.get(`/paginate?page=${page}`));
     }
 
     async GetOneMaterial(id) {
-        return await this.handleRequest(this.axios.get(`/dashboard/${id}`));
+        return await this.handleRequest(this.axios.get(`/${id}`));
     }
 
-    async CreateMaterial(materialData) {
-        return await this.handleRequest(this.axios.post('/dashboard', materialData));
-    }
-
-    async UpdateMaterial(materialData) {
-        return await this.handleRequest(this.axios.put(`/dashboard/${materialData.id}`, materialData));
-    }
-
-    async DeleteMaterial(id) {
-        return await this.handleRequest(this.axios.delete(`/dashboard/${id}`));
-    }
-
-    // Filter and Search methods
-    async searchMaterials(query) {
-        return await this.handleRequest(this.axios.get(`/search?q=${query}`));
-    }
-
-    async getMaterialsByCategory(category) {
-        return await this.handleRequest(this.axios.get(`/category/${category}`));
-    }
-
-    async getMaterialsByStatus(status) {
-        return await this.handleRequest(this.axios.get(`/status/${status}`));
-    }
-
-    async filterMaterials(filters) {
-        return await this.handleRequest(this.axios.get('/filter', { params: filters }));
-    }
-
-    // Bulk operations
-    async bulkUpdateMaterials(materialsData) {
-        return await this.handleRequest(this.axios.post('/bulk-update', materialsData));
-    }
-
-    // Statistics and Reports
-    async getMaterialStats() {
-        return await this.handleRequest(this.axios.get('/stats'));
-    }
-
-    // Error handling wrapper
-    async handleRequest(requestPromise) {
+    async handleRequest(request) {
         try {
-            return await requestPromise;
+            const response = await request;
+            return response;
         } catch (error) {
-            if (error.response) {
-                throw new Error(error.response.data.message || 'Server error occurred');
-            }
-            throw new Error('Network error occurred');
+            console.error('MaterialService Error:', error);
+            throw error;
         }
     }
 }

@@ -1,7 +1,6 @@
 import { createStore } from 'vuex';
-import { sports } from './modules/client/sport';
 import { materials } from './modules/client/materials';
-
+import { materialDashboard } from './modules/dashboard/materialsDashboard';
 
 export default createStore({
     strict: process.env.NODE_ENV !== 'production',
@@ -27,7 +26,7 @@ export default createStore({
         isDashboardMode: state => state.dashboardMode
     },
     modules: {
-        sports,
         materials,
+        materialDashboard
     }
 });
