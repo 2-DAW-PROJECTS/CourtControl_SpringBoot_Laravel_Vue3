@@ -155,6 +155,56 @@ export default {
   min-height: 100vh;
 }
 
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.pagination-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #222222;
+  color: #56ccf2;
+  border: 1px solid #444444;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-btn:disabled {
+  background-color: #444444;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pagination-btn:not(:disabled):hover {
+  background-color: #333333;
+  border-color: #56ccf2;
+}
+
+.page-info {
+  color: #cccccc;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .pagination-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+
 .header-section {
   text-align: center;
   margin-bottom: 3rem;
