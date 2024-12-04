@@ -66,51 +66,40 @@
     </template>
     
     <script>
-        import { ref, watch } from 'vue';
-        import { useIntersectionObserver } from '@vueuse/core';
-        import axios from 'axios';
-        
-        export default {
+    import { ref, watch } from 'vue';
+    import { useStore } from 'vuex';
+    import { useIntersectionObserver } from '@vueuse/core';
+    
+    export default {
         name: 'InfiniteScrollCourts',
         
         setup() {
+            const store = useStore();
             const courts = ref([]);
             const currentPage = ref(1);
             const loadMoreTrigger = ref(null);
             const isLoading = ref(false);
-            const isComplete = ref(false);
+            const isComplete = ref(false);  
             const hasError = ref(false);
             const stopObserver = ref(false);
-        
+    
             const loadNextCourt = async () => {
                 if (isComplete.value || isLoading.value || stopObserver.value) return;
                 
                 try {
                     isLoading.value = true;
-                    const response1 = await axios.get(`http://localhost:8085/api/courts/${currentPage.value}`);
+                    await store.dispatch('courts/INITIALIZE_COURTS', { page: currentPage.value });
+                    const storeCourts = store.getters['courts/allCourts'];
                     
-                    if (response1.data) {
-                        try {
-                            const response2 = await axios.get(`http://localhost:8085/api/courts/${currentPage.value + 1}`);
-                            if (response2.data) {
-                                courts.value.push(response1.data, response2.data);
-                                currentPage.value += 2;
-                            } else {
-                                courts.value.push({ ...response1.data, isLastSingle: true });
-                                isComplete.value = true;
-                                stopObserver.value = true;
-                            }
-                        } catch {
-                            courts.value.push({ ...response1.data, isLastSingle: true });
-                            isComplete.value = true;
-                            stopObserver.value = true;
-                        }
+                    if (storeCourts.length > courts.value.length) {
+                        courts.value = storeCourts;
+                        currentPage.value++;
                     } else {
                         isComplete.value = true;
                         stopObserver.value = true;
                     }
                 } catch (error) {
-                    isComplete.value = true;
+                    hasError.value = true;
                     stopObserver.value = true;
                 } finally {
                     isLoading.value = false;
@@ -137,6 +126,16 @@
                 }
             });
         
+            // return {
+            //     courts,
+            //     loadMoreTrigger,
+            //     isLoading,
+            //     isComplete,
+            //     hasError,
+            //     handleReservation: (courtId) => {
+            //         console.log(`Reservando la pista ${courtId}`);
+            //     }
+            // };
             return {
                 courts,
                 loadMoreTrigger,
