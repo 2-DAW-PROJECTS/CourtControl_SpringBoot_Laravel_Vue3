@@ -1,6 +1,8 @@
 import { createStore } from 'vuex';
 import { materials } from './modules/client/materials';
 import { materialDashboard } from './modules/dashboard/materialsDashboard';
+import { courts } from './modules/client/courts';
+import { courtsDashboard } from './modules/dashboard/courtsDashboard';
 
 export default createStore({
     strict: process.env.NODE_ENV !== 'production',
@@ -27,6 +29,8 @@ export default createStore({
     },
     modules: {
         materials,
-        materialDashboard
+        materialDashboard,
+        courts,
+        courtsDashboard,
     }
 });
