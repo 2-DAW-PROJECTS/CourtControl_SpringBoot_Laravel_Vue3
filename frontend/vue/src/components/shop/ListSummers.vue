@@ -1,10 +1,13 @@
 <template>
   <div class="list-content">
-    <div class="header-section">
+    <!-- <div class="header-section">
       <br><br><br>
       <h2>Elite Sports Academy</h2>
       <p class="subtitle">Formación deportiva de alto rendimiento para jóvenes talentos</p>
-    </div>
+    </div> -->
+    <br><br><br>
+    <br><br><br>
+    <br><br>
 
     <!-- Mostrar cargando -->
     <div v-if="loading" class="loading">
@@ -32,6 +35,7 @@
           <div class="summer-header">
             <h3>{{ summer.nameSummer }}</h3>
           </div>
+          <br>
           <div class="details-grid">
             <div class="detail-item hover-effect">
               <i class="fas fa-child"></i>
@@ -58,6 +62,7 @@
             <i class="fas fa-star"></i>
             <p class="description">{{ summer.description }}</p>
           </div>
+          <br>
           <div class="activities-box hover-effect">
             <details class="activities">
               <summary><i class="fas fa-dumbbell"></i> Actividades</summary>
@@ -142,37 +147,73 @@ export default {
 
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap');
 
 .list-content {
   padding: 2rem;
-  background-color: #23232f;
+  background-color: #f4fafd;
   min-height: 100vh;
-  color: #f6f1de;
 }
 
-/* .header-section {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem 0;
-  background: linear-gradient(135deg, #92d8be, #9bada1);
-  color: #23232f;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(146, 216, 190, 0.2);
-} */
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.pagination-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #222222;
+  color: #56ccf2;
+  border: 1px solid #444444;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-btn:disabled {
+  background-color: #444444;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pagination-btn:not(:disabled):hover {
+  background-color: #333333;
+  border-color: #56ccf2;
+}
+
+.page-info {
+  color: #cccccc;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .pagination-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+
 .header-section {
   text-align: center;
-  margin-bottom: 1.5rem;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 200px;
-  background: linear-gradient(135deg, #92d8be, #9bada1, #92d8be);
-  color: #23232f;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(146, 216, 190, 0.3);
-  position: relative;
-  overflow: hidden;
+  margin-bottom: 3rem;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #333333, #111111);
+  color: #ffffff;
+  border-bottom: 2px solid #444444;
   margin-top: 120px;
+  border-radius: 12px;
 }
 
 .summers-grid {
@@ -183,40 +224,44 @@ export default {
 }
 
 .header-section h2 {
-  font-family: 'Russo One', sans-serif;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-family: 'Roboto Slab', serif;
+  font-size: 3rem;
+  color: #ffffff;
   font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
-  opacity: 0.9;
+  color: #cccccc;
+  font-weight: 400;
 }
 
 .summer-card {
   display: flex;
-  background: #525055;
-  border-radius: 20px;
+  background: #222222;
+  border-radius: 12px;
   overflow: hidden;
-  transition: all 0.4s ease;
-  box-shadow: 0 6px 18px rgba(146, 216, 190, 0.1);
-  border: 1px solid rgba(146, 216, 190, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333333;
+  width: 80%;
   min-height: 400px;
+  margin: 0 auto;
 }
 
 .summer-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 25px rgba(146, 216, 190, 0.25);
-  border-color: rgba(146, 216, 190, 0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
 }
 
 .summer-image {
   flex: 0 0 500px;
-  position: relative;
+  height: auto;
   overflow: hidden;
+  position: relative;
 }
 
 .image-overlay {
@@ -225,7 +270,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(35, 35, 47, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -239,23 +284,23 @@ export default {
 }
 
 .reserve-btn-overlay {
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Inter', sans-serif;
   padding: 1rem 2rem;
-  background: #92d8be;
-  color: #23232f;
+  background: #56ccf2;
+  color: #111111;
   border: none;
-  border-radius: 12px;
+  border-radius: 6px;
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(146, 216, 190, 0.2);
+  box-shadow: 0 4px 15px rgba(86, 204, 242, 0.2);
 }
 
 .reserve-btn-overlay:hover {
-  background: #9bada1;
+  background: #333333;
+  color: #ffffff;
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(146, 216, 190, 0.4);
 }
 
 .summer-img {
@@ -266,7 +311,7 @@ export default {
 }
 
 .summer-card:hover .summer-img {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .summer-info {
@@ -277,10 +322,11 @@ export default {
 }
 
 .summer-header h3 {
-  font-family: 'Russo One', sans-serif;
-  color: #f5ce8d;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+  font-family: 'Roboto Slab', serif;
+  color: #ffffff;
+  font-size: 1.75rem;
+  margin-top: 0.5rem;
+  font-weight: 700;
 }
 
 .details-grid {
@@ -295,62 +341,52 @@ export default {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  background: rgba(146, 216, 190, 0.1);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.hover-effect {
-  transition: all 0.3s ease;
-}
-
-.hover-effect:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(146, 216, 190, 0.3);
+  background: rgba(86, 204, 242, 0.1);
+  border-radius: 6px;
 }
 
 .detail-item i {
-  color: #fc9b70;
+  color: #56ccf2;
   width: 20px;
 }
 
 .detail-item span {
-  color: #9bada1;
+  color: #cccccc;
 }
 
 .detail-item strong {
-  color: #f6f1de;
+  color: #ffffff;
   margin-left: 0.5rem;
 }
 
 .description-box {
-  background: rgba(146, 216, 190, 0.05);
+  background: rgba(86, 204, 242, 0.05);
   padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
   display: flex;
   gap: 0.5rem;
 }
 
 .description-box i {
-  color: #fc9b70;
+  color: #56ccf2;
 }
 
 .description {
-  color: #9bada1;
+  color: #999999;
   line-height: 1.6;
   margin: 0;
 }
 
 .activities-box {
-  background: rgba(146, 216, 190, 0.05);
+  background: rgba(86, 204, 242, 0.05);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .activities summary {
-  font-family: 'Russo One', sans-serif;
-  color: #f5ce8d;
+  font-family: 'Roboto Slab', serif;
+  color: #56ccf2;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -364,7 +400,7 @@ export default {
 }
 
 .activities li {
-  color: #9bada1;
+  color: #cccccc;
   margin: 0.5rem 0;
   display: flex;
   align-items: center;
@@ -373,11 +409,11 @@ export default {
 }
 
 .activities li:hover {
-  color: #eb6a65;
+  color: #56ccf2;
 }
 
 .activities li i {
-  color: #fc9b70;
+  color: #56ccf2;
 }
 
 @media (max-width: 768px) {
@@ -386,8 +422,8 @@ export default {
   }
 
   .header-section {
-    margin-top: 200px;
-    padding-bottom: 20px;
+    margin-top: 250px;
+    padding: 3rem 1rem;
   }
 
   .summer-image {

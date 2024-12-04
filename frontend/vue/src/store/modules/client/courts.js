@@ -1,14 +1,14 @@
 import Constant from '@/Constant';
-import MaterialService from '@/services/client/materialService';
+import CourtService from '@/services/client/courtService';
 import { createToaster } from "@meforma/vue-toaster";
 
 const toaster = createToaster({ "position": "top-right", "duration": 2300 });
 
-export const materials = {
+export const courts = {
     namespaced: true,
     state: {
-        materials: [],
-        currentMaterial: null,
+        courts: [],
+        currentCourt: null,
         loading: false,
         error: null,
         filters: {
@@ -24,52 +24,47 @@ export const materials = {
         [Constant.SET_ERROR](state, error) {
             state.error = error;
         },
-        [Constant.INITIALIZE_MATERIAL](state, materials) {
-            // console.log('Initializing materials:', materials);
-            state.materials = materials;
+        [Constant.INITIALIZE_COURTS](state, courts) {
+            // console.log('Initializing courts:', courts);
+            state.courts = courts;
         },
         UPDATE_FILTERS(state, filters) {
             state.filters = { ...state.filters, ...filters };
         }
     },
     actions: {
-        async [Constant.INITIALIZE_MATERIAL]({ commit }, sportId = null) {
+        async [Constant.INITIALIZE_COURTS]({ commit }, filters = {}) {
             commit(Constant.SET_LOADING, true);
             try {
-                const url = sportId !== null
-                    ? `http://localhost:8085/api/courts/materials?sportId=${Number(sportId)}`
-                    : `http://localhost:8085/api/courts/materials`;
-
-                // console.log('Fetching materials from URL:', url);
-                const response = await MaterialService.GetMaterials(url);
+                const response = await CourtService.GetCourts(filters);
                 // console.log('Response status:', response.status);
                 // console.log('Response data:', response.data);
                 if (response.status === Constant.STATUS_OK) {
-                    commit(Constant.INITIALIZE_MATERIAL, response.data);
+                    commit(Constant.INITIALIZE_COURTS, response.data);
                 } else {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
             } catch (error) {
                 commit(Constant.SET_ERROR, error.message);
-                toaster.error('Error loading materials');
-                console.error('Error loading materials:', error);
+                toaster.error('Error loading courts');
+                console.error('Error loading courts:', error);
             } finally {
                 commit(Constant.SET_LOADING, false);
             }
         },
         updateFilters({ commit, dispatch }, filters) {
             commit('UPDATE_FILTERS', filters);
-            dispatch(Constant.INITIALIZE_MATERIAL);
+            dispatch(Constant.INITIALIZE_COURTS, filters);
         }
     },
     getters: {
-        allMaterials: state => state.materials,
-        currentMaterial: state => state.currentMaterial,
+        allCourts: state => state.courts,
+        currentCourt: state => state.currentCourt,
         isLoading: state => state.loading,
         getError: state => state.error,
         getFilters: state => state.filters,
-        getMaterialById: (state) => (id) => {
-            return state.materials.find(material => material.id === id);
+        getCourtById: (state) => (id) => {
+            return state.courts.find(court => court.id === id);
         }
     }
 };

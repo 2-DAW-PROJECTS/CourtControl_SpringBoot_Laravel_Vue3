@@ -1,11 +1,12 @@
+<!-- Template section remains the same -->
 <template>
   <div class="list-content">
-    <div class="header-section">
+    <!-- <div class="header-section">
       <br><br><br>
       <h2>Nuestras Pistas Deportivas</h2>
       <p class="subtitle">Descubre y reserva las mejores instalaciones deportivas</p>
-    </div>
-
+    </div> -->
+    <br><br><br><br><br><br><br><br><br>
     <div v-if="courts.length === 0" class="no-courts">
       <i class="fas fa-exclamation-circle"></i>
       <p>No hay pistas disponibles en este momento.</p>
@@ -48,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: "ListContent",
@@ -60,22 +61,14 @@ export default {
   },
   data() {
     return {
-      courts: [],
       filteredCourts: [],
       currentPage: 1,
       itemsPerPage: 3,
       loading: false,
     };
   },
-  watch: {
-    filters: {
-      handler(newFilters) {
-        this.applyFilters(newFilters);
-      },
-      deep: true,
-    },
-  },
   computed: {
+    ...mapState('courts', ['courts']),
     totalPages() {
       return Math.ceil(this.filteredCourts.length / this.itemsPerPage);
     },
@@ -85,38 +78,29 @@ export default {
       return this.filteredCourts.slice(start, end);
     },
   },
-  mounted() {
-    this.fetchCourts();
+  watch: {
+    filters: {
+      handler(newFilters) {
+        this.applyFilters(newFilters);
+      },
+      deep: true,
+    },
   },
   methods: {
+    ...mapActions('courts', ['INITIALIZE_COURTS', 'updateFilters']),
+    
     async fetchCourts() {
       this.loading = true;
       try {
-        const sportQuery = Array.isArray(this.filters.sport) && this.filters.sport.length > 0
-          ? this.filters.sport.join(',')
-          : '';
-        const response = await axios.get(`http://localhost:8085/api/courts`, {
-          params: {
-            sportIds: sportQuery,
-            material: this.filters.material,
-            category: this.filters.category,
-            search: this.filters.search,
-          },
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          this.courts = response.data;
-          this.applyFilters(this.filters);
-        } else {
-          console.error('Error fetching courts:', response.statusText);
-        }
+        await this.INITIALIZE_COURTS(this.filters);
+        this.applyFilters(this.filters);
       } catch (error) {
         console.error('Error fetching courts:', error);
       } finally {
         this.loading = false;
       }
     },
+
     applyFilters(filters) {
       this.filteredCourts = this.courts.filter((court) => {
         const matchesSport = filters.sport && filters.sport.length > 0
@@ -134,277 +118,249 @@ export default {
       this.currentPage = 1;
     },
   },
+  mounted() {
+    this.fetchCourts();
+  },
 };
 </script>
 
-
 <style scoped>
-/* usa esta gama de colores y hazlo mucho mas bonito:
-#f6f1de
-#23232f
-#525055
-#92d8be
-#9bada1
-#f5ce8d
-#fc9b70
-#eb6a65 */
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap');
 
-/* Estilo general */
 .list-content {
-  padding: 2.5rem;
-  background: linear-gradient(to bottom, #23232f, #2a2a38);
+  padding: 2rem;
+  background-color: #f4fafd;
   min-height: 100vh;
-  color: #ffffff;
 }
 
 .header-section {
   text-align: center;
-  margin-bottom: 1.5rem;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 200px;
-  background: linear-gradient(135deg, #92d8be, #9bada1, #92d8be);
-  color: #23232f;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(146, 216, 190, 0.3);
-  position: relative;
-  overflow: hidden;
+  margin-bottom: 3rem;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #333333, #111111);
+  color: #ffffff;
+  border-bottom: 2px solid #444444;
   margin-top: 120px;
-}
-
-.header-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
-  pointer-events: none;
+  border-radius: 12px;
 }
 
 .header-section h2 {
-  font-family: 'Russo One', sans-serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 3rem;
-  margin-bottom: 0.8rem;
+  color: #ffffff;
   font-weight: 700;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
-  font-family: 'Russo One', sans-serif;
-  font-size: 1.3rem;
-  opacity: 0.95;
-  letter-spacing: 1px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  color: #cccccc;
+  font-weight: 400;
 }
 
-/* Estilo para la cuadrícula de las pistas */
 .courts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
-  padding: 1.5rem;
+  gap: 2rem;
+  padding: 0 1rem;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 .court-card {
-  background: linear-gradient(145deg, #525055, #474749);
-  border-radius: 25px;
+  background: #222222;
+  border-radius: 12px;
   overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  border: 2px solid rgba(146, 216, 190, 0.15);
-  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333333;
 }
 
 .court-card:hover {
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(146, 216, 190, 0.3);
-  border-color: rgba(146, 216, 190, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
 }
 
-/* Estilo de la imagen de la pista */
 .court-image {
-  height: 250px;
+  height: 240px;
   overflow: hidden;
-  position: relative;
 }
 
 .court-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.5s ease;
 }
 
 .court-card:hover .court-img {
   transform: scale(1.1);
 }
 
-/* Estilo de la información de la pista */
 .court-info {
-  padding: 2rem;
-  position: relative;
+  padding: 1.5rem;
 }
 
-.court-info::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(146, 216, 190, 0.3), transparent);
+/* .badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #111111;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+} */
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #111111; /* Fondo negro */
+  color: #ffffff; /* Texto blanco */
+  border-radius: 6px; /* Bordes redondeados */
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  border: 2px solid transparent; /* Borde transparente para aplicar el gradiente */
+  border-image: linear-gradient(to right, #f6f1de, #23232f, #525055, #92d8be, #9bada1, #f5ce8d, #fc9b70, #eb6a65);
+  border-image-slice: 1; /* Aplica el gradiente completo */
 }
+
+
 
 .court-info h3 {
-  font-family: 'Russo One', sans-serif;
-  color: #f5ce8d;
-  font-size: 1.7rem;
-  margin-bottom: 1.2rem;
-  font-weight: 600;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.75rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .court-details {
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.5rem;
 }
 
-.badge {
-  font-family: 'Russo One', sans-serif;
-  background: linear-gradient(135deg, #92d8be, #9bada1);
-  color: #23232f;
-  padding: 0.8rem 1.5rem;
-  border-radius: 30px;
+.court-details p {
+  margin: 0.75rem 0;
+  color: #cccccc;
   font-size: 1rem;
-  display: inline-block;
-  margin-bottom: 1.2rem;
-  box-shadow: 0 5px 15px rgba(146, 216, 190, 0.3);
-  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(146, 216, 190, 0.4);
+.court-details i {
+  color: #56ccf2;
+  font-size: 1.25rem;
 }
 
 .description {
-  color: #f6f1de;
-  line-height: 1.8;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #999999;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #444444;
 }
 
-/* Estilo para el botón de reserva */
 .reserve-btn {
-  font-family: 'Russo One', sans-serif;
   width: 100%;
-  padding: 1.2rem;
-  background: linear-gradient(135deg, #fc9b70, #eb6a65);
-  color: #23232f;
-  border: none;
-  border-radius: 15px;
+  padding: 1rem;
+  background-color: #111111;
+  color: #56ccf2;
+  border: 2px solid #56ccf2;
+  border-radius: 6px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 20px rgba(252, 155, 112, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .reserve-btn:hover {
-  background: linear-gradient(135deg, #eb6a65, #fc9b70);
-  box-shadow: 0 8px 25px rgba(235, 106, 101, 0.5);
+  background-color: #3f4344;
+  color: #ffffff;
   transform: translateY(-3px);
 }
 
-/* Estilo cuando no hay pistas disponibles */
 .no-courts {
   text-align: center;
-  padding: 4rem;
-  background: linear-gradient(145deg, #525055, #474749);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  border: 2px solid rgba(146, 216, 190, 0.15);
+  padding: 3rem;
+  background: #222222;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   margin: 2rem auto;
   max-width: 600px;
 }
 
 .no-courts i {
-  font-size: 4rem;
-  color: #92d8be;
-  margin-bottom: 1.5rem;
-  text-shadow: 0 0 20px rgba(146, 216, 190, 0.5);
+  font-size: 3.5rem;
+  color: #56ccf2;
+  margin-bottom: 1rem;
 }
 
 .no-courts p {
-  font-family: 'Russo One', sans-serif;
-  font-size: 1.4rem;
-  color: #f6f1de;
-  line-height: 1.6;
+  color: #cccccc;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
-/* Estilos para la paginación */
 .pagination-controls {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 3rem;
-  gap: 1.5rem;
+  gap: 1rem;
   padding: 1rem;
 }
 
 .pagination-btn {
-  font-family: 'Russo One', sans-serif;
-  padding: 1rem 2rem;
-  background: linear-gradient(135deg, #9bada1, #92d8be);
-  color: #23232f;
-  border: none;
-  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  background-color: #222222;
+  color: #56ccf2;
+  border: 1px solid #444444;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 5px 15px rgba(146, 216, 190, 0.2);
+  gap: 0.5rem;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #333333;
+  border-color: #56ccf2;
 }
 
 .pagination-btn:disabled {
-  background: linear-gradient(135deg, #525055, #474749);
+  background-color: #444444;
   cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.pagination-btn:not(:disabled):hover {
-  background: linear-gradient(135deg, #92d8be, #9bada1);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(146, 216, 190, 0.4);
+  opacity: 0.7;
 }
 
 .page-info {
-  font-family: 'Russo One', sans-serif;
-  color: #f6f1de;
-  font-size: 1.2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  color: #cccccc;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
-  .courts-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .header-section {
+    padding: 3rem 1rem;
+    margin-top: 250px;
   }
 
-  .header-section {
-    margin-top: 250px;
-    padding-bottom: 20px;
-  }
-  
   .header-section h2 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+  }
+
+  .courts-grid {
+    grid-template-columns: 1fr;
+    padding: 0 0.5rem;
   }
 
   .pagination-controls {
@@ -413,17 +369,27 @@ export default {
   }
 
   .court-card {
-    margin: 0 1rem;
-  }
-
-  .court-info h3 {
-    font-size: 1.5rem;
+    margin: 0 0.5rem;
   }
 }
 
 @media (min-width: 1400px) {
   .courts-grid {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1400px;
+    margin: 0 auto;
   }
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 </style>
