@@ -49,8 +49,7 @@
 </template>
 
 <script>
-// Script section remains the same
-import axios from 'axios';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: "ListContent",
@@ -62,22 +61,14 @@ export default {
   },
   data() {
     return {
-      courts: [],
       filteredCourts: [],
       currentPage: 1,
       itemsPerPage: 3,
       loading: false,
     };
   },
-  watch: {
-    filters: {
-      handler(newFilters) {
-        this.applyFilters(newFilters);
-      },
-      deep: true,
-    },
-  },
   computed: {
+    ...mapState('courts', ['courts']),
     totalPages() {
       return Math.ceil(this.filteredCourts.length / this.itemsPerPage);
     },
@@ -87,38 +78,29 @@ export default {
       return this.filteredCourts.slice(start, end);
     },
   },
-  mounted() {
-    this.fetchCourts();
+  watch: {
+    filters: {
+      handler(newFilters) {
+        this.applyFilters(newFilters);
+      },
+      deep: true,
+    },
   },
   methods: {
+    ...mapActions('courts', ['INITIALIZE_COURTS', 'updateFilters']),
+    
     async fetchCourts() {
       this.loading = true;
       try {
-        const sportQuery = Array.isArray(this.filters.sport) && this.filters.sport.length > 0
-          ? this.filters.sport.join(',')
-          : '';
-        const response = await axios.get(`http://localhost:8085/api/courts`, {
-          params: {
-            sportIds: sportQuery,
-            material: this.filters.material,
-            category: this.filters.category,
-            search: this.filters.search,
-          },
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          this.courts = response.data;
-          this.applyFilters(this.filters);
-        } else {
-          console.error('Error fetching courts:', response.statusText);
-        }
+        await this.INITIALIZE_COURTS(this.filters);
+        this.applyFilters(this.filters);
       } catch (error) {
         console.error('Error fetching courts:', error);
       } finally {
         this.loading = false;
       }
     },
+
     applyFilters(filters) {
       this.filteredCourts = this.courts.filter((court) => {
         const matchesSport = filters.sport && filters.sport.length > 0
@@ -135,6 +117,9 @@ export default {
       });
       this.currentPage = 1;
     },
+  },
+  mounted() {
+    this.fetchCourts();
   },
 };
 </script>
