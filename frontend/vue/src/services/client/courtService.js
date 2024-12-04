@@ -15,11 +15,10 @@ class CourtService {
             params.search = filters.search;
         }
 
-        console.log('Fetching courts with params:', params);
+        // console.log('Fetching courts with params:', params);
         return await axios.get(url, { params });
     }
 
-    // Otros métodos...
 }
 
 export default new CourtService();

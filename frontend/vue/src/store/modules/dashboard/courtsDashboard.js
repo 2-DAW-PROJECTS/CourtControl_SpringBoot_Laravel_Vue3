@@ -25,7 +25,7 @@ export const courtsDashboard = {
             state.error = error;
         },
         [Constant.INITIALIZE_COURTS](state, courts) {
-            console.log('Initializing courts:', courts);
+            // console.log('Initializing courts:', courts);
             state.courts = courts;
         },
         [Constant.ADD_COURT](state, court) {
@@ -49,8 +49,8 @@ export const courtsDashboard = {
             commit(Constant.SET_LOADING, true);
             try {
                 const response = await CourtServiceDashboard.GetCourts(page);
-                console.log('Response status:', response.status);
-                console.log('Response data:', response.data);
+                // console.log('Response status:', response.status);
+                // console.log('Response data:', response.data);
                 if (response.status === Constant.STATUS_OK) {
                     commit(Constant.INITIALIZE_COURTS, response.data);
                 } else {
@@ -68,8 +68,8 @@ export const courtsDashboard = {
             commit(Constant.SET_LOADING, true);
             try {
                 const response = await CourtServiceDashboard.CreateCourt(courtData);
-                console.log('Response status:', response.status);
-                console.log('Response data:', response.data);
+                // console.log('Response status:', response.status);
+                // console.log('Response data:', response.data);
                 if (response.status === Constant.STATUS_OK) {
                     commit(Constant.ADD_COURT, response.data);
                     toaster.success('Court created successfully');
@@ -88,8 +88,8 @@ export const courtsDashboard = {
             commit(Constant.SET_LOADING, true);
             try {
                 const response = await CourtServiceDashboard.UpdateCourt(courtData);
-                console.log('Response status:', response.status);
-                console.log('Response data:', response.data);
+                // console.log('Response status:', response.status);
+                // console.log('Response data:', response.data);
                 if (response.status === Constant.STATUS_OK) {
                     commit(Constant.UPDATE_COURT, response.data);
                     toaster.success('Court updated successfully');
@@ -108,7 +108,7 @@ export const courtsDashboard = {
             commit(Constant.SET_LOADING, true);
             try {
                 const response = await CourtServiceDashboard.DeleteCourt(id);
-                console.log('Response status:', response.status);
+                // console.log('Response status:', response.status);
                 if (response.status === Constant.STATUS_OK) {
                     commit(Constant.DELETE_COURT, id);
                     toaster.success('Court deleted successfully');

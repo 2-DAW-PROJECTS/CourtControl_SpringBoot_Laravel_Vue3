@@ -25,7 +25,7 @@ export const courts = {
             state.error = error;
         },
         [Constant.INITIALIZE_COURTS](state, courts) {
-            console.log('Initializing courts:', courts);
+            // console.log('Initializing courts:', courts);
             state.courts = courts;
         },
         UPDATE_FILTERS(state, filters) {
@@ -37,8 +37,8 @@ export const courts = {
             commit(Constant.SET_LOADING, true);
             try {
                 const response = await CourtService.GetCourts(filters);
-                console.log('Response status:', response.status);
-                console.log('Response data:', response.data);
+                // console.log('Response status:', response.status);
+                // console.log('Response data:', response.data);
                 if (response.status === Constant.STATUS_OK) {
                     commit(Constant.INITIALIZE_COURTS, response.data);
                 } else {
