@@ -25,7 +25,7 @@ export const materials = {
             state.error = error;
         },
         [Constant.INITIALIZE_MATERIAL](state, materials) {
-            console.log('Initializing materials:', materials);
+            // console.log('Initializing materials:', materials);
             state.materials = materials;
         },
         UPDATE_FILTERS(state, filters) {

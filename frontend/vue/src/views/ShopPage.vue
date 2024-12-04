@@ -217,8 +217,8 @@ export default {
 </script>
 <style scoped>
 .shop {
-  padding: 20px;
-  background-color: #f9f9f9;
+  /* padding: 20px; */
+  background-color: #303030;
   min-height: 100vh;
 }
 
