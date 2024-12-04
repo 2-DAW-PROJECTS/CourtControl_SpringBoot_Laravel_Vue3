@@ -102,49 +102,118 @@ export default {
 
       history.replaceState(null, "", `?${queryParams.toString()}`);
     },
-
     initializeFilters() {
       const params = new URLSearchParams(window.location.search);
       if (params.has("category")) {
         this.filters.category = params.get("category") || "pistas";
-      }
-      if (params.has("sportIds")) {
-        this.filters.sport = params.get("sportIds").split(",") || null;
-      }
-      if (params.has("search")) {
+      } if (params.has("sportIds")) {
+        const sportIds = params.get("sportIds").split(",");
+        this.filters.sport = sportIds.length === 1 && sportIds[0] === "" ? null : sportIds;
+      } else {
+        this.filters.sport = null;
+      } if (params.has("search")) {
         this.filters.search = params.get("search");
       }
-
       this.fetchData(this.filters);
     },
 
+    
+
+
+
+
     async fetchData(filters) {
-      this.loading = true;
-      try {
-        let url = "http://localhost:8085/api/lessons";
-        let params = {};
+  this.loading = true;
+  try {
+    // console.log("Filters received:", filters);
+    let url = null;
+    let params = {};
 
-        if (filters.sport) {
-          params.sportIds = filters.sport;
-        }
+    if (filters.sport && filters.sport.length > 0 && filters.sport[0] !== '') {
+      params.sportIds = filters.sport.join(','); // Convertir a una lista de valores separados por comas
+      // console.log("Sport filter applied:", params.sportIds);
+    } else {
+      // console.log("No sports selected, fetching all data");
+    }
 
-        if (filters.category === "academias") {
-          url = "http://localhost:8085/api/summers";
-        }
+    if (filters.category === "academias") {
+      url = "http://localhost:8085/api/summers";
+    } else if (filters.category === "tecnificaciones") {
+      url = "http://localhost:8085/api/lessons";
+    } else if (filters.category === "pistas") {
+      url = "http://localhost:8085/api/courts";
+    }
 
-        if (filters.search) {
-          params.search = filters.search; // Filtrar por término de búsqueda
-        }
+    if (filters.search) {
+      params.search = filters.search;
+      // console.log("Search filter applied:", params.search);
+    }
 
-        const response = await axios.get(url, { params });
-        this.data = response.data;
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        this.loading = false;
-      }
-    },
-  },};
+    // console.log("Selected URL:", url);
+
+    if (url) {
+      // console.log("Fetching data from URL:", url, "with params:", params);
+      const response = await axios.get(url, { params });
+      this.data = response.data;
+      // console.log("Data received:", this.data);
+    } else {
+      // console.log("No valid category selected, no request will be made.");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    this.loading = false;
+    // console.log("Loading state set to false");
+  }
+}
+
+//     async fetchData(filters) {
+//   this.loading = true;
+//   try {
+//     // console.log("Filters received:", filters);
+//     let url = null;
+//     let params = {};
+
+//     if (filters.sport && filters.sport.length > 0 && filters.sport[0] !== '') {
+//       params.sportIds = filters.sport.join(','); // Convertir a una lista de valores separados por comas
+//       // console.log("Sport filter applied:", params.sportIds);
+//     } else {
+//       // console.log("No sports selected, fetching all data");
+//     }
+
+//     if (filters.category === "academias") {
+//       url = "http://localhost:8085/api/summers";
+//     } else if (filters.category === "tecnificaciones") {
+//       url = "http://localhost:8085/api/lessons";
+//     } else if (filters.category === "pistas") {
+//       url = "http://localhost:8085/api/courts";
+//     }
+
+//     if (filters.search) {
+//       params.search = filters.search;
+//       // console.log("Search filter applied:", params.search);
+//     }
+
+//     // console.log("Selected URL:", url);
+
+//     if (url) {
+//       console.log("Fetching data from URL:", url, "with params:", params);
+//       const response = await axios.get(url, { params });
+//       this.data = response.data;
+//       console.log("Data received:", this.data);
+//     } else {
+//       // console.log("No valid category selected, no request will be made.");
+//     }
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//   } finally {
+//     this.loading = false;
+//     // console.log("Loading state set to false");
+//   }
+// }
+
+  },
+};
 </script>
 <style scoped>
 .shop {
