@@ -6,19 +6,14 @@ class MaterialService {
     constructor() {
         this.axios = axios.create({
             baseURL: API_URL,
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            timeout: 5000,
-            validateStatus: status => status >= 200 && status < 300
+            }
         });
 
         // Add request interceptor
         this.axios.interceptors.request.use(
-            config => {
-                return config;
-            },
+            config => config,
             error => {
                 console.error('Request Error:', error);
                 return Promise.reject(error);
@@ -37,8 +32,8 @@ class MaterialService {
         );
     }
 
-    async GetMaterials() {
-        return await this.handleRequest(this.axios.get('/'));
+    async GetMaterials(url) {
+        return await this.handleRequest(this.axios.get(url));
     }
 
     async GetMaterialsPaginate(page = 1) {
@@ -49,20 +44,9 @@ class MaterialService {
         return await this.handleRequest(this.axios.get(`/${id}`));
     }
 
-    async GetMaterialsInfinite(page = 1) {
-        return await this.handleRequest(this.axios.get(`/infinite?page=${page}`));
-    }
-
-    FormatFilters(filters) {
-        return Object.entries(filters)
-            .filter(([, value]) => value !== null && value !== '')
-            .map(([key, value]) => `${key}=${value}`)
-            .join('&');
-    }
-
-    async handleRequest(requestPromise) {
+    async handleRequest(request) {
         try {
-            const response = await requestPromise;
+            const response = await request;
             return response;
         } catch (error) {
             console.error('MaterialService Error:', error);

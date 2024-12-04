@@ -39,10 +39,11 @@ export const materials = {
                 const url = sportId !== null
                     ? `http://localhost:8085/api/courts/materials?sportId=${Number(sportId)}`
                     : `http://localhost:8085/api/courts/materials`;
-                console.log('Fetching materials from URL:', url);
+
+                // console.log('Fetching materials from URL:', url);
                 const response = await MaterialService.GetMaterials(url);
-                console.log('Response status:', response.status);
-                console.log('Response data:', response.data);
+                // console.log('Response status:', response.status);
+                // console.log('Response data:', response.data);
                 if (response.status === Constant.STATUS_OK) {
                     commit(Constant.INITIALIZE_MATERIAL, response.data);
                 } else {
