@@ -3,6 +3,12 @@ import { materials } from './modules/client/materials';
 import { materialDashboard } from './modules/dashboard/materialsDashboard';
 import { courts } from './modules/client/courts';
 import { courtsDashboard } from './modules/dashboard/courtsDashboard';
+import { lessons } from './modules/client/lessons';
+import { lessonsDashboard } from './modules/dashboard/lessonsDashboard';
+import { summers } from './modules/client/summers';
+import { summersDashboard } from './modules/dashboard/summersDashboard';
+
+
 
 export default createStore({
     strict: process.env.NODE_ENV !== 'production',
@@ -32,5 +38,9 @@ export default createStore({
         materialDashboard,
         courts,
         courtsDashboard,
+        lessons,
+        lessonsDashboard,
+        summers,
+        summersDashboard,
     }
 });
