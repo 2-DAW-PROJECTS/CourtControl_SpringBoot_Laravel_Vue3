@@ -17,7 +17,79 @@
         </div>
     </template>
 
-    <script>
+<script>
+import { ref, computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+export default {
+  name: "SearchBar",
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const searchQuery = ref("");
+    const suggestions = ref([]);
+    const allCourts = ref([]);
+
+    const courts = computed(() => store.state.courts.courts);
+
+    const handleSearch = () => {
+      store.dispatch('courts/updateFilters', { search: searchQuery.value });
+      router.push({ path: '/shop', query: { search: searchQuery.value } });
+    };
+
+    const fetchAllCourts = async () => {
+      try {
+        await store.dispatch('courts/INITIALIZE_COURTS');
+        allCourts.value = courts.value;
+      } catch (error) {
+        console.error('Error fetching all courts:', error);
+      }
+    };
+
+    const fetchAutocompleteSuggestions = () => {
+      if (searchQuery.value.trim() === "") {
+        suggestions.value = [];
+        return;
+      }
+
+      const uniqueSuggestions = new Map();
+      allCourts.value
+        .filter(court =>
+          (court.namePista && court.namePista.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+          (court.tagCourt && court.tagCourt.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        )
+        .forEach(court => {
+          if (!uniqueSuggestions.has(court.namePista)) {
+            uniqueSuggestions.set(court.namePista, court);
+          }
+        });
+      suggestions.value = Array.from(uniqueSuggestions.values());
+    };
+
+    const selectSuggestion = (suggestion) => {
+      searchQuery.value = suggestion.namePista;
+      suggestions.value = [];
+      handleSearch();
+    };
+
+    onMounted(() => {
+      fetchAllCourts();
+    });
+
+    return {
+      searchQuery,
+      suggestions,
+      handleSearch,
+      fetchAutocompleteSuggestions,
+      selectSuggestion
+    };
+  }
+};
+</script>
+
+
+<!-- <script>
         import { mapState, mapActions } from 'vuex';
 
         export default {
@@ -78,7 +150,7 @@
                 this.fetchAllCourts();
             }
         };
-    </script>
+    </script>  -->
 
     <style scoped>
         .search-bar {

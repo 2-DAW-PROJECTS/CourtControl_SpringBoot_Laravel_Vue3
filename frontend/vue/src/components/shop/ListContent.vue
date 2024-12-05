@@ -48,6 +48,108 @@
   </div>
 </template>
 
+
+<script>
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { useStore } from 'vuex';
+import Constant from '@/Constant';
+
+export default {
+  name: "ListContent",
+  props: {
+    filters: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    const store = useStore();
+    const listContentRef = ref(null);
+    const filteredCourts = ref([]);
+    const currentPage = ref(1);
+    const itemsPerPage = 3;
+
+    const courts = computed(() => store.state.courts.courts);
+    const loading = computed(() => store.state.courts.loading);
+    const error = computed(() => store.state.courts.error);
+
+    const totalPages = computed(() => {
+      return filteredCourts.value ? Math.ceil(filteredCourts.value.length / itemsPerPage) : 0;
+    });
+
+    const paginatedCourts = computed(() => {
+      if (!filteredCourts.value) return [];
+      const start = (currentPage.value - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      return filteredCourts.value.slice(start, end);
+    });
+
+    const fetchCourts = async () => {
+      try {
+        await store.dispatch(`courts/${Constant.INITIALIZE_COURTS}`, props.filters);
+        applyFilters(props.filters);
+      } catch (error) {
+        console.error('Error fetching courts:', error);
+      }
+    };
+
+    const applyFilters = (filters) => {
+      if (!courts.value) return;
+      filteredCourts.value = courts.value.filter((court) => {
+        // Your existing filter logic
+        const matchesSport = filters.sport && filters.sport.length > 0
+          ? filters.sport.includes(court.sportId.toString())
+          : true;
+        const matchesMaterial = filters.material
+          ? court.material === filters.material
+          : true;
+        const matchesSearch = filters.search
+          ? (court.namePista && court.namePista.toLowerCase().includes(filters.search.toLowerCase())) ||
+            (court.tagCourt && court.tagCourt.toLowerCase().includes(filters.search.toLowerCase()))
+          : true;
+        return matchesSport && matchesMaterial && matchesSearch;
+      });
+      currentPage.value = 1;
+    };
+
+    const changePage = (direction) => {
+      if (direction === 1 && currentPage.value < totalPages.value) {
+        currentPage.value++;
+      } else if (direction === -1 && currentPage.value > 1) {
+        currentPage.value--;
+      }
+    };
+
+    watch(() => props.filters, (newFilters) => {
+      applyFilters(newFilters);
+    }, { deep: true });
+
+    onMounted(() => {
+      fetchCourts();
+    });
+
+    onUnmounted(() => {
+      // Clean up any event listeners or timers if necessary
+    });
+
+    return {
+      listContentRef,
+      filteredCourts,
+      currentPage,
+      totalPages,
+      paginatedCourts,
+      loading,
+      error,
+      courts,
+      itemsPerPage,
+      fetchCourts,
+      applyFilters,
+      changePage
+    };
+  }
+};
+</script>
+<!-- 
 <script>
 import { mapState, mapActions } from 'vuex';
 
@@ -122,7 +224,9 @@ export default {
     this.fetchCourts();
   },
 };
-</script>
+</script>  -->
+
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap');

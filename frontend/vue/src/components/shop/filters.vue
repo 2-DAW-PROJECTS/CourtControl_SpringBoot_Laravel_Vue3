@@ -48,7 +48,128 @@
 </template>
 
 
+
 <script>
+import { ref, computed, watch, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import Constant from '../../Constant';
+
+export default {
+  name: "ShopFilters",
+  props: {
+    modelValue: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const route = useRoute();
+
+    const isOpen = ref(false);
+    const selectedSport = ref(route.query.sport ? route.query.sport[0] : "");
+    const selectedMaterial = ref("");
+
+    const filters = computed({
+      get: () => props.modelValue,
+      set: (value) => emit("update:modelValue", value)
+    });
+
+    const materials = computed(() => store.state.materials.materials);
+    const loading = computed(() => store.state.materials.loading);
+    const error = computed(() => store.state.materials.error);
+
+    const initializeMaterial = async (sportId = null) => {
+      await store.dispatch(`materials/${Constant.INITIALIZE_MATERIAL}`, sportId);
+    };
+
+    onMounted(async () => {
+      if (route.query.sport) {
+        await initializeMaterial(route.query.sport[0]);
+      } else {
+        await initializeMaterial();
+      }
+      
+      if (route.query.category) {
+        emit("update:modelValue", {
+          ...props.modelValue,
+          category: route.query.category
+        });
+      }
+    });
+
+    watch(() => route.query, (query) => {
+      if (query.category) {
+        emit("update:modelValue", {
+          ...props.modelValue,
+          category: query.category
+        });
+      }
+      if (query.sport) {
+        selectedSport.value = query.sport[0];
+        updateSportFilter();
+      }
+    }, { immediate: true });
+
+    const toggleDropdown = () => {
+      isOpen.value = !isOpen.value;
+    };
+
+    const updateSportFilter = async () => {
+      await initializeMaterial(selectedSport.value);
+      emit("update:modelValue", {
+        ...filters.value,
+        sport: selectedSport.value ? [selectedSport.value] : [],
+      });
+    };
+
+    const updateMaterialFilter = () => {
+      emit("update:modelValue", {
+        ...filters.value,
+        material: selectedMaterial.value,
+      });
+    };
+
+    const clearFilters = () => {
+      emit("update:modelValue", {
+        ...filters.value,
+        category: 'pistas',
+        sport: [],
+        material: "",
+        search: "",
+      });
+      selectedSport.value = "";
+      selectedMaterial.value = "";
+      initializeMaterial();
+    };
+
+    const handleCategoryChange = () => {
+      emit("update:modelValue", filters.value);
+      window.location.reload();
+    };
+
+    return {
+      isOpen,
+      selectedSport,
+      selectedMaterial,
+      filters,
+      materials,
+      loading,
+      error,
+      toggleDropdown,
+      updateSportFilter,
+      updateMaterialFilter,
+      clearFilters,
+      handleCategoryChange,
+    };
+  }
+};
+</script>
+
+
+
+<!-- <script>
 import { mapState, mapActions } from 'vuex';
 import Constant from '../../Constant';
 
@@ -151,133 +272,12 @@ export default {
     },
   },
 };
-</script>
-
-
-
-
-
-
-<!-- <script>
-export default {
-  name: "ShopFilters",
-  props: {
-    modelValue: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      isOpen: false,
-      selectedSport: this.$route.query.sport ? this.$route.query.sport[0] : "",
-      selectedMaterial: "",
-      materials: [],
-    };
-  },
-  async created() {
-    if (this.$route.query.sport) {
-      await this.fetchMaterials(this.$route.query.sport[0]);
-    } else {
-      await this.fetchMaterials();
-    }
-    
-    if (this.$route.query.category) {
-      this.$emit("update:modelValue", {
-        ...this.modelValue,
-        category: this.$route.query.category
-      });
-    }
-  },
-  watch: {
-    '$route.query': {
-      immediate: true,
-      handler(query) {
-        if (query.category) {
-          this.$emit("update:modelValue", {
-            ...this.modelValue,
-            category: query.category
-          });
-        }
-        if (query.sport) {
-          this.selectedSport = query.sport[0];
-          this.updateSportFilter();
-        }
-      }
-    }
-  },
-  methods: {
-    async fetchMaterials(sportId = null) {
-      try {
-          const url = sportId !== null
-              ? `http://localhost:8085/api/courts/materials?sportId=${Number(sportId)}`
-              : `http://localhost:8085/api/courts/materials`;
-
-          // console.log('Fetching materials from URL:', url); 
-          const response = await fetch(url);
-
-          // console.log('number(sportId):', Number(sportId));
-          // console.log('Response status:', response.status);
-          // console.log('Response headers:', response.headers);
-          // console.log('Response type:', response.type);
-          // console.log('Response body:', await response.clone().text());
-
-          if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          this.materials = await response.json();
-          // console.log('Fetched materials:', this.materials);
-      } catch (error) {
-          console.error('Error al cargar materiales:', error);
-      }
-    },
-
-    toggleDropdown() {
-      this.isOpen = !this.isOpen;
-    },
-    async updateSportFilter() {
-        await this.fetchMaterials(this.selectedSport); 
-        this.$emit("update:modelValue", {
-            ...this.filters,
-            sport: this.selectedSport ? [this.selectedSport] : [],
-        });
-    },
-    updateMaterialFilter() {
-      this.$emit("update:modelValue", {
-        ...this.filters,
-        material: this.selectedMaterial,
-      });
-    },
-    clearFilters() {
-      this.$emit("update:modelValue", {
-        ...this.filters,
-        category: 'pistas',
-        sport: [],
-        material: "",
-        search: "",
-      });
-      this.selectedSport = "";
-      this.selectedMaterial = "";
-      this.fetchMaterials();
-    },
-    handleCategoryChange() {
-      // console.log(this.filters.category);
-      this.$emit("update:modelValue", this.filters);
-      window.location.reload();
-    },
-  },
-  computed: {
-    filters: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$emit("update:modelValue", value);
-      },
-    },
-  },
-};
 </script> -->
+
+
+
+
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
