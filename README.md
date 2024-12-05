@@ -110,7 +110,7 @@ CourtControl es una **super app** diseñada para optimizar la administración de
 Una vez que todos los servicios estén en funcionamiento, puedes acceder a la aplicación a través de `http://localhost:8080` para el frontend y los endpoints de la API estarán disponibles en `http://localhost:8000` para Laravel y `http://localhost:8081` para Spring Boot.
 
 ## 📞 Contacto
-Para cualquier consulta o soporte, por favor contacta a los mantenedores del proyecto a través del repositorio de GitHub .
+Para cualquier consulta o soporte, por favor contacta a los mantenedores del proyecto a través del repositorio de GitHub. @JavierTomasTormo @alfosan
 
 ## 🔗 Enlaces de Interés
 - [Repositorio del Proyecto](https://github.com/2-DAW-PROJECTS/CourtControl_SpringBoot_Laravel_Vue3)
