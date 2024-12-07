@@ -1,5 +1,7 @@
 package com.alfosan_javi.spring.api.security.authentication;
 
+import com.alfosan_javi.spring.api.security.jwt.JwtAuthenticationFilter;
+import com.alfosan_javi.spring.api.security.jwt.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,27 +9,34 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtUtils jwtUtils;
+
+    public SecurityConfig(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Configuración de Argon2 para cifrar contraseñas
-        return new Argon2PasswordEncoder(
-                16, // Salt length
-                32, // Hash length
-                1,  // Paralelismo
-                65536, // Memory cost
-                3 // Iteraciones
-        );
+        return new Argon2PasswordEncoder(16, 32, 1, 65536, 3);  // Configura el PasswordEncoder Argon2
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Comentando esta parte para no aplicar ninguna configuración de seguridad
-        http.csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
+        http.csrf().disable()
+            .cors()
+            .and()
+            .authorizeHttpRequests()
+            .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/register").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }

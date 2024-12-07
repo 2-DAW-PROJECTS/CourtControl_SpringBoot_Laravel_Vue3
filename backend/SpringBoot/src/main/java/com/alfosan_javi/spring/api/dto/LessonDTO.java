@@ -22,5 +22,6 @@ public class LessonDTO {
     private int maxCapacity;
     private String description;
     private String img;
+    // Eliminamos el campo idSport
     private Long idSport;
 }

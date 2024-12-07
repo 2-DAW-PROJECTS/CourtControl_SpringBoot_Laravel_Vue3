@@ -60,7 +60,7 @@ public class Lesson {
     @Column(name = "img")
     private String img;
 
-    // Relación con Sport
+    // Eliminamos la relación con Sport
     @ManyToOne
     @JoinColumn(name = "id_sport", referencedColumnName = "id")
     private Sport sport;

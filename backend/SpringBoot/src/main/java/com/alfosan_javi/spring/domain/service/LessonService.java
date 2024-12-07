@@ -2,7 +2,9 @@ package com.alfosan_javi.spring.domain.service;
 
 import com.alfosan_javi.spring.domain.model.Lesson;
 import com.alfosan_javi.spring.domain.repository.LessonRepository;
+import com.alfosan_javi.spring.domain.repository.LessonSpecifications; // Importar las especificaciones
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +41,12 @@ public class LessonService {
     }
 
     public List<Lesson> getFilteredLessonsBySport(List<Long> sportIds) {
-        return lessonRepository.findBySportIds(sportIds);
+        // Usar especificación para filtrar
+        Specification<Lesson> spec = Specification.where(null);
+        
+        if (sportIds != null && !sportIds.isEmpty()) {
+            spec = spec.and(LessonSpecifications.hasSportIdIn(sportIds));
+        }
+        return lessonRepository.findAll(spec);
     }
 }

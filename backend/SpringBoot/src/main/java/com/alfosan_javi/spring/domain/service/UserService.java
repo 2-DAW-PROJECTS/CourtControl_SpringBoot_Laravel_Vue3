@@ -33,9 +33,4 @@ public class UserService {
         return userAssembler.toModel(savedUser);
     }
 
-    // Method to load user by email, which is useful for JwtRequestFilter
-    public User loadUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
-    }
 }

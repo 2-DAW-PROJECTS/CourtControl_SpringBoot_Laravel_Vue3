@@ -2,7 +2,6 @@ package com.alfosan_javi.spring.api.assembler;
 
 import com.alfosan_javi.spring.api.dto.LessonDTO;
 import com.alfosan_javi.spring.domain.model.Lesson;
-import com.alfosan_javi.spring.domain.model.Sport;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,8 +22,8 @@ public class LessonAssembler {
         model.setMaxCapacity(lesson.getMaxCapacity());
         model.setDescription(lesson.getDescription());
         model.setImg(lesson.getImg());
-        // Si el deporte está presente, asignar su ID
-        model.setIdSport(lesson.getSport() != null ? lesson.getSport().getId() : null);
+        // Eliminamos la parte de Sport porque ya no existe
+        // model.setIdSport(lesson.getSport() != null ? lesson.getSport().getId() : null);
         return model;
     }
 
@@ -43,12 +42,8 @@ public class LessonAssembler {
         lesson.setMaxCapacity(model.getMaxCapacity());
         lesson.setDescription(model.getDescription());
         lesson.setImg(model.getImg());
-        // Crear una entidad Sport con el ID proporcionado
-        if (model.getIdSport() != null) {
-            Sport sport = new Sport();
-            sport.setId(model.getIdSport());
-            lesson.setSport(sport);
-        }
+        // Eliminamos la asignación de Sport
+        // Si se requiere alguna lógica para asignar otro atributo en lugar de Sport, se puede agregar aquí
         return lesson;
     }
 }
