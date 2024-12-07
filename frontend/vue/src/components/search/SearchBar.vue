@@ -17,8 +17,81 @@
         </div>
     </template>
 
-    <script>
-        import axios from 'axios';
+<script>
+import { ref, computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+export default {
+  name: "SearchBar",
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const searchQuery = ref("");
+    const suggestions = ref([]);
+    const allCourts = ref([]);
+
+    const courts = computed(() => store.state.courts.courts);
+
+    const handleSearch = () => {
+      store.dispatch('courts/updateFilters', { search: searchQuery.value });
+      router.push({ path: '/shop', query: { search: searchQuery.value } });
+    };
+
+    const fetchAllCourts = async () => {
+      try {
+        await store.dispatch('courts/INITIALIZE_COURTS');
+        allCourts.value = courts.value;
+      } catch (error) {
+        console.error('Error fetching all courts:', error);
+      }
+    };
+
+    const fetchAutocompleteSuggestions = () => {
+      if (searchQuery.value.trim() === "") {
+        suggestions.value = [];
+        return;
+      }
+
+      const uniqueSuggestions = new Map();
+      allCourts.value
+        .filter(court =>
+          (court.namePista && court.namePista.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+          (court.tagCourt && court.tagCourt.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        )
+        .forEach(court => {
+          if (!uniqueSuggestions.has(court.namePista)) {
+            uniqueSuggestions.set(court.namePista, court);
+          }
+        });
+      suggestions.value = Array.from(uniqueSuggestions.values());
+    };
+
+    const selectSuggestion = (suggestion) => {
+      searchQuery.value = suggestion.namePista;
+      suggestions.value = [];
+      handleSearch();
+    };
+
+    onMounted(() => {
+      fetchAllCourts();
+    });
+
+    return {
+      searchQuery,
+      suggestions,
+      handleSearch,
+      fetchAutocompleteSuggestions,
+      selectSuggestion
+    };
+  }
+};
+</script>
+
+
+<!-- <script>
+        import { mapState, mapActions } from 'vuex';
+
         export default {
             data() {
                 return {
@@ -27,36 +100,46 @@
                     allCourts: []
                 };
             },
+            computed: {
+                ...mapState('courts', ['courts'])
+            },
             methods: {
+                ...mapActions('courts', ['INITIALIZE_COURTS', 'updateFilters']),
+                
                 handleSearch() {
+                    this.updateFilters({ search: this.searchQuery });
                     this.$emit('search', this.searchQuery);
                 },
+
                 async fetchAllCourts() {
                     try {
-                        const response = await axios.get(`http://localhost:8085/api/courts`);
-                        this.allCourts = response.data;
+                        await this.INITIALIZE_COURTS();
+                        this.allCourts = this.courts;
                     } catch (error) {
                         console.error('Error fetching all courts:', error);
                     }
                 },
+
                 fetchAutocompleteSuggestions() {
                     if (this.searchQuery.trim() === "") {
                         this.suggestions = [];
                         return;
                     }
+
                     const uniqueSuggestions = new Map();
                     this.allCourts
                         .filter(court =>
-                        (court.namePista && court.namePista.toLowerCase().includes(this.searchQuery.toLowerCase())) ||
-                        (court.tagCourt && court.tagCourt.toLowerCase().includes(this.searchQuery.toLowerCase()))
+                            (court.namePista && court.namePista.toLowerCase().includes(this.searchQuery.toLowerCase())) ||
+                            (court.tagCourt && court.tagCourt.toLowerCase().includes(this.searchQuery.toLowerCase()))
                         )
                         .forEach(court => {
-                        if (!uniqueSuggestions.has(court.namePista)) {
-                            uniqueSuggestions.set(court.namePista, court);
-                        }
+                            if (!uniqueSuggestions.has(court.namePista)) {
+                                uniqueSuggestions.set(court.namePista, court);
+                            }
                         });
                     this.suggestions = Array.from(uniqueSuggestions.values());
                 },
+
                 selectSuggestion(suggestion) {
                     this.searchQuery = suggestion.namePista;
                     this.suggestions = [];
@@ -67,7 +150,7 @@
                 this.fetchAllCourts();
             }
         };
-    </script>
+    </script>  -->
 
     <style scoped>
         .search-bar {
@@ -90,7 +173,7 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             animation: inputPulse 2.5s infinite, glow 4s infinite;
             box-shadow: 0 0 30px rgba(146, 216, 190, 0.4),
-                       inset 0 0 15px rgba(146, 216, 190, 0.2);
+            inset 0 0 15px rgba(146, 216, 190, 0.2);
             letter-spacing: 1px;
             font-family: 'Russo One', sans-serif;
             text-transform: uppercase;
@@ -106,7 +189,7 @@
             background: rgba(146, 216, 190, 0.28);
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 0 50px rgba(146, 216, 190, 0.7),
-                       inset 0 0 20px rgba(146, 216, 190, 0.3);
+            inset 0 0 20px rgba(146, 216, 190, 0.3);
             border: 3px solid rgba(146, 216, 190, 0.6);
         }
         
@@ -126,7 +209,7 @@
             max-height: 400px;
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(146, 216, 190, 0.3),
-                       inset 0 0 20px rgba(146, 216, 190, 0.1);
+            inset 0 0 20px rgba(146, 216, 190, 0.1);
             backdrop-filter: blur(15px);
             animation: slideDown 0.3s ease-out;
         }
