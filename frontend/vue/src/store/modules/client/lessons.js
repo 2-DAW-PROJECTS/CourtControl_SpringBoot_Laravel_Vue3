@@ -29,6 +29,9 @@ export const lessons = {
         },
         UPDATE_FILTERS(state, filters) {
             state.filters = { ...state.filters, ...filters };
+        },
+        [Constant.SET_LESSON](state, lesson) {
+            state.currentLesson = lesson;
         }
     },
     actions: {
@@ -52,11 +55,29 @@ export const lessons = {
         updateFilters({ commit, dispatch }, filters) {
             commit('UPDATE_FILTERS', filters);
             dispatch(Constant.INITIALIZE_LESSONS, filters);
+        },
+        async [Constant.FETCH_LESSON_BY_ID]({ commit }, id) {
+            commit(Constant.SET_LOADING, true);
+            try {
+                const response = await LessonService.GetLessonById(id);
+                if (response.status === Constant.STATUS_OK) {
+                    commit(Constant.SET_LESSON, response.data);
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                commit(Constant.SET_ERROR, error.message);
+                toaster.error('Error fetching lesson');
+                console.error('Error fetching lesson:', error);
+            } finally {
+                commit(Constant.SET_LOADING, false);
+            }
         }
     },
     getters: {
         allLessons: state => state.lessons,
         currentLesson: state => state.currentLesson,
+        lesson: state => state.currentLesson,
         isLoading: state => state.loading,
         getError: state => state.error,
         getFilters: state => state.filters,

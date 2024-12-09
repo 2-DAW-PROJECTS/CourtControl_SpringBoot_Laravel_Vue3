@@ -23,7 +23,7 @@
       <div v-for="lesson in paginatedLessons" :key="lesson.id" class="lesson-card">
         <div class="lesson-image">
           <div class="image-overlay">
-            <button class="reserve-btn-overlay">¡Inscríbete Ahora!</button>
+            <button @click="goToDetails(lesson.id)" class="reserve-btn-overlay">¡Inscríbete Ahora!</button>
           </div>
           <img :src="require(`@/assets/img_lessons/${lesson.img}`)" :alt="lesson.nameClass" class="lesson-img" />
         </div>
@@ -131,6 +131,11 @@ export default {
       const end = start + this.itemsPerPage;
       return this.filteredLessons.slice(start, end);
     },
+  },
+  methods: {
+      goToDetails(id) {
+        this.$router.push({ name: 'LessonDetails', params: { id } });
+      }
   },
   watch: {
     filters: {

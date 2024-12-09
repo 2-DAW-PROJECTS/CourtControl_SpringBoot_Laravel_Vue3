@@ -17,6 +17,11 @@ class LessonService {
 
         return await axios.get(url, { params });
     }
+
+    async GetLessonById(id) {
+        const url = `${API_URL}/${id}`;
+        return await axios.get(url);
+    }
 }
 
 export default new LessonService();
