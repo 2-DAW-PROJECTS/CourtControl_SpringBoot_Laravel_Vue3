@@ -31,7 +31,7 @@ import CardDescription_home from "@/components/home/CardDescription_home.vue";
 import HomeGifts from "@/components/home/Home_gifts.vue";
 
 // import BKPLLORENÇ from "@/components/home/bkp_llorenç.vue";
-import InfinityScrollCourts from "@/components/home/bkp_llorenç.vue";
+import InfinityScrollCourts from "@/components/home/InfinityScrollCourts.vue";
 
 export default {
   name: "HomePage",
