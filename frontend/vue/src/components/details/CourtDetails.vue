@@ -63,32 +63,6 @@
     </div>
 </template>
 
-<!-- <script>
-import { ref, onMounted } from 'vue';
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-import Constant from '@/Constant';
-
-export default {
-    name: 'CourtDetails',
-    setup() {
-        const store = useStore();
-        const route = useRoute();
-        const court = ref(null);
-
-        onMounted(async () => {
-            const courtId = route.params.id;
-            // console.log('Court ID:', courtId);
-            await store.dispatch(`courts/${Constant.FETCH_COURT_BY_ID}`, courtId);
-            court.value = store.getters['courts/currentCourt'];
-            // console.log('Court Data:', court.value);
-        });
-
-        return { court };
-    },
-};
-</script> -->
-
 <script>
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
