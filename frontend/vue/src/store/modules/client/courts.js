@@ -30,6 +30,10 @@ export const courts = {
         },
         UPDATE_FILTERS(state, filters) {
             state.filters = { ...state.filters, ...filters };
+        },
+
+        [Constant.SET_COURT](state, court) {
+            state.currentCourt = court;
         }
     },
     actions: {
@@ -55,11 +59,30 @@ export const courts = {
         updateFilters({ commit, dispatch }, filters) {
             commit('UPDATE_FILTERS', filters);
             dispatch(Constant.INITIALIZE_COURTS, filters);
+        },
+
+        async [Constant.FETCH_COURT_BY_ID]({ commit }, id) {
+            commit(Constant.SET_LOADING, true);
+            try {
+                const response = await CourtService.GetCourtById(id);
+                if (response.status === Constant.STATUS_OK) {
+                    commit(Constant.SET_COURT, response.data);
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                commit(Constant.SET_ERROR, error.message);
+                toaster.error('Error fetching court');
+                console.error('Error fetching court:', error);
+            } finally {
+                commit(Constant.SET_LOADING, false);
+            }
         }
     },
     getters: {
         allCourts: state => state.courts,
         currentCourt: state => state.currentCourt,
+        court: (state) => state.currentCourt,
         isLoading: state => state.loading,
         getError: state => state.error,
         getFilters: state => state.filters,
