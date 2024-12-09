@@ -1,18 +1,12 @@
-<!-- Template section remains the same -->
 <template>
   <div class="list-content">
-    <!-- <div class="header-section">
-      <br><br><br>
-      <h2>Nuestras Pistas Deportivas</h2>
-      <p class="subtitle">Descubre y reserva las mejores instalaciones deportivas</p>
-    </div> -->
     <br><br><br><br><br><br><br><br><br>
-    <div v-if="courts.length === 0" class="no-courts">
+    <div v-if="filteredCourts.length === 0" class="no-courts">
       <i class="fas fa-exclamation-circle"></i>
       <p>No hay pistas disponibles en este momento.</p>
     </div>
 
-    <div class="courts-grid" v-if="courts.length > 0">
+    <div class="courts-grid" v-if="filteredCourts.length > 0">
       <div v-for="court in paginatedCourts" :key="court.id" class="court-card">
         <div class="court-image">
           <img
@@ -31,12 +25,12 @@
             <p><i class="fas fa-clock"></i> Disponibilidad: 24/7</p>
             <p class="description"><i class="fas fa-star"></i> {{ court.description }}</p>
           </div>
-          <button class="reserve-btn">Reservar Ahora</button>
+          <button @click="goToDetails(court.id)" class="reserve-btn">Reservar Ahora</button>
         </div>
       </div>
     </div>
 
-    <div class="pagination-controls" v-if="courts.length > 0">
+    <div class="pagination-controls" v-if="filteredCourts.length > 0">
       <button :disabled="currentPage === 1" @click="currentPage--" class="pagination-btn">
         <i class="fas fa-chevron-left"></i> Anterior
       </button>
@@ -48,11 +42,10 @@
   </div>
 </template>
 
-
 <script>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import Constant from '@/Constant';
+import { useRouter } from 'vue-router';
 
 export default {
   name: "ListContent",
@@ -64,39 +57,37 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    const listContentRef = ref(null);
+    const router = useRouter();
     const filteredCourts = ref([]);
     const currentPage = ref(1);
     const itemsPerPage = 3;
-
-    const courts = computed(() => store.state.courts.courts);
+    const courts = computed(() => store.state.courts.courts || []);
     const loading = computed(() => store.state.courts.loading);
-    const error = computed(() => store.state.courts.error);
 
     const totalPages = computed(() => {
-      return filteredCourts.value ? Math.ceil(filteredCourts.value.length / itemsPerPage) : 0;
+      return Math.ceil(filteredCourts.value.length / itemsPerPage);
     });
 
     const paginatedCourts = computed(() => {
-      if (!filteredCourts.value) return [];
       const start = (currentPage.value - 1) * itemsPerPage;
       const end = start + itemsPerPage;
       return filteredCourts.value.slice(start, end);
     });
 
     const fetchCourts = async () => {
+      loading.value = true;
       try {
-        await store.dispatch(`courts/${Constant.INITIALIZE_COURTS}`, props.filters);
+        await store.dispatch('courts/INITIALIZE_COURTS', props.filters);
         applyFilters(props.filters);
       } catch (error) {
         console.error('Error fetching courts:', error);
+      } finally {
+        loading.value = false;
       }
     };
 
     const applyFilters = (filters) => {
-      if (!courts.value) return;
       filteredCourts.value = courts.value.filter((court) => {
-        // Your existing filter logic
         const matchesSport = filters.sport && filters.sport.length > 0
           ? filters.sport.includes(court.sportId.toString())
           : true;
@@ -112,12 +103,8 @@ export default {
       currentPage.value = 1;
     };
 
-    const changePage = (direction) => {
-      if (direction === 1 && currentPage.value < totalPages.value) {
-        currentPage.value++;
-      } else if (direction === -1 && currentPage.value > 1) {
-        currentPage.value--;
-      }
+    const goToDetails = (id) => {
+      router.push({ name: 'CourtDetails', params: { id } });
     };
 
     watch(() => props.filters, (newFilters) => {
@@ -128,105 +115,20 @@ export default {
       fetchCourts();
     });
 
-    onUnmounted(() => {
-      // Clean up any event listeners or timers if necessary
-    });
-
     return {
-      listContentRef,
       filteredCourts,
       currentPage,
+      itemsPerPage,
+      loading,
       totalPages,
       paginatedCourts,
-      loading,
-      error,
-      courts,
-      itemsPerPage,
       fetchCourts,
       applyFilters,
-      changePage
+      goToDetails,
     };
-  }
+  },
 };
 </script>
-<!-- 
-<script>
-import { mapState, mapActions } from 'vuex';
-
-export default {
-  name: "ListContent",
-  props: {
-    filters: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      filteredCourts: [],
-      currentPage: 1,
-      itemsPerPage: 3,
-      loading: false,
-    };
-  },
-  computed: {
-    ...mapState('courts', ['courts']),
-    totalPages() {
-      return Math.ceil(this.filteredCourts.length / this.itemsPerPage);
-    },
-    paginatedCourts() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.filteredCourts.slice(start, end);
-    },
-  },
-  watch: {
-    filters: {
-      handler(newFilters) {
-        this.applyFilters(newFilters);
-      },
-      deep: true,
-    },
-  },
-  methods: {
-    ...mapActions('courts', ['INITIALIZE_COURTS', 'updateFilters']),
-    
-    async fetchCourts() {
-      this.loading = true;
-      try {
-        await this.INITIALIZE_COURTS(this.filters);
-        this.applyFilters(this.filters);
-      } catch (error) {
-        console.error('Error fetching courts:', error);
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    applyFilters(filters) {
-      this.filteredCourts = this.courts.filter((court) => {
-        const matchesSport = filters.sport && filters.sport.length > 0
-          ? filters.sport.includes(court.sportId.toString())
-          : true;
-        const matchesMaterial = filters.material
-          ? court.material === filters.material
-          : true;
-        const matchesSearch = filters.search
-          ? (court.namePista && court.namePista.toLowerCase().includes(filters.search.toLowerCase())) ||
-            (court.tagCourt && court.tagCourt.toLowerCase().includes(filters.search.toLowerCase()))
-          : true;
-        return matchesSport && matchesMaterial && matchesSearch;
-      });
-      this.currentPage = 1;
-    },
-  },
-  mounted() {
-    this.fetchCourts();
-  },
-};
-</script>  -->
-
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap');
