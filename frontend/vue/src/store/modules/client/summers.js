@@ -29,6 +29,9 @@ export const summers = {
         },
         UPDATE_FILTERS(state, filters) {
             state.filters = { ...state.filters, ...filters };
+        },
+        [Constant.SET_SUMMER](state, summer) {
+            state.currentSummer = summer;
         }
     },
     actions: {
@@ -52,11 +55,29 @@ export const summers = {
         updateFilters({ commit, dispatch }, filters) {
             commit('UPDATE_FILTERS', filters);
             dispatch(Constant.INITIALIZE_SUMMERS, filters);
+        },
+        async [Constant.FETCH_SUMMER_BY_ID]({ commit }, id) {
+            commit(Constant.SET_LOADING, true);
+            try {
+                const response = await SummerService.GetSummerById(id);
+                if (response.status === Constant.STATUS_OK) {
+                    commit(Constant.SET_SUMMER, response.data);
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                commit(Constant.SET_ERROR, error.message);
+                toaster.error('Error fetching summer');
+                console.error('Error fetching summer:', error);
+            } finally {
+                commit(Constant.SET_LOADING, false);
+            }
         }
     },
     getters: {
         allSummers: state => state.summers,
         currentSummer: state => state.currentSummer,
+        summer: state => state.currentSummer,
         isLoading: state => state.loading,
         getError: state => state.error,
         getFilters: state => state.filters,

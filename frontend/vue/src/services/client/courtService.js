@@ -9,14 +9,16 @@ class CourtService {
 
         if (filters.sport && filters.sport.length > 0 && filters.sport[0] !== '') {
             params.sportIds = filters.sport.join(',');
-        }
-
-        if (filters.search) {
+        } if (filters.search) {
             params.search = filters.search;
         }
-
         // console.log('Fetching courts with params:', params);
         return await axios.get(url, { params });
+    }
+
+    async GetCourtById(id) {
+        const url = `${API_URL}/${id}`;
+        return await axios.get(url);
     }
 
 }

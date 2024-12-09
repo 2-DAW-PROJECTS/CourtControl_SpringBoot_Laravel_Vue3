@@ -82,18 +82,28 @@
                 const isComplete = ref(false);  
                 const hasError = ref(false);
                 const stopObserver = ref(false);
-        
+
                 const loadNextCourt = async () => {
                     if (isComplete.value || isLoading.value || stopObserver.value) return;
-                    
+
                     try {
                         isLoading.value = true;
-                        await store.dispatch('courts/INITIALIZE_COURTS', { page: currentPage.value });
+                        await store.dispatch('courts/INITIALIZE_COURTS', { 
+                            page: currentPage.value,
+                            perPage: 1  // Set to load 1 court at a time
+                        });
                         const storeCourts = store.getters['courts/allCourts'];
-                        
+
                         if (storeCourts.length > courts.value.length) {
-                            courts.value = storeCourts;
-                            currentPage.value++;
+                            // Add only the new court
+                            const newCourt = storeCourts.find(court => !courts.value.some(c => c.id === court.id));
+                            if (newCourt) {
+                                courts.value.push(newCourt);
+                                currentPage.value++;
+                            } else {
+                                isComplete.value = true;
+                                stopObserver.value = true;
+                            }
                         } else {
                             isComplete.value = true;
                             stopObserver.value = true;
@@ -115,7 +125,7 @@
                         }
                     },
                     { 
-                        threshold: 1.0,
+                        threshold: 0.5,
                         rootMargin: '50px'
                     }
                 );
@@ -139,6 +149,7 @@
             }
         };
     </script>
+
     <style scoped>
     .list-content {
         padding: 2rem;

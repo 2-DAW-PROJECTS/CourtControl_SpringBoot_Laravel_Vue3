@@ -17,6 +17,11 @@ class SummerService {
 
         return await axios.get(url, { params });
     }
+
+    async GetSummerById(id) {
+        const url = `${API_URL}/${id}`;
+        return await axios.get(url);
+    }
 }
 
 export default new SummerService();
