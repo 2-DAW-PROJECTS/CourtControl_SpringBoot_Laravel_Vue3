@@ -1,6 +1,12 @@
 <template>
-    <br><br>
+    <br><br><br><br>
     <div class="court-details-container" v-if="court">
+
+        <!-- Back Button -->
+        <button class="back-button" @click="goBack">
+            <font-awesome-icon :icon="['fas', 'backward']" /> Volver <!-- <h1>volver</h1>-->
+        </button>
+
         <!-- Header -->
         <div class="court-header">
             <h1>{{ court.namePista }}</h1>
@@ -57,7 +63,7 @@
     </div>
 </template>
 
-<script>
+<!-- <script>
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -72,16 +78,48 @@ export default {
 
         onMounted(async () => {
             const courtId = route.params.id;
-            console.log('Court ID:', courtId);
+            // console.log('Court ID:', courtId);
             await store.dispatch(`courts/${Constant.FETCH_COURT_BY_ID}`, courtId);
             court.value = store.getters['courts/currentCourt'];
-            console.log('Court Data:', court.value);
+            // console.log('Court Data:', court.value);
         });
 
         return { court };
     },
 };
+</script> -->
+
+<script>
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+import Constant from '@/Constant';
+
+export default {
+    name: 'CourtDetails',
+    setup() {
+        const store = useStore();
+        const route = useRoute();
+        const router = useRouter(); // Definir router
+        const court = ref(null);
+
+        onMounted(async () => {
+            const courtId = route.params.id;
+            // console.log('Court ID:', courtId);
+            await store.dispatch(`courts/${Constant.FETCH_COURT_BY_ID}`, courtId);
+            court.value = store.getters['courts/currentCourt'];
+            // console.log('Court Data:', court.value);
+        });
+
+        const goBack = () => {
+            router.back();
+        };
+
+        return { court, goBack };
+    },
+};
 </script>
+
 
 <style scoped>
 /* General Reset and Font Imports */
@@ -113,6 +151,30 @@ body {
     margin: 40px auto;
     overflow: hidden;
 }
+
+
+/* Back Button */
+.back-button {
+    position: absolute;
+    top: 90px;
+    left: 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+    background-color: #2980b9;
+}
+
 
 /* Header Section */
 .court-header {
@@ -241,7 +303,6 @@ body {
     background-color: #c0392b;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .court-content {
         flex-direction: column;
@@ -255,6 +316,13 @@ body {
 
     .court-header h1 {
         font-size: 2rem;
+    }
+
+    .back-button {
+        top: 90px;
+        left: 10px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
     }
 }
 </style>
