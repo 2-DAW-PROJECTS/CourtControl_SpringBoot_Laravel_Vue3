@@ -26,7 +26,7 @@
       <div v-for="summer in paginatedSummers" :key="summer.id" class="summer-card">
         <div class="summer-image">
           <div class="image-overlay">
-            <button class="reserve-btn-overlay">¡Inscríbete Ahora!</button>
+            <button class="reserve-btn-overlay" @click="goToDetails(summer.id)">¡Inscríbete Ahora!</button>
           </div>
           <!-- Aquí usamos require para cargar la imagen -->
           <img :src="require(`@/assets/img_summer/${summer.img}`)" :alt="summer.nameSummer" class="summer-img" />
@@ -141,6 +141,10 @@ export default {
       const options = { year: "numeric", month: "long", day: "numeric" };
       return new Date(date).toLocaleDateString("es-ES", options);
     },
+
+    goToDetails(id) {
+      this.$router.push({ name: 'SummerDetails', params: { id } });
+    }
   },
 };
 </script>
