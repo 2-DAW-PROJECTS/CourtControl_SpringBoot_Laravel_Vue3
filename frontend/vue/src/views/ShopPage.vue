@@ -34,9 +34,9 @@
     data() {
       return {
         filters: {
-          category: "pistas", // Iniciar con "pistas"
-          sport: null, // El deporte inicialmente no está seleccionado
-          search: "", // Búsqueda por defecto vacía
+          category: "pistas", 
+          sport: null, 
+          search: "", 
 
         },
         data: [],
