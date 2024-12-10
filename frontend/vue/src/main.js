@@ -2,6 +2,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';  // Importar el router
 import store from './store';  // Importar el store
+import '@fortawesome/fontawesome-free/css/all.css';  // Importar Font Awesome
+
 
 const app = createApp(App);
 
