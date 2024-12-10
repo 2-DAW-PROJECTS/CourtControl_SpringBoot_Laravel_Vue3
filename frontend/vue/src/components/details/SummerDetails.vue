@@ -8,6 +8,7 @@
             <!-- Header -->
             <div class="summer-header">
                 <h1>{{ summer.nameSummer }}</h1>
+                <!-- <span class="age-tag">Rango de Edad</span><br><br> -->
                 <span class="age-tag">{{ summer.categoryAge }}</span>
             </div>
             <!-- Content -->
@@ -84,217 +85,223 @@
     </script>
 
     <style scoped>
-    /* General Reset and Font Imports */
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;600&display=swap');
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    body {
-        font-family: 'Roboto', sans-serif;
-        color: #333;
-        background-color: #f9f9f9;
-        line-height: 1.6;
-    }
-    /* Main Container */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
     .summer-details-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 1200px;
-        margin: 40px auto;
-        overflow: hidden;
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        animation: fadeIn 1s ease-in-out;
     }
-    /* Back Button */
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .back-button {
-        position: absolute;
-        top: 90px;
-        left: 20px;
-        background-color: #3498db;
-        color: #fff;
+        /* position: fixed; */
+        /* top: 100px; */
+        /* left: 30px; */
+        background: #ff6b6b;
+        color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 700;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 500;
         cursor: pointer;
-        text-align: center;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
     }
+
     .back-button:hover {
-        background-color: #2980b9;
+        background: #ff4757;
+        transform: scale(1.1);
     }
-    /* Header Section */
+
     .summer-header {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 3rem;
     }
+
     .summer-header h1 {
         font-size: 2.5rem;
         color: #2c3e50;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-    .age-tag {
-        display: inline-block;
-        background-color: #3498db;
-        color: #fff;
-        padding: 8px 20px;
-        border-radius: 20px;
+        margin-bottom: 1rem;
         font-weight: 600;
-        text-transform: uppercase;
+        animation: bounceIn 1s ease;
+    }
+
+    @keyframes bounceIn {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-30px);
+        }
+        60% {
+            transform: translateY(-15px);
+        }
+    }
+
+    .age-tag {
+        background: #ff6b6b;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-weight: 500;
         font-size: 0.9rem;
     }
-    /* Content Section */
+
     .summer-content {
-        display: flex;
-        flex-wrap: wrap;
-        text-align: center;
-        gap: 20px;
-        width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
     }
+
+    .summer-image {
+        grid-column: 1 / 2;
+    }
+
     .summer-image img {
-        width: 60%;
-        height: auto;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
     }
-    /* Info Section */
+
+    .summer-image img:hover {
+        transform: scale(1.05);
+    }
+
     .info-section {
-        flex: 1 1 300px;
-        background-color: #f0f4f8;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        grid-column: 2 / 3;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 2rem;
+        animation: fadeIn 1s ease-in-out;
     }
+
     .info-section h3 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
         color: #2c3e50;
-        margin-bottom: 15px;
-        font-weight: 700;
+        font-weight: 600;
     }
+
     .info-grid {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 1rem;
     }
+
     .info-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px;
-        background: #fff;
-        border-radius: 6px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        gap: 1rem;
+        border: 1px solid #e9ecef;
+        transition: transform 0.3s ease;
     }
+
+    .info-item:hover {
+        transform: scale(1.05);
+    }
+
     .info-item i {
-        font-size: 1.5rem;
-        color: #3498db;
-    }
-    .info-item span {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #34495e;
-    }
-    /* Description Section */
-    /* .description-section {
-        flex: 1 1 300px;
-        background: #ecf0f1;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .description-section h3 {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
         color: #2c3e50;
-        margin-bottom: 15px;
-        font-weight: 700;
     }
-    .description-section p {
-        font-size: 1rem;
-        color: #7f8c8d;
-        line-height: 1.8;
-    } */
 
     .description-section {
-        flex: 1 1 300px;
-        background: #ffffff;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        grid-column: 3 / 4;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 2rem;
+        animation: fadeIn 1s ease-in-out;
     }
-    .description-section:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    }
+
     .description-section h3 {
-        font-size: 1.6rem;
-        color: #34495e;
-        margin-bottom: 20px;
-        font-weight: 700;
-        border-bottom: 2px solid #3498db;
-        padding-bottom: 10px;
-    }
-    .description-section p {
-        font-size: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
         color: #2c3e50;
-        line-height: 1.8;
-        margin-bottom: 15px;
-        text-align: justify;
+        font-weight: 600;
     }
 
-
-
-
-
-    /* Reserve Button */
-    .reserve-button {
-        display: inline-block;
-        background-color: #e74c3c;
-        color: #fff;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 8px;
+    .description-section p {
+        color: #495057;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
         font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        text-align: center;
-        transition: background-color 0.3s ease;
-        margin-top: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
+    .reserve-button {
+        width: 100%;
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 1.5rem;
+    }
+
+    .reserve-button:hover:not(:disabled) {
+        background: #ff4757;
+        transform: scale(1.1);
+    }
+
     .reserve-button:disabled {
-        background-color: #bdc3c7;
+        background: #dee2e6;
         cursor: not-allowed;
     }
-    .reserve-button:hover:not(:disabled) {
-        background-color: #c0392b;
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+        font-size: 1.5rem;
+        color: #2c3e50;
     }
+
+    @media (max-width: 1200px) {
+        .summer-content {
+            grid-template-columns: 1fr 1fr;
+        }
+        .summer-image {
+            grid-column: 1 / 2;
+        }
+        .info-section {
+            grid-column: 2 / 3;
+        }
+        .description-section {
+            grid-column: 1 / 3;
+        }
+    }
+
     @media (max-width: 768px) {
         .summer-content {
-            flex-direction: column;
-            align-items: center;
+            grid-template-columns: 1fr;
         }
-        .info-section,
-        .description-section {
-            width: 100%;
+        .summer-image, .info-section, .description-section {
+            grid-column: 1 / 2;
+        }
+        .back-button {
+            top: 80px;
+            left: 20px;
+            padding: 10px 20px;
         }
         .summer-header h1 {
             font-size: 2rem;
-        }
-        .back-button {
-            top: 90px;
-            left: 10px;
-            padding: 8px 16px;
-            font-size: 0.9rem;
         }
     }
     </style>

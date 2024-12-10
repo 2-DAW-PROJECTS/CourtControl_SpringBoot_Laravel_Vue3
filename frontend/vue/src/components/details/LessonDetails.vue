@@ -113,9 +113,9 @@
         flex-direction: column;
         align-items: center;
         padding: 20px;
-        background: #fff;
+        /* background: #fff;
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
         max-width: 1200px;
         margin: 40px auto;
         overflow: hidden;
@@ -123,9 +123,6 @@
 
     /* Back Button */
     .back-button {
-        position: absolute;
-        top: 90px;
-        left: 20px;
         background-color: #3498db;
         color: #fff;
         border: none;
@@ -137,6 +134,7 @@
         text-align: center;
         transition: background-color 0.3s ease;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        align-self: flex-start;
     }
 
     .back-button:hover {
