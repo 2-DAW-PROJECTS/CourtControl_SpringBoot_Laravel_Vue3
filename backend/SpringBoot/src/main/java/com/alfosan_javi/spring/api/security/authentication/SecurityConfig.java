@@ -23,7 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new Argon2PasswordEncoder(16, 32, 1, 65536, 3);  // Configura el PasswordEncoder Argon2
+        return new Argon2PasswordEncoder(16, 32, 1, 65536, 3);
     }
 
     @Bean
@@ -32,7 +32,10 @@ public class SecurityConfig {
             .cors()
             .and()
             .authorizeHttpRequests()
-            .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/register").permitAll()
+            .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**").permitAll()
+            .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
+            .requestMatchers("/employee/**").hasAnyRole("ROLE_EMPLOYEE", "ROLE_ADMIN")
+            .requestMatchers("/client/**").hasAnyRole("ROLE_CLIENT", "ROLE_EMPLOYEE", "ROLE_ADMIN")
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);

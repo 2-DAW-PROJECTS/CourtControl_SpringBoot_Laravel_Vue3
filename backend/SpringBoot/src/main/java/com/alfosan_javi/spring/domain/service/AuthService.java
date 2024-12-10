@@ -3,15 +3,20 @@ package com.alfosan_javi.spring.domain.service;
 import com.alfosan_javi.spring.api.response.LoginRequest;
 import com.alfosan_javi.spring.api.response.LoginResponse;
 import com.alfosan_javi.spring.api.response.RegisterRequest;
+import com.alfosan_javi.spring.domain.model.Role;
 import com.alfosan_javi.spring.domain.model.User;
+import com.alfosan_javi.spring.domain.repository.RoleRepository;
 import com.alfosan_javi.spring.domain.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.alfosan_javi.spring.domain.model.RefreshToken;
 import com.alfosan_javi.spring.domain.repository.RefreshTokenRepository;
 import com.alfosan_javi.spring.api.security.jwt.JwtUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 import java.time.Instant;
+import java.util.regex.Pattern;
 
 @Service
 public class AuthService {
@@ -21,28 +26,55 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     // Constructor
     public AuthService(UserRepository userRepository, JwtUtils jwtUtils,
                        RefreshTokenRepository refreshTokenRepository, RefreshTokenService refreshTokenService,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.refreshTokenRepository = refreshTokenRepository;
         this.refreshTokenService = refreshTokenService;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
-    // Método para registrar un nuevo usuario
+    @Transactional
     public void register(RegisterRequest registerRequest) {
+        // Validar email
+        if (registerRequest.getEmail() == null || !isValidEmail(registerRequest.getEmail())) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        // Verificar si el correo ya está en uso
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("Email is already in use");
         }
 
+        // Validar la contraseña
+        if (registerRequest.getPassword() == null || registerRequest.getPassword().length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+
+        // Crear un nuevo usuario
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setName(registerRequest.getName());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
+        // Obtener el rol "CLIENTE", si no existe, crearlo
+        Role clienteRole = roleRepository.findByName("ROLE_CLIENT")
+                .orElseGet(() -> {
+                    Role newRole = new Role();
+                    newRole.setName("ROLE_CLIENT");
+                    return roleRepository.save(newRole);
+                });
+
+        clienteRole.getPermissions().size();
+
+        // Asignar el rol "CLIENTE" al usuario
+        newUser.getRoles().add(clienteRole);
 
         userRepository.save(newUser);
     }
@@ -63,10 +95,8 @@ public class AuthService {
             throw new IllegalStateException("Generated refresh token is invalid");
         }
 
-        // Verificar si ya existe un refresh token para este usuario
         Optional<RefreshToken> existingRefreshTokenOpt = refreshTokenRepository.findTopByUserIdOrderByCreatedAtDesc(String.valueOf(user.getId()));
 
-        // Si existe un refresh token, lo movemos a la lista negra
         existingRefreshTokenOpt.ifPresent(existingRefreshToken -> {
             refreshTokenService.blacklistToken(existingRefreshToken.getToken());
         });
@@ -81,7 +111,6 @@ public class AuthService {
 
         return new LoginResponse(accessToken, refreshToken);
     }
-
 
     // Método para rotar un refresh token
     public String rotateRefreshToken(String oldRefreshToken) {
@@ -107,5 +136,10 @@ public class AuthService {
         return newRefreshToken;
     }
 
+    // Método para validar formato de email
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
 }
-
