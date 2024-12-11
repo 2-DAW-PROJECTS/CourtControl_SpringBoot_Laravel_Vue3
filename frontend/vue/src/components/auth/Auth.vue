@@ -3,9 +3,6 @@
         <div class="imgBx">
             <img id="sportsImage" src="@/assets/auth/wallauth5.png" alt="Sports">
         </div>
-        <div class="logo-container">
-                <img src="@/assets/logo.png" alt="App Logo" class="app-logo">
-            </div>
         <div class="user signinBx">
             <div class="formBx">
                 <form @submit.prevent="login">
@@ -28,7 +25,7 @@
                             <i class="fab fa-github"></i>
                         </div>
                     </div>
-                    <p class="signup">Already have an account? <a href="#" @click.prevent="toggleForm">Sign in.</a></p>
+                    <p class="signup">Register now! <a href="#" @click.prevent="toggleForm">Sign up.</a></p>
                 </form>
             </div>
         </div>
@@ -47,6 +44,7 @@
                         <i class="fas fa-eye toggle-password" @click="togglePasswordVisibility('confirmPassword')"></i>
                     </div>
                     <input type="submit" value="Sign Up">
+                    <p class="signup">Already have an account? <a href="#" @click.prevent="toggleForm">Sign in.</a></p>
                 </form>
             </div>
         </div>
@@ -402,43 +400,7 @@
 
 
 
-        @keyframes moveRandomly {
-            0% {
-                transform: translate(0, 0);
-            }
-            25% {
-                transform: translate(calc(100vw - 150px), calc(100vh - 150px));
-            }
-            50% {
-                transform: translate(calc(-100vw + 150px), calc(100vh - 150px));
-            }
-            75% {
-                transform: translate(calc(100vw - 150px), calc(-100vh + 150px));
-            }
-            100% {
-                transform: translate(calc(-100vw + 150px), calc(-100vh + 150px));
-            }
-        }
-
-        .logo-container:hover .app-logo {
-            animation: moveRandomly 2s infinite;
-        }
 
 
-        .logo-container {
-            position: absolute;
-            top: 70%;
-            right: 52.10%;
-            transform: translate(-50%, -50%);
-            width: 150px;
-        }
 
-        .app-logo {
-            width: 180px;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .app-logo:hover {
-            transform: scale(1.1);
-        }
     </style>
