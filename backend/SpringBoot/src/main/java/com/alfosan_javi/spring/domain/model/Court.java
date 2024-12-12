@@ -49,4 +49,7 @@ public class Court {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    @Column(name = "is_active")
+    private Boolean isActive;
 }

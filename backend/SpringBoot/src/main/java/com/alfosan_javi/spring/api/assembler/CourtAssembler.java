@@ -19,6 +19,7 @@ public class CourtAssembler {
         model.setDescription(court.getDescription());
         model.setImg(court.getImg());
         model.setTagCourt(court.getTagCourt());
+        model.setIsActive(court.getIsActive());
         return model;
     }
 
@@ -33,6 +34,7 @@ public class CourtAssembler {
         court.setDescription(model.getDescription());
         court.setImg(model.getImg());
         court.setTagCourt(model.getTagCourt());
+        court.setIsActive(model.getIsActive());
         return court;
     }
 }

@@ -18,4 +18,5 @@ public class CourtDTO {
     private String description;
     private String img;
     private String tagCourt;
+    private Boolean isActive;
 }
