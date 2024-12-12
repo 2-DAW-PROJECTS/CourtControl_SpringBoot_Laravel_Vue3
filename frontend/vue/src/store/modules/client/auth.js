@@ -53,11 +53,11 @@ export const auth = {
     },
     actions: {
         async [Constant.LOGIN_SUCCESS]({ commit }, credentials) {
-            console.log('LOGIN action:', credentials);
+            // console.log('LOGIN action:', credentials);
             commit(Constant.SET_LOADING, true);
             try {
                 const response = await AuthService.login(credentials);
-                console.log('LOGIN response:', response);
+                // console.log('LOGIN response:', response);
                 commit(Constant.LOGIN_SUCCESS, response.data);
                 return response;
             } catch (error) {
@@ -69,6 +69,7 @@ export const auth = {
                 commit(Constant.SET_LOADING, false);
             }
         },
+
         async [Constant.REGISTER_SUCCESS]({ commit }, userData) {
             // console.log('REGISTER action:', userData);
             commit(Constant.SET_LOADING, true);

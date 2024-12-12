@@ -96,12 +96,11 @@ export default {
         });
         
         const hasUpperCase = (value) => /[A-Z]/.test(value) || "Debe incluir al menos una letra mayúscula.";
-        
         const hasNumber = (value) => /\d/.test(value) || "Debe incluir al menos un número.";
-        
+
         const rules = {
             formData: {
-                name: { required },
+                name: { required: false },
                 email: { required, email },
                 password: {
                     required,
@@ -117,31 +116,33 @@ export default {
         const submitForm = () => {
             v$.value.$touch(); 
             if (!v$.value.$invalid) {
-            console.log('Formulario válido:', formData);
+                console.log('Formulario válido:', formData);
             } else {
-            console.log('Errores en el formulario');
+                console.log('Errores en el formulario:', v$.value.$errors);
             }
         };
 
         const login = async () => {
             v$.value.$touch();
             if (!v$.value.$invalid) {
-                try {
-                    const response = await store.dispatch(`auth/${Constant.LOGIN_SUCCESS}`, {
-                        email: formData.email,
-                        password: formData.password
-                    });
-                    console.log('Login successful:', response);
-                } catch (error) {
-                    console.error('Error logging in:', error);
-                } finally {
-                    console.log('El proceso auth ha finalizado');
-                }
-            } else {
-                console.log('Errores en el formulario');
+            try {
+                // const response = 
+                await store.dispatch(`auth/${Constant.LOGIN_SUCCESS}`, {
+                    email: formData.email,
+                    password: formData.password
+                });
+                // console.log('Login successful:', response);
+            } catch (error) {
+                console.error('Error logging in:', error);
+            } finally {
+                console.log('El proceso auth ha finalizado');
             }
-        };
-
+            } else {
+                console.log('Errores en el formulario:', v$.value.$errors);
+            }
+        };      
+        
+        
         const register = async () => {
             // console.log(Constant, '147 auth.vue');
             v$.value.$touch();
@@ -162,7 +163,7 @@ export default {
                 console.log('El proceso de registro ha finalizado');
             }
             } else {
-            console.log('Errores en el formulario');
+                console.log('Errores en el formulario:', v$.value.$errors);
             }
         };
 
