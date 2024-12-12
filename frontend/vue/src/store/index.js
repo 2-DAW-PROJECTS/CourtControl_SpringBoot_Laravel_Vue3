@@ -8,6 +8,10 @@ import { lessonsDashboard } from './modules/dashboard/lessonsDashboard';
 import { summers } from './modules/client/summers';
 import { summersDashboard } from './modules/dashboard/summersDashboard';
 
+//W.I.P.
+import { auth } from './modules/client/auth';
+// import {authDashboard} from './modules/dashboard/authDashboard';
+
 
 
 export default createStore({
@@ -42,5 +46,7 @@ export default createStore({
         lessonsDashboard,
         summers,
         summersDashboard,
+        auth,
+        // authDashboard,
     }
 });
