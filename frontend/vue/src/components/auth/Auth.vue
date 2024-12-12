@@ -213,13 +213,6 @@ export default {
         loginWithGithub() {
             console.log('GitHub login clicked');
         },
-//                                                                                  //
-//                                                                                  //
-//                                                                                  //
-//  //  //  //  HAY QUE IMPLEMENTARLO A TRAVES DEL STORE Y DEL SERVICE  //  //  //  //
-//                                                                                  //
-//                                                                                  //
-//                                                                                  //
     }
 };
 </script>
