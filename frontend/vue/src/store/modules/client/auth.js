@@ -8,6 +8,7 @@ export const auth = {
     namespaced: true,
     state: {
         user: null,
+        accesToken: null,
         status: { loggedIn: false },
         loading: false,
         error: null,
@@ -22,22 +23,26 @@ export const auth = {
             state.error = error;
             toaster.error(error);
         },
-        [Constant.LOGIN_SUCCESS](state, user) {
+        [Constant.LOGIN_SUCCESS](state, { user, accessToken }) {
             // console.log('LOGIN_SUCCESS mutation:', user);
             state.status.loggedIn = true;
             state.user = user;
+            state.accessToken = accessToken;
+            // console.log('token guardado correctamente', accessToken);
             toaster.success('Login successful');
         },
         [Constant.LOGIN_FAILURE](state) {
             // console.log('LOGIN_FAILURE mutation');
             state.status.loggedIn = false;
             state.user = null;
+            state.accessToken = null;
             toaster.error('Login failed');
         },
         [Constant.LOGOUT](state) {
             // console.log('LOGOUT mutation');
             state.status.loggedIn = false;
             state.user = null;
+            state.accessToken = null; 
             toaster.success('Logged out successfully');
         },
         [Constant.REGISTER_SUCCESS](state) {
@@ -58,7 +63,8 @@ export const auth = {
             try {
                 const response = await AuthService.login(credentials);
                 // console.log('LOGIN response:', response);
-                commit(Constant.LOGIN_SUCCESS, response.data);
+                const { user, accessToken } = response.data;
+                commit(Constant.LOGIN_SUCCESS, { user, accessToken });
                 return response;
             } catch (error) {
                 console.error('LOGIN error:', error);
@@ -91,6 +97,7 @@ export const auth = {
     getters: {
         isLoading: state => state.loading,
         getError: state => state.error,
-        getUser: state => state.user
+        getUser: state => state.user,
+        getAccessToken: state => state.accessToken 
     }
 };
