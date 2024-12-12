@@ -45,8 +45,8 @@
             <div class="formBx">
                 <form @submit.prevent="register">
                     <h2>Create an Account</h2>
-                    <input type="text" placeholder="Username" autocomplete="off" v-model="formData.username" />
-                    <span v-if="v$.formData.username.$invalid && v$.formData.username.$dirty">
+                    <input type="text" placeholder="Username" autocomplete="off" v-model="formData.name" />
+                    <span v-if="v$.formData.name.$invalid && v$.formData.name.$dirty">
                         El nombre de usuario es obligatorio.
                     </span>
                     <input type="email" placeholder="Email Address" autocomplete="off" v-model="formData.email" />
@@ -90,7 +90,7 @@ export default {
         const store = useStore();
         
         const formData = reactive({
-            username: '',
+            name: '',
             email: '',
             password: '',
         });
@@ -101,7 +101,7 @@ export default {
         
         const rules = {
             formData: {
-                username: { required },
+                name: { required },
                 email: { required, email },
                 password: {
                     required,
@@ -148,13 +148,14 @@ export default {
 
             if (!v$.value.$invalid) {
             try {
-                const response = await store.dispatch(`auth/${Constant.REGISTER_SUCCESS}`, {
-                    username: formData.username,
+                // const response = 
+                await store.dispatch(`auth/${Constant.REGISTER_SUCCESS}`, {
+                    name: formData.name,
                     email: formData.email,
                     password: formData.password
                 });
-                
-                console.log('Registration successful:', response);
+
+                // console.log('Registration successful:', response);
             } catch (error) {
                 console.error('Error registering:', error);
             } finally {
