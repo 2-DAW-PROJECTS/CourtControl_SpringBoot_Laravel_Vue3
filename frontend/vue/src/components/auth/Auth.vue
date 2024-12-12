@@ -1,18 +1,27 @@
+
+
+
 <template>
     <div class="container" ref="container">
         <div class="imgBx">
             <img id="sportsImage" src="@/assets/auth/wallauth5.png" alt="Sports">
         </div>
-        <div class="logo-container">
-                <img src="@/assets/logo.png" alt="App Logo" class="app-logo">
-            </div>
         <div class="user signinBx">
             <div class="formBx">
                 <form @submit.prevent="login">
                     <h2>Sign In</h2>
-                    <input type="text" placeholder="Username" autocomplete="off" v-model="loginEmail">
+                    <input type="text" placeholder="Email" autocomplete="off" v-model="formData.email" />
+                    <span v-if="v$.formData.email.$invalid && v$.formData.email.$dirty">
+                        Introduce un correo electrónico válido.
+                    </span>
                     <div class="password-container">
-                        <input type="password" placeholder="Password" id="password" ref="password" v-model="loginPassword">
+                        <input type="password" placeholder="Password" id="password" ref="password" v-model="formData.password" @blur="v$.formData.password.$touch()">
+                        <span v-if="v$.formData.password.$invalid && v$.formData.password.$dirty">
+                            <span v-if="v$.formData.password.required.$invalid">La contraseña es obligatoria.</span>
+                            <span v-if="v$.formData.password.minLength.$invalid">Debe tener al menos 8 caracteres.</span>
+                            <span v-if="v$.formData.password.hasUpperCase.$invalid">Debe incluir al menos una letra mayúscula.</span>
+                            <span v-if="v$.formData.password.hasNumber.$invalid">Debe incluir al menos un número.</span>
+                        </span>
                         <i class="fas fa-eye toggle-password" @click="togglePasswordVisibility('password')"></i>
                     </div>
                     <input type="submit" value="Login">
@@ -28,7 +37,7 @@
                             <i class="fab fa-github"></i>
                         </div>
                     </div>
-                    <p class="signup">Already have an account? <a href="#" @click.prevent="toggleForm">Sign in.</a></p>
+                    <p class="signup">Register now! <a href="#" @click.prevent="toggleForm">Sign up.</a></p>
                 </form>
             </div>
         </div>
@@ -36,10 +45,22 @@
             <div class="formBx">
                 <form @submit.prevent="register">
                     <h2>Create an Account</h2>
-                    <input type="text" placeholder="Username" autocomplete="off" v-model="registerName">
-                    <input type="email" placeholder="Email Address" autocomplete="off" v-model="registerEmail">
+                    <input type="text" placeholder="Username" autocomplete="off" v-model="formData.name" />
+                    <span v-if="v$.formData.name.$invalid && v$.formData.name.$dirty">
+                        El nombre de usuario es obligatorio.
+                    </span>
+                    <input type="email" placeholder="Email Address" autocomplete="off" v-model="formData.email" />
+                    <span v-if="v$.formData.email.$invalid && v$.formData.email.$dirty">
+                        Introduce un correo electrónico válido.
+                    </span>
                     <div class="password-container">
-                        <input type="password" placeholder="Create Password" id="createPassword" ref="createPassword" v-model="registerPassword">
+                        <input type="password" placeholder="Create Password" id="createPassword" ref="createPassword" v-model="formData.password" @blur="v$.formData.password.$touch()">
+                        <span v-if="v$.formData.password.$invalid && v$.formData.password.$dirty">
+                            <span v-if="v$.formData.password.required.$invalid">La contraseña es obligatoria.</span>
+                            <span v-if="v$.formData.password.minLength.$invalid">Debe tener al menos 8 caracteres.</span>
+                            <span v-if="v$.formData.password.hasUpperCase.$invalid">Debe incluir al menos una letra mayúscula.</span>
+                            <span v-if="v$.formData.password.hasNumber.$invalid">Debe incluir al menos un número.</span>
+                        </span>
                         <i class="fas fa-eye toggle-password" @click="togglePasswordVisibility('createPassword')"></i>
                     </div>
                     <div class="password-container">
@@ -47,58 +68,151 @@
                         <i class="fas fa-eye toggle-password" @click="togglePasswordVisibility('confirmPassword')"></i>
                     </div>
                     <input type="submit" value="Sign Up">
+                    <p class="signup">Already have an account? <a href="#" @click.prevent="toggleForm">Sign in.</a></p>
                 </form>
-            </div>
+            </div>      
         </div>
     </div>
 </template>
-    <script>
-    import axios from 'axios';
 
-    export default {
-        name: 'AuthPage',
-        data() {
-            return {
-                isRegistering: false,
-                loginEmail: '',
-                loginPassword: '',
-                registerName: '',
-                registerEmail: '',
-                registerPassword: ''
-            };
-        },
-        methods: {
-            toggleForm() {
-                this.isRegistering = !this.isRegistering;
-                const container = this.$refs.container;
-                container.classList.toggle('active');
+
+
+<script>
+import { useStore } from 'vuex';
+import useVuelidate from "@vuelidate/core";
+import { required, minLength, email } from "@vuelidate/validators";
+import { reactive } from 'vue';
+import Constant from '../../Constant';
+
+export default {
+    name: 'AuthPage',
+    setup() {
+        const store = useStore();
+        
+        const formData = reactive({
+            name: '',
+            email: '',
+            password: '',
+        });
+        
+        const hasUpperCase = (value) => /[A-Z]/.test(value) || "Debe incluir al menos una letra mayúscula.";
+        const hasNumber = (value) => /\d/.test(value) || "Debe incluir al menos un número.";
+
+        const rules = {
+            formData: {
+                name: { required: false },
+                email: { required, email },
+                password: {
+                    required,
+                    minLength: minLength(8),
+                    hasUpperCase,
+                    hasNumber,
+                },
             },
-            togglePasswordVisibility(inputId) {
-                const input = this.$refs[inputId];
-                const icon = input.nextElementSibling;
-                
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                } else {
-                    input.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
+        };
+
+        const v$ = useVuelidate(rules, { formData });
+
+        const submitForm = () => {
+            v$.value.$touch(); 
+            if (!v$.value.$invalid) {
+                console.log('Formulario válido:', formData);
+            } else {
+                console.log('Errores en el formulario:', v$.value.$errors);
+            }
+        };
+
+        const login = async () => {
+            v$.value.$touch();
+            if (!v$.value.$invalid) {
+                try {
+                    // const response = 
+                    await store.dispatch(`auth/${Constant.LOGIN_SUCCESS}`, {
+                        email: formData.email,
+                        password: formData.password
+                    });
+
+                    // const accessToken = store.getters['auth/getAccessToken'];
+                    // console.log('AccessToken:', accessToken);
+
+                    // console.log('Login successful:', response);
+                    // console.log(response.data.accessToken);
+                } catch (error) {
+                    console.error('Error logging in:', error);
+                } finally {
+                    console.log('El proceso auth ha finalizado');
                 }
-            },
-            loginWithGoogle() {
-                // Implement Google login logic
-                console.log('Google login clicked');
-            },
-            loginWithFacebook() {
-                // Implement Facebook login logic
-                console.log('Facebook login clicked');
-            },
-            loginWithGithub() {
-                // Implement GitHub login logic
-                console.log('GitHub login clicked');
-            },
+            } else {
+                console.log('Errores en el formulario:', v$.value.$errors);
+            }
+        };      
+        
+        
+        const register = async () => {
+            // console.log(Constant, '147 auth.vue');
+            v$.value.$touch();
+
+            if (!v$.value.$invalid) {
+                try {
+                    // const response = 
+                    await store.dispatch(`auth/${Constant.REGISTER_SUCCESS}`, {
+                        name: formData.name,
+                        email: formData.email,
+                        password: formData.password
+                    });
+
+                    // console.log('Registration successful:', response);
+                } catch (error) {
+                    console.error('Error registering:', error);
+                } finally {
+                    console.log('El proceso de registro ha finalizado');
+                }
+            } else {
+                console.log('Errores en el formulario:', v$.value.$errors);
+            }
+        };
+
+        return { formData, v$, submitForm, login, register };
+    },
+    data() {
+        return {
+            isRegistering: false,
+            loginEmail: '',
+            loginPassword: '',
+            registerName: '',
+            registerEmail: '',
+            registerPassword: ''
+        };
+    },
+    methods: {
+        toggleForm() {
+            this.isRegistering = !this.isRegistering;
+            const container = this.$refs.container;
+            container.classList.toggle('active');
+        },
+        togglePasswordVisibility(inputId) {
+            const input = this.$refs[inputId];
+            const icon = input.nextElementSibling;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        },
+        loginWithGoogle() {
+            console.log('Google login clicked');
+        },
+        loginWithFacebook() {
+            console.log('Facebook login clicked');
+        },
+        loginWithGithub() {
+            console.log('GitHub login clicked');
+        },
 //                                                                                  //
 //                                                                                  //
 //                                                                                  //
@@ -106,34 +220,9 @@
 //                                                                                  //
 //                                                                                  //
 //                                                                                  //
-            async login() {
-                try {
-                    const response = await axios.post('/api/auth/login', {
-                        email: this.loginEmail,
-                        password: this.loginPassword
-                    });
-                    console.log('Login successful:', response.data);
-                } catch (error) {
-                    console.error('Error logging in:', error);
-                }
-            },//login
-            async register() {
-                try {
-                    const response = await axios.post('/api/auth/register', {
-                        name: this.registerName,
-                        email: this.registerEmail,
-                        password: this.registerPassword
-                    });
-                    console.log('Registration successful:', response.data);
-                } catch (error) {
-                    console.error('Error registering:', error);
-                }
-            }//register
-
-
-        }//Methods
-    };
-    </script>
+    }
+};
+</script>
 
     <style scoped>
         * {
@@ -402,43 +491,7 @@
 
 
 
-        @keyframes moveRandomly {
-            0% {
-                transform: translate(0, 0);
-            }
-            25% {
-                transform: translate(calc(100vw - 150px), calc(100vh - 150px));
-            }
-            50% {
-                transform: translate(calc(-100vw + 150px), calc(100vh - 150px));
-            }
-            75% {
-                transform: translate(calc(100vw - 150px), calc(-100vh + 150px));
-            }
-            100% {
-                transform: translate(calc(-100vw + 150px), calc(-100vh + 150px));
-            }
-        }
-
-        .logo-container:hover .app-logo {
-            animation: moveRandomly 2s infinite;
-        }
 
 
-        .logo-container {
-            position: absolute;
-            top: 70%;
-            right: 52.10%;
-            transform: translate(-50%, -50%);
-            width: 150px;
-        }
 
-        .app-logo {
-            width: 180px;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .app-logo:hover {
-            transform: scale(1.1);
-        }
     </style>
