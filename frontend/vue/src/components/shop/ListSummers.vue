@@ -24,13 +24,18 @@
     <!-- Mostrar programas disponibles -->
     <div class="summers-grid" v-if="!loading && filteredSummers.length > 0">
       <div v-for="summer in paginatedSummers" :key="summer.id" class="summer-card">
+
         <div class="summer-image">
+          <span class="badge-right" :class="{ 'active-badge': summer.isActive, 'inactive-badge': !summer.isActive }">
+            {{ summer.isActive ? 'Open' : 'Closed' }}
+          </span> 
           <div class="image-overlay">
             <button class="reserve-btn-overlay" @click="goToDetails(summer.id)">¡Inscríbete Ahora!</button>
           </div>
           <!-- Aquí usamos require para cargar la imagen -->
           <img :src="require(`@/assets/img_summer/${summer.img}`)" :alt="summer.nameSummer" class="summer-img" />
         </div>
+
         <div class="summer-info">
           <div class="summer-header">
             <h3>{{ summer.nameSummer }}</h3>
@@ -226,6 +231,50 @@ export default {
   gap: 2rem;
   padding: 1rem;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+.badge-right {
+  position: absolute;
+  padding: 0.5rem 1rem;
+  background-color: #111111;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 10px;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  border: 2px solid transparent;
+  z-index: 100;
+  float: left;
+  font-family: Russo One, 'sans-serif';
+  text-align: center;
+}
+
+
+.active-badge {
+  background: #42cd67;
+  color: #000000;
+  font-weight: bolder;
+  letter-spacing: 5px;
+}
+
+.inactive-badge {
+  background: #de7b7b;
+  color: #ffffff;
+  font-weight: bolder;
+  font-size: 1.5rem;
+  transform: rotate(-45deg);
+  padding: 1rem 2rem;
+  position: absolute;
+  letter-spacing: 0.5cap;
+  top: 44%;
+  left: 49%;
+  transform-origin: center;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+
 
 .header-section h2 {
   font-family: 'Roboto Slab', serif;

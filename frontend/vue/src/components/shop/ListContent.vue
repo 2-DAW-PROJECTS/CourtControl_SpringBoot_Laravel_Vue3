@@ -18,6 +18,10 @@
         </div>
         <div class="court-info">
           <span class="badge">{{ court.tagCourt }}</span>
+          <!-- <pre>{{ court }}</pre> -->
+          <span class="badge-right" :class="{ 'active-badge': court.isActive, 'inactive-badge': !court.isActive }">
+            {{ court.isActive ? 'Activo' : 'Inactivo' }}
+          </span> 
           <h3>{{ court.namePista }}</h3>
           <div class="court-details">
             <p><i class="fas fa-ruler-combined"></i> Dimensiones: {{ court.ancho }} metros</p>
@@ -234,7 +238,37 @@ export default {
   border-image-slice: 1; /* Aplica el gradiente completo */
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+.badge-right {
+  /* display: inline-block; */
+  padding: 0.5rem 1rem;
+  background-color: #111111;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  border: 2px solid transparent;
+  border-image-slice: 1;
+  float: right;
+  letter-spacing: 5px;
+  font-family: Russo One, 'sans-serif';
+}
 
+.active-badge {
+  background: #42cd67;
+  color: #000000;
+  font-weight: bolder;
+}
+
+.inactive-badge {
+  background: #de7b7b;
+  color: #ffffff;
+  font-weight: bolder;
+  
+  
+}
 
 .court-info h3 {
   font-family: 'Roboto Slab', serif;

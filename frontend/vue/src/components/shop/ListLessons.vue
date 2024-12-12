@@ -30,7 +30,7 @@
         <div class="lesson-info">
           <div class="lesson-header">
             <span class="badge" :class="{ 'active-badge': lesson.active, 'inactive-badge': !lesson.active }">
-              {{ lesson.active ? 'Activo' : 'Inactivo' }}
+              {{ lesson.active ? 'Open' : 'Closed' }}
             </span>
             <h3>{{ lesson.nameClass }}</h3>
           </div>
@@ -333,8 +333,9 @@ export default {
   margin-top: 0.2rem;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 .badge {
-  display: inline-block;
+  /* display: inline-block; */
   padding: 0.5rem 1rem;
   background-color: #111111;
   color: #ffffff;
@@ -344,20 +345,26 @@ export default {
   margin-bottom: 1rem;
   text-transform: uppercase;
   border: 2px solid transparent;
-  /* border-image: linear-gradient(to right, #f6f1de, #23232f, #525055, #92d8be, #9bada1, #f5ce8d, #fc9b70, #eb6a65); */
   border-image-slice: 1;
+  float: right;
+  font-family: Russo One, 'sans-serif';
 }
+
 
 .active-badge {
   background: #81e19a;
   color: #000000;
   font-weight: bolder;
+  letter-spacing: 5px;
+
 }
 
 .inactive-badge {
   background: #de7b7b;
   color: #ffffff;
   font-weight: bolder;
+  letter-spacing: 4px;
+
 }
 
 .description {
