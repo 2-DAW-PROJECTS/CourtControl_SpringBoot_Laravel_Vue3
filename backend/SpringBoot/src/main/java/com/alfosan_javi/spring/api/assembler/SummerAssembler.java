@@ -5,6 +5,8 @@ import com.alfosan_javi.spring.domain.model.Summer;
 import com.alfosan_javi.spring.domain.model.Sport;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class SummerAssembler {
 
@@ -19,7 +21,8 @@ public class SummerAssembler {
             summer.getEndDate(),
             summer.getMaxParticipants(),
             summer.getDescription(),
-            summer.getActivities()
+            summer.getActivities(),
+            summer.getIsActive()
         );
     }
 
@@ -35,8 +38,9 @@ public class SummerAssembler {
             model.getMaxParticipants(),
             model.getDescription(),
             model.getActivities(),
-            null,
-            null
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            model.getIsActive()
         );
     }
 }

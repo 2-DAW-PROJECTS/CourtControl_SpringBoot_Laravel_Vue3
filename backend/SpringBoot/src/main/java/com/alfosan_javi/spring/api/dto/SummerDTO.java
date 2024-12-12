@@ -21,4 +21,5 @@ public class SummerDTO {
     private int maxParticipants;
     private String description;
     private String activities;
+    private Boolean isActive;
 }
