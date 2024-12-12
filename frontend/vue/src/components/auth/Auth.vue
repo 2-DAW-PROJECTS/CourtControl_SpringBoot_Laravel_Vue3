@@ -125,18 +125,23 @@ export default {
         const login = async () => {
             v$.value.$touch();
             if (!v$.value.$invalid) {
-            try {
-                // const response = 
-                await store.dispatch(`auth/${Constant.LOGIN_SUCCESS}`, {
-                    email: formData.email,
-                    password: formData.password
-                });
-                // console.log('Login successful:', response);
-            } catch (error) {
-                console.error('Error logging in:', error);
-            } finally {
-                console.log('El proceso auth ha finalizado');
-            }
+                try {
+                    // const response = 
+                    await store.dispatch(`auth/${Constant.LOGIN_SUCCESS}`, {
+                        email: formData.email,
+                        password: formData.password
+                    });
+
+                    // const accessToken = store.getters['auth/getAccessToken'];
+                    // console.log('AccessToken:', accessToken);
+
+                    // console.log('Login successful:', response);
+                    // console.log(response.data.accessToken);
+                } catch (error) {
+                    console.error('Error logging in:', error);
+                } finally {
+                    console.log('El proceso auth ha finalizado');
+                }
             } else {
                 console.log('Errores en el formulario:', v$.value.$errors);
             }
@@ -148,20 +153,20 @@ export default {
             v$.value.$touch();
 
             if (!v$.value.$invalid) {
-            try {
-                // const response = 
-                await store.dispatch(`auth/${Constant.REGISTER_SUCCESS}`, {
-                    name: formData.name,
-                    email: formData.email,
-                    password: formData.password
-                });
+                try {
+                    // const response = 
+                    await store.dispatch(`auth/${Constant.REGISTER_SUCCESS}`, {
+                        name: formData.name,
+                        email: formData.email,
+                        password: formData.password
+                    });
 
-                // console.log('Registration successful:', response);
-            } catch (error) {
-                console.error('Error registering:', error);
-            } finally {
-                console.log('El proceso de registro ha finalizado');
-            }
+                    // console.log('Registration successful:', response);
+                } catch (error) {
+                    console.error('Error registering:', error);
+                } finally {
+                    console.log('El proceso de registro ha finalizado');
+                }
             } else {
                 console.log('Errores en el formulario:', v$.value.$errors);
             }
