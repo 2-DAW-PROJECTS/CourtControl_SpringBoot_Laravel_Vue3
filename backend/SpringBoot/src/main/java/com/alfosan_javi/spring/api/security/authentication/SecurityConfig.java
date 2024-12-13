@@ -26,20 +26,22 @@ public class SecurityConfig {
         return new Argon2PasswordEncoder(16, 32, 1, 65536, 3);
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .cors()
-            .and()
-            .authorizeHttpRequests()
-            .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**").permitAll()
-            .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
-            .requestMatchers("/employee/**").hasAnyRole("ROLE_EMPLOYEE", "ROLE_ADMIN")
-            .requestMatchers("/client/**").hasAnyRole("ROLE_CLIENT", "ROLE_EMPLOYEE", "ROLE_ADMIN")
-            .anyRequest().authenticated()
-            .and()
-            .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf().disable()
+        .cors()
+        .and()
+        .authorizeHttpRequests()
+        .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**").permitAll()
+        .requestMatchers("/api/auth/profile").authenticated()
+        .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
+        .requestMatchers("/employee/**").hasAnyRole("ROLE_EMPLOYEE", "ROLE_ADMIN")
+        .requestMatchers("/client/**").hasAnyRole("ROLE_CLIENT", "ROLE_EMPLOYEE", "ROLE_ADMIN")
+        .anyRequest().authenticated()
+        .and()
+        .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+    return http.build();
+}
+
 }
