@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Date;
+import javax.servlet.http.HttpServletRequest;  // Importación correcta de HttpServletRequest
 
 @Component
 public class JwtUtils {
@@ -40,24 +41,24 @@ public class JwtUtils {
         }
     }
 
-    public String generateAccessToken(String username) {
+    public String generateAccessToken(String email) {
         try {
             return Jwts.builder()
-                    .setSubject(username)
+                    .setSubject(email)  // Aquí usamos el email como el subject
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                     .signWith(secretKey, SignatureAlgorithm.HS512)
                     .compact();
         } catch (Exception e) {
-            logger.error("Error generating access token for user: {}. Error: {}", username, e.getMessage());
+            logger.error("Error generating access token for user: {}. Error: {}", email, e.getMessage());
             throw new RuntimeException("Error generating access token", e);
         }
     }
 
-    public String generateRefreshToken(String username) {
+    public String generateRefreshToken(String email) {
         try {
             String refreshToken = Jwts.builder()
-                    .setSubject(username)
+                    .setSubject(email)  // Usamos el email también en el refresh token
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationMs))
                     .signWith(secretKey, SignatureAlgorithm.HS512)
@@ -70,7 +71,7 @@ public class JwtUtils {
 
             return refreshToken;
         } catch (Exception e) {
-            logger.error("Error generating refresh token for user: {}. Error: {}", username, e.getMessage());
+            logger.error("Error generating refresh token for user: {}. Error: {}", email, e.getMessage());
             throw new RuntimeException("Error generating refresh token", e);
         }
     }
@@ -96,21 +97,30 @@ public class JwtUtils {
         return false;
     }
 
-    public String getUserNameFromJwtToken(String token) {
+    public String getUserEmailFromJwtToken(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody()
-                    .getSubject();
+                    .getSubject();  // Devuelve el correo que está almacenado como "subject"
         } catch (JwtException e) {
-            logger.error("Error extracting username from JWT token: {}", e.getMessage());
-            throw new RuntimeException("Error extracting username from JWT token", e);
+            logger.error("Error extracting email from JWT token: {}", e.getMessage());
+            throw new RuntimeException("Error extracting email from JWT token", e);
         }
     }
 
     public long getRefreshExpirationMs() {
         return refreshExpirationMs;
     }
+
+    public String getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
 }
