@@ -83,38 +83,71 @@
                 const hasError = ref(false);
                 const stopObserver = ref(false);
 
+                // const loadNextCourt = async () => {
+                //     if (isComplete.value || isLoading.value || stopObserver.value) return;
+
+                //     try {
+                //         isLoading.value = true;
+                //         await store.dispatch('courts/INITIALIZE_COURTS', { 
+                //             page: currentPage.value,
+                //             perPage: 3 // Set to load 2 courts at a time
+                //         });
+                //         const storeCourts = store.getters['courts/allCourts'];
+
+                //         if (storeCourts.length > courts.value.length) {
+                //             // Add the new courts
+                //             const newCourts = storeCourts.filter(court => !courts.value.some(c => c.id === court.id));
+                //             if (newCourts.length > 0) {
+                //                 courts.value.push(...newCourts);
+                //                 currentPage.value++;
+                //             } else {
+                //                 isComplete.value = true;
+                //                 stopObserver.value = true;
+                //             }
+                //         } else {
+                //             isComplete.value = true;
+                //             stopObserver.value = true;
+                //         }
+                //     } catch (error) {
+                //         hasError.value = true;
+                //         stopObserver.value = true;
+                //     } finally {
+                //         isLoading.value = false;
+                //     }                
+                // };
                 const loadNextCourt = async () => {
-                    if (isComplete.value || isLoading.value || stopObserver.value) return;
+    if (isComplete.value || isLoading.value || stopObserver.value) return;
 
-                    try {
-                        isLoading.value = true;
-                        await store.dispatch('courts/INITIALIZE_COURTS', { 
-                            page: currentPage.value,
-                            perPage: 1  // Set to load 1 court at a time
-                        });
-                        const storeCourts = store.getters['courts/allCourts'];
+    try {
+        isLoading.value = true;
 
-                        if (storeCourts.length > courts.value.length) {
-                            // Add only the new court
-                            const newCourt = storeCourts.find(court => !courts.value.some(c => c.id === court.id));
-                            if (newCourt) {
-                                courts.value.push(newCourt);
-                                currentPage.value++;
-                            } else {
-                                isComplete.value = true;
-                                stopObserver.value = true;
-                            }
-                        } else {
-                            isComplete.value = true;
-                            stopObserver.value = true;
-                        }
-                    } catch (error) {
-                        hasError.value = true;
-                        stopObserver.value = true;
-                    } finally {
-                        isLoading.value = false;
-                    }
-                };
+        // Carga las canchas de la página actual
+        await store.dispatch('courts/INITIALIZE_COURTS', {
+            page: currentPage.value,
+            perPage: 3,
+        });
+
+        // Obtén solo las canchas de esta página desde el store
+        const storeCourts = store.getters['courts/allCourts'];
+        const newCourts = storeCourts.slice(
+            (currentPage.value - 1) * 3, 
+            currentPage.value * 3
+        );
+
+        if (newCourts.length > 0) {
+            courts.value.push(...newCourts); // Añadir nuevas canchas al arreglo
+            currentPage.value++;
+        } else {
+            isComplete.value = true; // No hay más canchas para cargar
+            stopObserver.value = true;
+        }
+    } catch (error) {
+        hasError.value = true;
+        stopObserver.value = true;
+    } finally {
+        isLoading.value = false;
+    }
+};
 
 
                 const observer = useIntersectionObserver(
@@ -125,8 +158,8 @@
                         }
                     },
                     { 
-                        threshold: 0.5,
-                        rootMargin: '50px'
+                        threshold: 1,
+                        rootMargin: '25px'
                     }
                 );
             
@@ -167,7 +200,7 @@
     .header-section .title {
         font-size: 3.5rem;
         background: linear-gradient(45deg, #ff6f61, #ff8f70);
-        -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 1.5rem;
         font-weight: 800;
@@ -185,7 +218,7 @@
     
     .courts-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
     padding: 2rem;
     max-width: 1600px;
