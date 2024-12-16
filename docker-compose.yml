@@ -2,19 +2,19 @@
 version: '3.8'
 
 services:
-  # apache:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: apache
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./backend/laravel:/var/www/html/backend/laravel
-  #   depends_on:
-  #     - mysql
-  #   networks:
-  #     - app-network
+  apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apache
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend/laravel:/var/www/html/backend/laravel
+    depends_on:
+      - mysql
+    networks:
+      - app-network
 
   mysql:
     image: mysql:5.7
@@ -50,19 +50,19 @@ services:
     networks:
       - app-network
 
-  # laravel:
-  #   build:
-  #     context: ./backend/laravel
-  #     dockerfile: Dockerfile
-  #   container_name: laravel
-  #   volumes:
-  #     - ./backend/laravel:/var/www/html
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - mysql
-  #   networks:
-  #     - app-network
+  laravel:
+    build:
+      context: ./backend/laravel
+      dockerfile: Dockerfile
+    container_name: laravel
+    volumes:
+      - ./backend/laravel:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
 
   vue:
     build:
