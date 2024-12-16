@@ -23,25 +23,28 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // Configuramos Argon2PasswordEncoder con parámetros personalizados
         return new Argon2PasswordEncoder(16, 32, 1, 65536, 3);
     }
 
-@Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable()
-        .cors()
-        .and()
-        .authorizeHttpRequests()
-        .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**").permitAll()
-        .requestMatchers("/api/auth/profile").authenticated()
-        .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
-        .requestMatchers("/employee/**").hasAnyRole("ROLE_EMPLOYEE", "ROLE_ADMIN")
-        .requestMatchers("/client/**").hasAnyRole("ROLE_CLIENT", "ROLE_EMPLOYEE", "ROLE_ADMIN")
-        .anyRequest().authenticated()
-        .and()
-        .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+            .cors()
+            .and()
+            .authorizeHttpRequests()
+            // Rutas públicas
+            .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**").permitAll()
+            // Rutas protegidas
+            .requestMatchers("/api/users/profile").authenticated()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/employee/**").hasAnyRole("EMPLOYEE", "ADMIN")
+            .requestMatchers("/client/**").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN")
+            .anyRequest().authenticated()
+            .and()
+            // Agregar el filtro JWT antes del filtro de autenticación estándar de Spring
+            .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-}
-
+        return http.build();
+    }
 }

@@ -54,7 +54,8 @@ public class User implements UserDetails {
         updatedAt = LocalDateTime.now();
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    // Cambiar FetchType a EAGER
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "users_roles",
         joinColumns = @JoinColumn(name = "user_id"),
@@ -74,10 +75,9 @@ public class User implements UserDetails {
         return email;
     }
 
-    // Re-adding the `isEnabled()` method
     @Override
     public boolean isEnabled() {
-        return true;  // Assuming the user is always enabled; modify if needed
+        return true;
     }
 
     @Override

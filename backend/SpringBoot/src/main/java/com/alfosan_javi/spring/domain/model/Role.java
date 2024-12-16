@@ -20,7 +20,8 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    // Cambiar FetchType a EAGER
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "roles_permissions",
         joinColumns = @JoinColumn(name = "role_id"),

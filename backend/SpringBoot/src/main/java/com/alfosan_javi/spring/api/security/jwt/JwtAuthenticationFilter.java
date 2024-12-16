@@ -7,10 +7,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory; // Import del logger
 
 import java.io.IOException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class); // Declaración del logger
 
     private final JwtUtils jwtUtils;
 
@@ -26,11 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserEmailFromJwtToken(jwt);
+                logger.info("Token válido para el usuario: {}", username); // Log de depuración
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(username, null, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
+            // Usar el objeto `ex` como segundo parámetro
             logger.error("No se pudo configurar la autenticación de usuario", ex);
         }
 

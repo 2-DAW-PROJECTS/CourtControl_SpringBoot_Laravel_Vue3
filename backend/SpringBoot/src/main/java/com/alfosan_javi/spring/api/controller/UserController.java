@@ -2,11 +2,12 @@ package com.alfosan_javi.spring.api.controller;
 
 import com.alfosan_javi.spring.api.dto.UserDTO;
 import com.alfosan_javi.spring.domain.service.UserService;
+import com.alfosan_javi.spring.domain.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,9 +19,27 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
-        UserDTO createdUser = userService.register(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getUserProfile() {
+        // Obtén el objeto Authentication del contexto de seguridad
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica si el usuario está autenticado
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Obtén el email del usuario autenticado
+        String email = authentication.getName(); // Usa getName() para obtener el email
+        System.out.println("Email obtenido del token: " + email);
+
+        try {
+            // Busca al usuario usando el servicio
+            UserDTO userDTO = userService.getUserByEmail(email);
+            return ResponseEntity.ok(userDTO);
+        } catch (UserNotFoundException ex) {
+            // Retorna 404 si no se encuentra el usuario
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

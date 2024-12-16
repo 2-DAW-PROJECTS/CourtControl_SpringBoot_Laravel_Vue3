@@ -39,6 +39,16 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        try {
+            authService.register(registerRequest);
+            return ResponseEntity.ok("Cliente registrado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error registrando cliente: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/profile")
     public ResponseEntity<?> getProfile(HttpServletRequest request) {
         // Obtener el token desde los encabezados
