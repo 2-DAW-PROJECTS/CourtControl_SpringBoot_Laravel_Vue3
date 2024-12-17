@@ -16,11 +16,16 @@ use App\Http\Controllers\SportController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware(['admin'])->group(function () {
+    Route::get('/admin/test', function () {
+        return response()->json(['message' => 'You are an admin']);
+    });
+    //aqui haremos la generacion para confirmar el token
 });
-
-
 
 
 // Rutas para el controlador SportController
