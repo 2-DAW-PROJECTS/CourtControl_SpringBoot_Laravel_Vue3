@@ -18,9 +18,13 @@ import java.util.Optional;
 import java.time.Instant;
 import java.util.regex.Pattern;
 
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
 @Service
 public class AuthService {
 
+    private final WebClient webClient;
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtils jwtUtils;
@@ -28,9 +32,11 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
-    public AuthService(UserRepository userRepository, JwtUtils jwtUtils,
+    // Inyección de dependencias
+    public AuthService(WebClient.Builder webClientBuilder, UserRepository userRepository, JwtUtils jwtUtils,
                        RefreshTokenRepository refreshTokenRepository, RefreshTokenService refreshTokenService,
                        PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8000").build();  // URL base Laravel
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -39,6 +45,7 @@ public class AuthService {
         this.roleRepository = roleRepository;
     }
 
+    // Método registrar
     @Transactional
     public void register(RegisterRequest registerRequest) {
         if (registerRequest.getEmail() == null || !isValidEmail(registerRequest.getEmail())) {
@@ -53,35 +60,42 @@ public class AuthService {
             throw new IllegalArgumentException("Password must be at least 8 characters long");
         }
 
+        // Crear nuevo usuario
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setName(registerRequest.getName());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
-        Role clienteRole = roleRepository.findByName("ROLE_CLIENT")
+        // Obtener o crear el rol "CLIENT"
+        Role clienteRole = roleRepository.findByName("CLIENT")
                 .orElseGet(() -> {
                     Role newRole = new Role();
-                    newRole.setName("ROLE_CLIENT");
+                    newRole.setName("CLIENT");
                     return roleRepository.save(newRole);
                 });
-
-        clienteRole.getPermissions().size();
 
         newUser.getRoles().add(clienteRole);
 
         userRepository.save(newUser);
     }
 
+    // Método para autenticar usuarios
     public LoginResponse authenticate(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // Si el usuario tiene el rol de ADMIN, autenticarse en Laravel
+        if (userHasAdminRole(user)) {
+            return authenticateAdminInLaravel(loginRequest);
+        }
+
+        // Si el usuario no es admin, proceder con la autenticación normal
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        String accessToken = jwtUtils.generateAccessToken(user.getEmail());  // Usamos el correo
-        String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());  // Usamos el correo
+        String accessToken = jwtUtils.generateAccessToken(user.getEmail());
+        String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
 
         Optional<RefreshToken> existingRefreshTokenOpt = refreshTokenRepository.findTopByUserIdOrderByCreatedAtDesc(String.valueOf(user.getId()));
 
@@ -89,6 +103,7 @@ public class AuthService {
             refreshTokenService.blacklistToken(existingRefreshToken.getToken());
         });
 
+        // Crear y guardar el nuevo token de refresh
         RefreshToken refreshTokenEntity = new RefreshToken();
         refreshTokenEntity.setToken(refreshToken);
         refreshTokenEntity.setUserId(String.valueOf(user.getId()));
@@ -97,6 +112,30 @@ public class AuthService {
         refreshTokenRepository.save(refreshTokenEntity);
 
         return new LoginResponse(accessToken, refreshToken);
+    }
+
+
+    // Verificar si el usuario tiene el rol ADMIN
+    private boolean userHasAdminRole(User user) {
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals("ADMIN"));
+    }
+
+
+    private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
+        Mono<LoginResponse> loginResponseMono = webClient.post()
+                .uri("/api/auth/login")
+                .bodyValue(loginRequest)
+                .retrieve()
+                .bodyToMono(LoginResponse.class);
+
+        LoginResponse loginResponse = loginResponseMono.block();
+
+        if (loginResponse == null) {
+            throw new IllegalArgumentException("Failed to authenticate admin in Laravel");
+        }
+
+        return loginResponse;
     }
 
 
