@@ -36,7 +36,7 @@ public class AuthService {
     public AuthService(WebClient.Builder webClientBuilder, UserRepository userRepository, JwtUtils jwtUtils,
                        RefreshTokenRepository refreshTokenRepository, RefreshTokenService refreshTokenService,
                        PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8000").build();  // URL base Laravel
+        this.webClient = webClientBuilder.baseUrl("http://localhost:80").build();  // URL base Laravel
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -124,7 +124,7 @@ public class AuthService {
 
     private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
         Mono<LoginResponse> loginResponseMono = webClient.post()
-                .uri("/api/auth/login")
+                .uri("/api/admin/auth/login")
                 .bodyValue(loginRequest)
                 .retrieve()
                 .bodyToMono(LoginResponse.class);
