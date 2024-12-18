@@ -1,3 +1,24 @@
+<!-- <template>
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <img src="@/assets/logo.png" alt="Poliesportiu Logo" class="logo-glow" />
+      </div>
+      <button class="menu-toggle" @click="toggleMenu" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav" :class="{ 'nav-active': isMenuOpen }">
+        <ul>
+          <li><router-link to="/home" class="nav-link">Inicio</router-link></li>
+          <li><router-link to="/shop" class="nav-link">Reserva</router-link></li>
+          <li><router-link to="/auth" class="nav-link">Login/Register</router-link></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</template> -->
 <template>
   <header class="header">
     <div class="header-container">
@@ -13,8 +34,8 @@
         <ul>
           <li><router-link to="/home" class="nav-link">Inicio</router-link></li>
           <li><router-link to="/shop" class="nav-link">Reserva</router-link></li>
-          <!-- <li><router-link to="#" class="nav-link">Servicios</router-link></li> -->
-          <li><router-link to="/auth" class="nav-link">Login/Register</router-link></li>
+          <li v-if="!isLoggedIn"><router-link to="/auth" class="nav-link">Login/Register</router-link></li>
+          <li v-else><router-link to="/home" class="nav-link_logout" @click="logout">Logout</router-link></li>
         </ul>
       </nav>
     </div>
@@ -22,19 +43,35 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+
 export default {
   name: 'AppHeader',
-  data() {
+  setup() {
+    const store = useStore();
+
+    // Computed property to check if the user is logged in
+    const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+
+    // Logout method
+    const logout = () => {
+      store.commit('auth/LOGOUT'); // Trigger logout mutation
+      store.dispatch('auth/logout'); // If you want additional actions for logout
+    };
+
     return {
-      isMenuOpen: false
-    }
+      isMenuOpen: false,
+      isLoggedIn,
+      logout,
+    };
   },
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 
@@ -144,6 +181,32 @@ export default {
   left: 0;
   background: linear-gradient(to right, #92d8be, #f5ce8d);
   transition: width 0.3s ease;
+}
+
+.nav-link_logout {
+  text-decoration: none;
+  color: #f6f1de;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2px solid #92d8be;
+  border-radius: 20px;
+  background-color: transparent;
+}
+
+.nav-link_logout:hover {
+  background-color: #92d8be;
+  color: #23232f;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(146, 216, 190, 0.3);
+}
+
+.nav-link_logout::after {
+  display: none;
 }
 
 .nav-link:hover::after {

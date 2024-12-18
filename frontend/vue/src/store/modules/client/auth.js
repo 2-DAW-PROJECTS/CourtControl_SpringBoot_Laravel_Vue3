@@ -76,6 +76,11 @@ export const auth = {
             }
         },
 
+        logout({ commit }) {
+            // Additional logic for logout if needed (e.g., clearing session on the server)
+            commit(Constant.LOGOUT);
+        },
+
         async [Constant.REGISTER_SUCCESS]({ commit }, userData) {
             // console.log('REGISTER action:', userData);
             commit(Constant.SET_LOADING, true);
@@ -98,6 +103,8 @@ export const auth = {
         isLoading: state => state.loading,
         getError: state => state.error,
         getUser: state => state.user,
-        getAccessToken: state => state.accessToken 
+        getAccessToken: state => state.accessToken,
+        isLoggedIn: state => state.status.loggedIn // Este getter indica si el usuario está autenticado.
+
     }
 };
