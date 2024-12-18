@@ -19,22 +19,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Bcrypt Options
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the configuration options that should be used when
-    | passwords are hashed using the Bcrypt algorithm. This will allow you
-    | to control the amount of time it takes to hash the given password.
-    |
-    */
-
-    'bcrypt' => [
-        'rounds' => env('BCRYPT_ROUNDS', 12),
-        'verify' => true,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Argon Options
     |--------------------------------------------------------------------------
     |

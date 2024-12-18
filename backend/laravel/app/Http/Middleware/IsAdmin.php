@@ -23,25 +23,25 @@ class IsAdmin
 
             $responseData = $response->json();
 
-            Log::info('Respuesta recibida en IsAdmin:', [
-                'status' => $response->status(),
-                'data' => $responseData,
-                '.                                                                                              .' => ".                                                          ."
-            ]);
+            // Log::info('Respuesta recibida en IsAdmin:', [
+            //     'status' => $response->status(),
+            //     'data' => $responseData,
+            //     '.                                                                                              .' => ".                                                          ."
+            // ]);
 
             if ($response->status() !== 200 || !$responseData['is_admin']) {
                 return response()->json([
                     "error" => "Unauthorized",
-                    "response" => $responseData,
+                    // "response" => $responseData,
                     // "email" => $email,
                     // "password" => $password,
-                    "request" => $request->all(),
+                    // "request" => $request->all(),
                 ], 401);
             }
 
             return $next($request);
         } catch (\Throwable $th) {
-            Log::error('Error in IsAdmin middleware:', ['exception' => $th]);
+            // Log::error('Error in IsAdmin middleware:', ['exception' => $th]);
             return response()->json([
                 "error" => "Unauthorized by Throw",
                 "received" => isset($responseData) ? $responseData : null
