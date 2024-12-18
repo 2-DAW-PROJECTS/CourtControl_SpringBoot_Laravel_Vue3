@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'driver' => 'bcrypt',
+    'driver' => 'argon',
 
     /*
     |--------------------------------------------------------------------------
@@ -44,11 +44,12 @@ return [
     |
     */
 
+
     'argon' => [
-        'memory' => 65536,
-        'threads' => 1,
-        'time' => 4,
-        'verify' => true,
+        'memory' => 1024,
+        'threads' => 2,
+        'time' => 2,
+        'type' => 'argon2id', // Asegúrate de que el tipo sea 'argon2id'
     ],
 
 ];
