@@ -10,9 +10,8 @@ import { summersDashboard } from './modules/dashboard/summersDashboard';
 
 //W.I.P.
 import { auth } from './modules/client/auth';
+import { profile } from './modules/client/profile';
 // import {authDashboard} from './modules/dashboard/authDashboard';
-
-
 
 export default createStore({
     strict: process.env.NODE_ENV !== 'production',
@@ -47,6 +46,7 @@ export default createStore({
         summers,
         summersDashboard,
         auth,
+        profile,
         // authDashboard,
     }
 });

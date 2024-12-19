@@ -35,7 +35,10 @@
           <li><router-link to="/home" class="nav-link">Inicio</router-link></li>
           <li><router-link to="/shop" class="nav-link">Reserva</router-link></li>
           <li v-if="!isLoggedIn"><router-link to="/auth" class="nav-link">Login/Register</router-link></li>
-          <li v-else><router-link to="/home" class="nav-link_logout" @click="logout">Logout</router-link></li>
+          <li v-else>
+            <router-link to="/profile" class="nav-link">Perfil</router-link>
+            <router-link to="/home" class="nav-link_logout" @click="logout">Logout</router-link>
+          </li>
         </ul>
       </nav>
     </div>
