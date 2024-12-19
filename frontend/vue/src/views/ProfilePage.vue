@@ -18,6 +18,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import DetailsUser from "@/components/profile/DetailsUser.vue";
+import Constant from '@/Constant';  // Asegúrate de importar las constantes
 
 export default {
   name: "ProfilePage",
@@ -25,19 +26,18 @@ export default {
     DetailsUser,
   },
   computed: {
-    // Usando mapState con el namespace 'client/profile' para acceder a los datos
-    ...mapState('client/profile', ['userProfile', 'loading', 'error']),
+    ...mapState('profile', ['userProfile', 'loading', 'error']),
     isLoading() {
       return this.loading;  // Se utiliza la propiedad 'loading' de Vuex para determinar si los datos están siendo cargados
     },
   },
   methods: {
-    // Usando mapActions con el namespace 'client/profile' para acceder a la acción de cargar el perfil
-    ...mapActions('client/profile', ['loadUserProfile']),
+    ...mapActions('profile', [Constant.FETCH_USER_PROFILE]),  // Cambié a usar la constante de acción
   },
   mounted() {
-    console.log('Cargando perfil...');
-    this.loadUserProfile();  // Llamamos a la acción para cargar el perfil cuando el componente se monta
+    // Eliminar o comentar este console.log para ver errores directamente
+    // console.log('Cargando perfil...');
+    this.FETCH_USER_PROFILE();  // Llamamos a la acción con el nombre correcto
   },
 };
 </script>

@@ -20,13 +20,13 @@ export const profile = {
     },
   },
   actions: {
-    async [Constant.FETCH_USER_PROFILE]({ commit, rootState }) {
+    // Cambia el nombre de la acción a FETCH_USER_PROFILE
+    async FETCH_USER_PROFILE({ commit, rootState }) {
       commit(Constant.SET_LOADING, true);
       try {
-        const token = rootState.auth.accessToken;  // Obtener el token desde el estado global
-        console.log('Token:', token);
-        const profileData = await DetailsUserService.getUserProfile(token);  // Llamar al servicio
-        commit(Constant.SET_USER_PROFILE, profileData);  // Guardar el perfil en el estado
+        const token = rootState.auth.accessToken;  // Asegúrate de que el token esté correctamente accesible
+        const profileData = await DetailsUserService.getUserProfile(token);  // Llamada al servicio
+        commit(Constant.SET_USER_PROFILE, profileData);  // Guarda el perfil en el estado
       } catch (error) {
         commit(Constant.SET_ERROR, error.message);
         console.error('Error al cargar perfil:', error.message);
