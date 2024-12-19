@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import ShopPage from '../views/ShopPage.vue';
+import ProfilePage from '../views/ProfilePage.vue'; // Asegúrate de que ProfilePage esté importado
 import CourtDetails from '../components/details/CourtDetails.vue';
 import LessonDetails from '../components/details/LessonDetails.vue';
 import SummerDetails from '../components/details/SummerDetails.vue';
@@ -40,7 +41,12 @@ const routes = [
     path: '/auth',
     name: 'auth',
     component: AuthPage  
-  }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfilePage,
+  },
 ];
 
 const router = createRouter({

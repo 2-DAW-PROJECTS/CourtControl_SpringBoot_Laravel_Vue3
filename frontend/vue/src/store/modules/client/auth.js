@@ -28,7 +28,7 @@ export const auth = {
             state.status.loggedIn = true;
             state.user = user;
             state.accessToken = accessToken;
-            // console.log('token guardado correctamente', accessToken);
+            console.log('token guardado correctamente', accessToken);
             toaster.success('Login successful');
         },
         [Constant.LOGIN_FAILURE](state) {
