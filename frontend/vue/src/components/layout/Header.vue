@@ -1,24 +1,3 @@
-<!-- <template>
-  <header class="header">
-    <div class="header-container">
-      <div class="logo">
-        <img src="@/assets/logo.png" alt="Poliesportiu Logo" class="logo-glow" />
-      </div>
-      <button class="menu-toggle" @click="toggleMenu" aria-label="Toggle Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="nav" :class="{ 'nav-active': isMenuOpen }">
-        <ul>
-          <li><router-link to="/home" class="nav-link">Inicio</router-link></li>
-          <li><router-link to="/shop" class="nav-link">Reserva</router-link></li>
-          <li><router-link to="/auth" class="nav-link">Login/Register</router-link></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-</template> -->
 <template>
   <header class="header">
     <div class="header-container">
@@ -53,14 +32,11 @@ export default {
   name: 'AppHeader',
   setup() {
     const store = useStore();
-
-    // Computed property to check if the user is logged in
     const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
 
-    // Logout method
     const logout = () => {
-      store.commit('auth/LOGOUT'); // Trigger logout mutation
-      store.dispatch('auth/logout'); // If you want additional actions for logout
+      store.commit('auth/LOGOUT');
+      store.dispatch('auth/logout');
     };
 
     return {
@@ -76,6 +52,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style scoped>

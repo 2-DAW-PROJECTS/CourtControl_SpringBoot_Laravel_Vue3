@@ -1,4 +1,3 @@
-<!-- src/App.vue -->
 <template>
   <div id="app">
     <Header /> <!-- Incluir el header -->
@@ -11,12 +10,27 @@
 // Importar los componentes Header y Footer
 import Header from './components/layout/Header.vue';
 import Footer from './components/layout/Footer.vue';
+import { useStore } from 'vuex'; // Importar Vuex para manejar el store
 
 export default {
   name: 'App',
   components: {
     Header,
     Footer
+  },
+  mounted() {
+    const store = useStore();
+
+    // Verificar si el accessToken existe en localStorage al cargar la app
+    const accessToken = localStorage.getItem('accessToken');
+    
+    if (accessToken) {
+      // Restauramos la sesión desde localStorage
+      store.commit('LOGIN_SUCCESS', {
+        user: JSON.parse(localStorage.getItem('user')),
+        accessToken
+      });
+    }
   }
 };
 </script>

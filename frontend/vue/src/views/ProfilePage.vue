@@ -1,15 +1,19 @@
 <template>
   <div class="profile-page">
-    <h1>Este es tu perfil</h1>
+    <!-- Estado de carga con animación -->
+    <div v-if="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando tu perfil...</p>
+    </div>
 
-    <!-- Muestra un mensaje de carga mientras los datos están siendo recuperados -->
-    <div v-if="isLoading">Cargando...</div>
+    <!-- Mensaje de error estilizado -->
+    <div v-else-if="error" class="error-container">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>{{ error }}</p>
+    </div>
 
-    <!-- Muestra un mensaje de error si ocurre algún problema -->
-    <div v-else-if="error">{{ error }}</div>
-
-    <!-- Muestra el componente DetailsUser solo si los datos están disponibles -->
-    <div v-else>
+    <!-- Contenido principal -->
+    <div v-else class="profile-content">
       <DetailsUser :user="userProfile" />
     </div>
   </div>
@@ -18,7 +22,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import DetailsUser from "@/components/profile/DetailsUser.vue";
-import Constant from '@/Constant';  // Asegúrate de importar las constantes
+import Constant from '@/Constant';
 
 export default {
   name: "ProfilePage",
@@ -28,22 +32,77 @@ export default {
   computed: {
     ...mapState('profile', ['userProfile', 'loading', 'error']),
     isLoading() {
-      return this.loading;  // Se utiliza la propiedad 'loading' de Vuex para determinar si los datos están siendo cargados
+      return this.loading;
     },
   },
   methods: {
-    ...mapActions('profile', [Constant.FETCH_USER_PROFILE]),  // Cambié a usar la constante de acción
+    ...mapActions('profile', [Constant.FETCH_USER_PROFILE]),
   },
   mounted() {
-    // Eliminar o comentar este console.log para ver errores directamente
-    // console.log('Cargando perfil...');
-    this.FETCH_USER_PROFILE();  // Llamamos a la acción con el nombre correcto
+    this.FETCH_USER_PROFILE();
   },
 };
 </script>
 
 <style scoped>
 .profile-page {
-  padding: 20px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 40px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.error-container i {
+  font-size: 3rem;
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+.error-container p {
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.profile-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 20px;
+  }
 }
 </style>
