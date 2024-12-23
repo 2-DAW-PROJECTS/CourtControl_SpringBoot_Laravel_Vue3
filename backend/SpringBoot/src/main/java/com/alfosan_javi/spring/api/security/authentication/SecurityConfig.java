@@ -11,6 +11,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+// @Configuration
+// @EnableWebSecurity
+// public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+//     @Override
+//     protected void configure(HttpSecurity http) throws Exception {
+//         http
+//             .cors().and()
+//             .csrf().disable()
+//             .authorizeRequests()
+//             .antMatchers("/api/auth/**").permitAll()
+//             .anyRequest().authenticated();
+//     }
+
+//     @Bean
+//     public CorsConfigurationSource corsConfigurationSource() {
+//         CorsConfiguration configuration = new CorsConfiguration();
+//         configuration.setAllowedOrigins(Arrays.asList("*"));
+//         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+//         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//         source.registerCorsConfiguration("/**", configuration);
+//         return source;
+//     }
+// }
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
