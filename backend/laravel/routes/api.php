@@ -20,12 +20,10 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/admin/test', [AdminController::class, 'generateToken']);
 });
 
-// Rutas para el controlador SportController
 Route::get('/sports', [SportController::class, 'index']);
 Route::get('/sports/{id}', [SportController::class, 'show']);
 Route::post('/sports', [SportController::class, 'store']);
 Route::put('/sports/{id}', [SportController::class, 'update']);
 Route::delete('/sports/{id}', [SportController::class, 'destroy']);
 
-// Ruta para verificar si el usuario es administrador
-Route::post('/users/check-admin', [UserController::class, 'checkAdmin']);
+// Route::post('/users/check-admin', [UserController::class, 'checkAdmin']);

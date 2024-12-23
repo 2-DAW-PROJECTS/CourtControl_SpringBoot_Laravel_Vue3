@@ -18,19 +18,8 @@ import java.util.Optional;
 import java.time.Instant;
 import java.util.regex.Pattern;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.core.ParameterizedTypeReference;
-import java.util.Map;
-
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-
 
 @Service
 public class AuthService {
@@ -144,7 +133,7 @@ public class AuthService {
     
 //     try {
 //         // Log de depuración antes de la llamada
-//         // System.out.println("Enviando solicitud a Laravel con URL: " + url);
+//         System.out.println("Enviando solicitud a Laravel con URL: " + url);
 //         System.out.println("Datos de la solicitud: " + loginRequest);
 
 //         loginResponse = restTemplate.postForObject(url, loginRequest, LoginResponse.class);
@@ -163,50 +152,32 @@ public class AuthService {
 
 //     return loginResponse;
 // }
-    public LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
-        String url = "http://apache/api/admin/test"; // Usar el nombre del servicio Docker
-        LoginResponse loginResponse = null;
+private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
+    String url = "http://apache/api/admin/test"; // Usar el nombre del servicio Docker
+    LoginResponse loginResponse = null;
+    
+    try {
+        // Log de depuración antes de la llamada
+        // System.out.println("Enviando solicitud a Laravel con URL: " + url);
+        System.out.println("Datos de la solicitud: " + loginRequest);
 
-        try {
-            // Log de depuración antes de la llamada
-            System.out.println("Enviando solicitud a Laravel con URL: " + url);
-            System.out.println("Datos de la solicitud: " + loginRequest);
+        loginResponse = restTemplate.postForObject(url, loginRequest, LoginResponse.class);
 
-            // Configurar la solicitud HTTP
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/json");
-            HttpEntity<LoginRequest> requestEntity = new HttpEntity<>(loginRequest, headers);
-
-            // Realizar la solicitud POST a Laravel
-            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<Map<String, Object>>() {}
-            );
-
-            // Verificar si la respuesta contiene el token JWT
-            if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null && responseEntity.getBody().containsKey("token")) {
-                String token = (String) responseEntity.getBody().get("token");
-                loginResponse = new LoginResponse(token, null); // Asumiendo que solo necesitas el token JWT
-            } else {
-                throw new IllegalArgumentException("Failed to authenticate admin in Laravel");
-            }
-
-            // Log de depuración después de la llamada
-            System.out.println("Respuesta recibida de Laravel: " + loginResponse);
-        } catch (Exception e) {
-            // Log de depuración en caso de excepción
-            System.err.println("Error al autenticar admin en Laravel: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        if (loginResponse == null) {
-            throw new IllegalArgumentException("Failed to authenticate admin in Laravel");
-        }
-
-        return loginResponse;
+        System.out.println("Respuesta recibida de Laravel: " + loginResponse);
+    } catch (Exception e) {
+        // Log de depuración en caso de excepción
+        System.err.println("Error al autenticar admin en Laravel: " + e.getMessage());
+        e.printStackTrace();
     }
+
+    if (loginResponse == null) {
+        throw new IllegalArgumentException("Failed to authenticate admin in Laravel");
+    }
+
+    return loginResponse;
+}
+
+
 
 
 

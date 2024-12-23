@@ -64,21 +64,21 @@ services:
     networks:
       - app-network
 
-  # vue:
-  #   build:
-  #     context: ./frontend/vue
-  #     dockerfile: Dockerfile
-  #   container_name: vue_frontend
-  #   ports:
-  #     - "8081:8081"
-  #   volumes:
-  #     - ./frontend/vue:/app
-  #     - /app/node_modules
-  #   environment:
-  #     CHOKIDAR_USEPOLLING: "true"
-  #     VUE_APP_WATCH_POLL: "true"
-  #   networks:
-  #     - app-network
+  vue:
+    build:
+      context: ./frontend/vue
+      dockerfile: Dockerfile
+    container_name: vue_frontend
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./frontend/vue:/app
+      - /app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      VUE_APP_WATCH_POLL: "true"
+    networks:
+      - app-network
 
 
 
