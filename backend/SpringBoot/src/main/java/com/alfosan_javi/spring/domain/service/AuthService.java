@@ -1,25 +1,36 @@
 package com.alfosan_javi.spring.domain.service;
 
+// Local imports
 import com.alfosan_javi.spring.api.response.LoginRequest;
 import com.alfosan_javi.spring.api.response.LoginResponse;
 import com.alfosan_javi.spring.api.response.RegisterRequest;
 import com.alfosan_javi.spring.domain.model.Role;
 import com.alfosan_javi.spring.domain.model.User;
+import com.alfosan_javi.spring.domain.model.RefreshToken;
 import com.alfosan_javi.spring.domain.repository.RoleRepository;
 import com.alfosan_javi.spring.domain.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import com.alfosan_javi.spring.domain.model.RefreshToken;
 import com.alfosan_javi.spring.domain.repository.RefreshTokenRepository;
 import com.alfosan_javi.spring.api.security.jwt.JwtUtils;
+
+// Spring imports
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
+//fornecedor de dependencias
+import com.fasterxml.jackson.databind.ObjectMapper; // Importación necesaria
+
+
+// Java imports
 import java.util.Optional;
 import java.time.Instant;
 import java.util.regex.Pattern;
 
-import org.springframework.web.client.RestTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+
+
+
 
 @Service
 public class AuthService {
@@ -153,27 +164,34 @@ public class AuthService {
 //     return loginResponse;
 // }
 private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
-    String url = "http://apache/api/admin/test"; // Usar el nombre del servicio Docker
+    String url = "http://apache/api/admin/test";
     LoginResponse loginResponse = null;
-    
     try {
         // Log de depuración antes de la llamada
-        // System.out.println("Enviando solicitud a Laravel con URL: " + url);
+        System.out.println("Enviando solicitud a Laravel con URL: " + url);
         System.out.println("Datos de la solicitud: " + loginRequest);
 
-        loginResponse = restTemplate.postForObject(url, loginRequest, LoginResponse.class);
+        // Realizar la solicitud y capturar la respuesta como String
+        String response = restTemplate.postForObject(url, loginRequest, String.class);
 
-        System.out.println("Respuesta recibida de Laravel: " + loginResponse);
+        // Log de depuración de la respuesta
+        System.out.println("Respuesta recibida de Laravel: " + response);
+
+        // Intentar deserializar la respuesta a LoginResponse
+        ObjectMapper objectMapper = new ObjectMapper();
+        loginResponse = objectMapper.readValue(response, LoginResponse.class);
+
+        // Log de depuración después de la deserialización
+        System.out.println("Respuesta deserializada a LoginResponse: " + loginResponse);
+
     } catch (Exception e) {
         // Log de depuración en caso de excepción
         System.err.println("Error al autenticar admin en Laravel: " + e.getMessage());
         e.printStackTrace();
     }
-
     if (loginResponse == null) {
         throw new IllegalArgumentException("Failed to authenticate admin in Laravel");
     }
-
     return loginResponse;
 }
 
