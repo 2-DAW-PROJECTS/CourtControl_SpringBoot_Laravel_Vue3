@@ -18,7 +18,6 @@ Route::middleware(['admin'])->group(function () {
     //     return response()->json(['message' => 'You are an admin nice cock bro']);
     // });
     Route::post('/admin/test', [AdminController::class, 'generateToken']);
-    //aqui haremos la generacion para confirmar el token
 });
 
 // Rutas para el controlador SportController

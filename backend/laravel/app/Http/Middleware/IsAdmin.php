@@ -12,6 +12,11 @@ class IsAdmin
 {
     public function handle(Request $request, Closure $next): JsonResponse
     {
+
+            Log::info('Has llegado a laravel, eres un makina:', [
+                'request' => $request
+            ]);
+
         try {
             $email = $request->input('email');
             $password = $request->input('password');
