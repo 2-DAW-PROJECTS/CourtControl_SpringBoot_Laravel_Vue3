@@ -106,6 +106,16 @@ CourtControl es una **super app** diseñada para optimizar la administración de
     mvn spring-boot:run
     ```
 
+### Configuración de Docker
+1. Navega al directorio raíz del proyecto:
+    ```bash
+    cd CourtControl_SpringBoot_Laravel_Vue3
+    ```
+2. Construye y levanta los contenedores:
+    ```bash
+    docker-compose up --build
+    ```
+
 ## 🎉 ¡Listo para usar!
 Una vez que todos los servicios estén en funcionamiento, puedes acceder a la aplicación a través de `http://localhost:8080` para el frontend y los endpoints de la API estarán disponibles en `http://localhost:8000` para Laravel y `http://localhost:8081` para Spring Boot.
 
@@ -120,4 +130,14 @@ Para cualquier consulta o soporte, por favor contacta a los mantenedores del pro
 - [Documentación Oficial de Spring Boot](https://spring.io/projects/spring-boot)
 
 ## 📜 Licencia
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE.md](LICENSE.md) para más detalles.
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE.md para más detalles.
+
+## 🎉 ¡Diversión Extra!
+- **¿Sabías que...?** El nombre "CourtControl" no solo suena genial, sino que también refleja nuestro objetivo de ofrecer un control total sobre las instalaciones deportivas.
+
+- **Trivia Deportiva:** ¿Sabías que el voleibol se originó en Estados Unidos en 1895? ¡Ahora puedes gestionar tus canchas de voleibol con tecnología de punta!
+
+- **Mascota Oficial:** Conoce a "Courtney", nuestra mascota oficial, que te acompañará en cada paso del camino mientras usas nuestra app.
+![Courtney - La mascota oficial de CourtControl](./Courtney.webp)
+
+¡Gracias por usar CourtControl! ¡Esperamos que disfrutes de una experiencia de gestión deportiva sin igual! 🎾🏀🏐🏸
