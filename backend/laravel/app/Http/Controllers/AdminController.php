@@ -13,7 +13,8 @@ class AdminController extends Controller
     public function generateToken(Request $request)
     {
         try {
-            // Log::info('Request received: ', $request->all());
+
+            Log::info('Request received: ', $request->all());
 
             $email = $request->input('email');
             $password = $request->input('password');
@@ -31,9 +32,9 @@ class AdminController extends Controller
 
             $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
 
-            // Log::info('Token JWT generado: ', ['token' => $jwt]);
+            Log::info('Token JWT generado: ', ['token' => $jwt]);
 
-            return response()->json(['message' => 'Token generated successfully', 'token' => $jwt]);
+            return response()->json(['accessToken' => $jwt, 'refreshToken' => $jwt]);
 
 
         } catch (Exception $e) {

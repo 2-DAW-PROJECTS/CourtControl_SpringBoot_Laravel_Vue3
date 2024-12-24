@@ -2,7 +2,8 @@
 FROM openjdk:17-jdk-slim
 
 # Instalar el cliente MySQL desde el repositorio adecuado
-RUN apt-get update && apt-get install -y default-mysql-client
+RUN apt-get update && apt-get install -y default-mysql-client 
+# && apt-get install -y curl
 
 # Setear el directorio de trabajo
 WORKDIR /app
