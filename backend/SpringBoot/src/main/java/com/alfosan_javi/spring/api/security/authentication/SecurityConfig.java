@@ -11,33 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
-// @Configuration
-// @EnableWebSecurity
-// public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-//     @Override
-//     protected void configure(HttpSecurity http) throws Exception {
-//         http
-//             .cors().and()
-//             .csrf().disable()
-//             .authorizeRequests()
-//             .antMatchers("/api/auth/**").permitAll()
-//             .anyRequest().authenticated();
-//     }
-
-//     @Bean
-//     public CorsConfigurationSource corsConfigurationSource() {
-//         CorsConfiguration configuration = new CorsConfiguration();
-//         configuration.setAllowedOrigins(Arrays.asList("*"));
-//         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-//         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//         source.registerCorsConfiguration("/**", configuration);
-//         return source;
-//     }
-// }
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -50,26 +23,23 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Configuramos Argon2PasswordEncoder con parámetros personalizados
         return new Argon2PasswordEncoder(16, 32, 1, 65536, 3);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .cors()
-            .and()
-            .authorizeHttpRequests()
-            // Rutas públicas
-            .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**").permitAll()
-            // Rutas protegidas
-            .requestMatchers("/api/users/profile").authenticated()
-            .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers("/employee/**").hasAnyRole("EMPLOYEE", "ADMIN")
-            .requestMatchers("/client/**").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN")
-            .anyRequest().authenticated()
-            .and()
-            // Agregar el filtro JWT antes del filtro de autenticación estándar de Spring
+        http.csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.disable()) // Puedes habilitar o deshabilitar CORS según lo necesites
+            .authorizeRequests(auth -> auth
+                // Rutas públicas
+                .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**").permitAll()
+                // Rutas protegidas
+                .requestMatchers("/api/users/profile", "/api/bookings/**").authenticated()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/employee/**").hasAnyRole("EMPLOYEE", "ADMIN")
+                .requestMatchers("/client/**").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN")
+                .anyRequest().authenticated()
+            )
             .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

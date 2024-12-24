@@ -17,7 +17,7 @@ Route::middleware(['admin'])->group(function () {
     // Route::get('/admin/test', function () {
     //     return response()->json(['message' => 'You are an admin nice cock bro']);
     // });
-    Route::post('/admin/test', [AdminController::class, 'generateToken']);
+    Route::post('/admin/auth/login', [AdminController::class, 'generateToken']);
 });
 
 Route::get('/sports', [SportController::class, 'index']);

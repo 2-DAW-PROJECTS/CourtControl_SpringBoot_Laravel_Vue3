@@ -19,4 +19,17 @@ public class BookingCourtAssembler {
         dto.setUpdatedAt(bookingCourt.getUpdatedAt());
         return dto;
     }
+
+    public BookingCourt toEntity(BookingCourtDTO dto) {
+        BookingCourt bookingCourt = new BookingCourt();
+        bookingCourt.setId(dto.getId());
+        bookingCourt.setIdDay(dto.getIdDay());
+        bookingCourt.setIdHour(dto.getIdHour());
+        bookingCourt.setIdMonth(dto.getIdMonth());
+        bookingCourt.setIdCourt(dto.getIdCourt());
+        bookingCourt.setIdUser(dto.getIdUser());
+        bookingCourt.setCreatedAt(dto.getCreatedAt());
+        bookingCourt.setUpdatedAt(dto.getUpdatedAt());
+        return bookingCourt;
+    }
 }

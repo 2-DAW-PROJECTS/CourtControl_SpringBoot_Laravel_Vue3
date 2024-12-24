@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "booking_courts")
+@Table(name = "bookings_courts")
 @Data
 public class BookingCourt {
 
@@ -26,8 +26,9 @@ public class BookingCourt {
     @Column(name = "id_court", nullable = false)
     private int idCourt;
 
+    // Cambiar de 'int' a 'Long'
     @Column(name = "id_user", nullable = false)
-    private int idUser;
+    private Long idUser;  // Cambié el tipo de 'int' a 'Long'
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

@@ -12,7 +12,10 @@ public class BookingCourtDTO {
     private int idHour;
     private int idMonth;
     private int idCourt;
-    private int idUser;
+
+    // Cambiar de 'int' a 'Long'
+    private Long idUser;  // Cambié el tipo de 'int' a 'Long'
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
