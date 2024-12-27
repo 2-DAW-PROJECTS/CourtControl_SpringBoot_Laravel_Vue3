@@ -38,6 +38,7 @@ const Footer = () => {
                             </a>
                         </div>
                         <p className="text-xs text-gray-500 mt-4">Valencia, España</p>
+                        <p className="text-xs text-gray-500 mt-4">Pero por la calle no!</p>
                     </div>
                 </div>
 
