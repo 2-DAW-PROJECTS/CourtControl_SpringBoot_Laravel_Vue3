@@ -33,21 +33,6 @@ public class CourtController {
                     .collect(Collectors.toList());
     }
 
-    // Obtener los materiales disponibles
-    // @GetMapping("/materials")
-    // public List<String> getMaterialsBySport(@RequestParam(required = false) Long sportId) {
-    //     System.out.println("Received sportId: " + sportId);
-
-    //     List<String> materials;
-    //     if (sportId != null) {
-    //         materials = courtService.getMaterialsBySport(sportId);
-    //         System.out.println("Materials for sport " + sportId + ": " + materials);
-    //     } else {
-    //         materials = courtService.getAllMaterials();
-    //         System.out.println("All materials: " + materials);
-    //     }
-    //     return materials;
-    // }
     @GetMapping("/materials")
     public List<String> getMaterialsBySport(@RequestParam(required = false) Integer sportId) {
         // System.out.println("ESTOY EN EL CONTROLLER MATERIALS");

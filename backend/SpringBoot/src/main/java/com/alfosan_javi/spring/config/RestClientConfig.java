@@ -22,8 +22,8 @@ public class RestClientConfig {
     @Bean
     public ClientHttpRequestFactory clientHttpRequestFactory() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(5000); // Tiempo de espera de conexión
-        factory.setReadTimeout(30000); // Tiempo de espera de lectura
+        factory.setConnectTimeout(5000); 
+        factory.setReadTimeout(30000); 
         return factory;
     }
 
@@ -32,11 +32,11 @@ public class RestClientConfig {
         RetryTemplate retryTemplate = new RetryTemplate();
 
         FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
-        backOffPolicy.setBackOffPeriod(2000); // Tiempo de espera entre reintentos
+        backOffPolicy.setBackOffPeriod(2000); 
         retryTemplate.setBackOffPolicy(backOffPolicy);
 
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-        retryPolicy.setMaxAttempts(3); // Número máximo de reintentos
+        retryPolicy.setMaxAttempts(3); 
         retryTemplate.setRetryPolicy(retryPolicy);
 
         return retryTemplate;
