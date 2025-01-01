@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInstagram, faTwitter, faFacebook } from '@fortawesome/free-brands-svg-icons';
+
 
 const Footer = () => {
     return (
@@ -26,15 +29,20 @@ const Footer = () => {
                     {/* Redes sociales */}
                     <div className="text-center md:text-right">
                         <p className="text-sm font-semibold mb-3">Síguenos en:</p>
-                        <div className="flex justify-center md:justify-end space-x-6">
-                            <a href="#" className="text-gray-400 hover:text-blue-500 transition duration-300">
-                                <i className="fab fa-instagram text-lg"></i>
+                        <div className="social-links">
+                            <a href="https://www.instagram.com" className="social-link">
+                                <FontAwesomeIcon icon={faInstagram} className="text-lg" />
+                                <span className="social-text">  Instagram</span>
                             </a>
-                            <a href="#" className="text-gray-400 hover:text-blue-400 transition duration-300">
-                                <i className="fab fa-twitter text-lg"></i>
+                            <br />
+                            <a href="https://www.twitter.com" className="social-link">
+                                <FontAwesomeIcon icon={faTwitter} className="text-lg" />
+                                <span className="social-text">  Twitter</span>
                             </a>
-                            <a href="#" className="text-gray-400 hover:text-blue-600 transition duration-300">
-                                <i className="fab fa-facebook text-lg"></i>
+                            <br />
+                            <a href="https://www.facebook.com" className="social-link">
+                                <FontAwesomeIcon icon={faFacebook} className="text-lg" />
+                                <span className="social-text">  Facebook</span>
                             </a>
                         </div>
                         <p className="text-xs text-gray-500 mt-4">Valencia, España</p>
