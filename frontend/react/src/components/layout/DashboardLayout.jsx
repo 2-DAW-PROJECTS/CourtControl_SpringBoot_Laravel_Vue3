@@ -50,19 +50,3 @@ const DashboardLayout = ({ children, activeDashboard, setActiveDashboard }) => {
 };
 
 export default DashboardLayout;
-
-
-
-// import React from 'react';
-
-// const DashboardLayout = ({ children }) => {
-//     return (
-//         <div className="dashboard-layout">
-//             <div className="container mx-auto px-4 py-8">
-//                 {children}
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default DashboardLayout;
