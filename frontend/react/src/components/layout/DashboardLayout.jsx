@@ -37,6 +37,16 @@ const DashboardLayout = ({ children, activeDashboard, setActiveDashboard }) => {
                         >
                             Summers
                         </button>
+                        <button 
+                            className={`px-6 py-2.5 rounded-full font-medium transition-all duration-200 ease-in-out transform hover:scale-105 ${
+                                activeDashboard === 'users' 
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
+                                : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                            }`} 
+                            onClick={() => setActiveDashboard('users')}
+                        >
+                            Users
+                        </button>
                     </div>
                 </div>
             </nav>
