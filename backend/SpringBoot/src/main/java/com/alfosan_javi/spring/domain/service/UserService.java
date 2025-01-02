@@ -27,7 +27,6 @@ public class UserService {
         return userAssembler.toDTO(user);
     }
 
-    
     public UserDTO[] getAllUsers() {
         List<User> users = userRepository.findAll();
         if (users.isEmpty()) {

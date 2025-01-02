@@ -1,53 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSummers } from '../../store/slices/summerSlice';
+import { fetchUsers } from '../../store/slices/userSlice';
 import Constants from '../../Constants';
 
-const SummerDashboard = () => {
+const DashboardPage = () => {
     const dispatch = useDispatch();
-    const status = useSelector((state) => state.summers.status);
-    const summers = useSelector((state) => state.summers.summers);
+    const users = useSelector(state => state.users.users);
+    const loading = useSelector(state => state.users.status === Constants.SET_LOADING);
+    const error = useSelector(state => state.users.error);
     const [search, setSearch] = useState('');
-    const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
-    const resultsPerPage = 10; // Número de resultados por página
+    const [currentPage, setCurrentPage] = useState(1);
+    const resultsPerPage = 5; 
 
     useEffect(() => {
-        dispatch(fetchSummers());
+        dispatch(fetchUsers());
     }, [dispatch]);
 
-    const filteredSummers = summers.filter(summer =>
-        summer.nameSummer.toLowerCase().includes(search.toLowerCase()) ||
-        summer.description.toLowerCase().includes(search.toLowerCase())
+    useEffect(() => {
+        console.log('Users data:', users);
+    }, [users]);
+
+    if (loading) return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-900">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+        </div>
     );
 
-    if (status === Constants.SET_LOADING) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-900">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-                <p className="text-white ml-4">Cargando summers...</p>
-            </div>
-        );
-    }
+    if (error) return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-900">
+            <div className="text-red-600 text-lg">{`Error: ${error}`}</div>
+        </div>
+    );
 
-    if (summers.length === 0) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-900">
-                <p className="text-white">No hay datos disponibles.</p>
-            </div>
-        );
-    }
+    const filteredUsers = users.filter(user =>
+        user.name.toLowerCase().includes(search.toLowerCase()) ||
+        user.email.toLowerCase().includes(search.toLowerCase())
+    );
 
-    // Calcular el número total de páginas
-    const totalPages = Math.ceil(filteredSummers.length / resultsPerPage);
+    const totalPages = Math.ceil(filteredUsers.length / resultsPerPage);
 
-    // Obtener los resultados de la página actual
-    const currentResults = filteredSummers.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
+    const currentResults = filteredUsers.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
 
-    return (
+    return (        
         <div className="bg-gray-900 text-gray-200 rounded-lg">
             <div className="container mx-auto p-6 rounded-lg bg-gray-800 shadow-lg">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-white">Summer Dashboard</h1>
+                    <h1 className="text-3xl font-bold text-white">Users Management</h1>
                     <div className="flex-1 mx-4 flex justify-center">
                         <div className="relative w-64">
                             <input
@@ -62,42 +60,44 @@ const SummerDashboard = () => {
                             </svg>
                         </div>
                     </div>
-                    <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Añadir Nuevo</button>
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                        Add New User
+                    </button>
                 </div>
-
                 <div className="overflow-x-auto bg-gray-700 rounded-lg shadow">
                     <table className="min-w-full table-auto">
                         <thead className="bg-gray-600">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ID</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Created At</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Updated At</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Roles</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-gray-700 divide-y divide-gray-600">
-                            {currentResults.map(summer => (
-                                <tr key={summer.id} className="hover:bg-gray-600">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">{summer.id}</td>
+                            {currentResults.map(user => (
+                                <tr key={user.id} className="hover:bg-gray-600">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">{user.id}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <div className="h-16 w-16 flex-shrink-0">
-                                                <img className="h-16 w-16 rounded-full object-cover" src={`/assets/img_summer/${summer.img}`} alt={summer.nameSummer} />
-                                            </div>
                                             <div className="ml-4">
-                                                <div className="text-sm font-medium text-gray-100">{summer.nameSummer}</div>
-                                                <div className="text-sm text-gray-400">{summer.description}</div>
+                                                <div className="text-sm font-medium text-gray-100">{user.name}</div>
+                                                <div className="text-sm text-gray-400">{user.email}</div>
                                             </div>
                                         </div>
                                     </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-yellow-400">{new Date(user.createdAt).toLocaleString()}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-teal-400">{new Date(user.updatedAt).toLocaleString()}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${summer.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                            {summer.isActive ? 'Active' : 'Inactive'}
+                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            {user.roles.join(', ')}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button className="text-blue-400 hover:text-blue-600 mr-3">Editar</button>
-                                        <button className="text-red-400 hover:text-red-600">Eliminar</button>
+                                        <button className="text-blue-400 hover:text-blue-600 mr-3">Edit</button>
+                                        <button className="text-red-400 hover:text-red-600">Delete</button>
                                     </td>
                                 </tr>
                             ))}
@@ -127,4 +127,4 @@ const SummerDashboard = () => {
     );
 };
 
-export default SummerDashboard;
+export default DashboardPage;
