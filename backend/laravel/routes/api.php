@@ -8,15 +8,7 @@ use App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\SportController;
 
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::middleware(['admin'])->group(function () {
-    // Route::get('/admin/test', function () {
-    //     return response()->json(['message' => 'You are an admin nice cock bro']);
-    // });
     Route::post('/admin/auth/login', [AdminController::class, 'generateToken']);
 });
 
