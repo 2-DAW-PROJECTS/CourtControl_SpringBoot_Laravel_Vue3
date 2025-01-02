@@ -19,27 +19,3 @@ function App() {
 }
 
 export default App;
-
-// import React from 'react';
-// import { Route, Routes } from 'react-router-dom';
-
-// import Header from './components/layout/Header';
-// import Footer from './components/layout/Footer';
-// import DashboardsPage from './views/DashboardsPage';
-
-// function App() {
-//   return (
-//     <div id="app">
-//       <Header />
-//       <div className="container mx-auto px-4 py-8">
-//         <Routes>
-//           <Route path="/" element={<DashboardsPage />} />
-//           {/* Puedes agregar más rutas aquí si es necesario */}
-//         </Routes>
-//       </div>
-//       <Footer />
-//     </div>
-//   );
-// }
-
-// export default App;
