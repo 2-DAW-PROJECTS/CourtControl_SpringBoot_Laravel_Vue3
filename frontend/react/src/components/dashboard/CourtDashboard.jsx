@@ -5,18 +5,16 @@ const CourtDashboard = () => {
     const [courts, setCourts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [search, setSearch] = useState(''); // Añadir estado para la búsqueda
 
     useEffect(() => {
         const fetchCourts = async () => {
             try {
                 const response = await axios.get('http://localhost:8085/api/courts');
-                // console.log("CourtDashboard.jsx", response.data);
-                // setCourts(response.data);
                 const courtsWithAdjustedImg = response.data.map(court => ({
                     ...court,
                     img: court.img.replace('../../assets', '/assets')
                 }));
-                // console.log("courtsWithAdjustedImg", courtsWithAdjustedImg);
                 setCourts(courtsWithAdjustedImg);
             } catch (err) {
                 setError(err.message);
@@ -39,11 +37,33 @@ const CourtDashboard = () => {
         </div>
     );
 
+    // Filtrar los resultados basados en la búsqueda
+    const filteredCourts = courts.filter(court =>
+        court.namePista.toLowerCase().includes(search.toLowerCase()) ||
+        court.tagCourt.toLowerCase().includes(search.toLowerCase()) ||
+        court.material.toLowerCase().includes(search.toLowerCase()) ||
+        court.typePista.toLowerCase().includes(search.toLowerCase())
+    );
+
     return (
         <div className="min-h-screen bg-gray-900 text-gray-200 rounded-lg">
             <div className="container mx-auto p-6 rounded-lg bg-gray-800 shadow-lg">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-bold text-white">Courts Management</h1>
+                    <div className="flex-1 mx-4 flex justify-center">
+                        <div className="relative w-64">
+                            <input
+                                type="text"
+                                placeholder="Buscar..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="w-full py-2 pl-10 pr-3 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-gray-800"
+                            />
+                            <svg className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </div>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
                         Add New Court
                     </button>
@@ -62,14 +82,11 @@ const CourtDashboard = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-gray-700 divide-y divide-gray-600">
-                            {courts.map(court => (
+                            {filteredCourts.map(court => (
                                 <tr key={court.id} className="hover:bg-gray-600">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">{court.id}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            {/* <div className="h-10 w-10 flex-shrink-0">
-                                                <img className="h-10 w-10 rounded-full object-cover" src={court.img} alt="" />
-                                            </div> */}
                                             <div className="h-16 w-16 flex-shrink-0">
                                                 <img className="h-16 w-16 rounded-full object-cover" src={court.img} alt="" />
                                             </div>
