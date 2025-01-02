@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import CourtDashboard from '../components/dashboard/CourtDashboard';
 import LessonDashboard from '../components/dashboard/LessonDashboard';
-// import SummerDashboard from '../components/dashboard/SummerDashboard';
+import SummerDashboard from '../components/dashboard/SummerDashboard';
 
 const DashboardsPage = () => {
     const [activeDashboard, setActiveDashboard] = useState('courts');
@@ -14,8 +14,8 @@ const DashboardsPage = () => {
                 return <LessonDashboard />;
                 // return 'Lessons Dashboard';
             case 'summers':
-                // return <SummerDashboard />;
-                return 'Summer Dashboard';
+                return <SummerDashboard />;
+                // return 'Summer Dashboard';
             case 'courts':
             default:
                 return <CourtDashboard />;
