@@ -4,6 +4,8 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 import CourtDashboard from '../components/dashboard/CourtDashboard';
 import LessonDashboard from '../components/dashboard/LessonDashboard';
 import SummerDashboard from '../components/dashboard/SummerDashboard';
+import UserDashboard from '../components/dashboard/UserDashboard';
+
 
 const DashboardsPage = () => {
     const [activeDashboard, setActiveDashboard] = useState('courts');
@@ -15,6 +17,9 @@ const DashboardsPage = () => {
                 // return 'Lessons Dashboard';
             case 'summers':
                 return <SummerDashboard />;
+                // return 'Summer Dashboard';
+            case 'users':
+                return <UserDashboard />;
                 // return 'Summer Dashboard';
             case 'courts':
             default:
