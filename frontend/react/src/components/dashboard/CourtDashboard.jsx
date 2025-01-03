@@ -85,7 +85,7 @@ const CourtDashboard = () => {
                         </thead>
                         <tbody className="bg-gray-700 divide-y divide-gray-600">
                             {currentResults.map(court => (
-                                <tr key={court.id} className="hover:bg-gray-600 cursor-pointer" onClick={() => handleCourtClick(court.id)}>
+                                <tr key={court.id} className="hover:bg-gray-600 cursor-pointer">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">{court.id}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
@@ -106,8 +106,7 @@ const CourtDashboard = () => {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button className="text-blue-400 hover:text-blue-600 mr-3">Edit</button>
-                                        <button className="text-red-400 hover:text-red-600">Delete</button>
+                                        <button className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600" onClick={() => handleCourtClick(court.id)}>Modify</button>
                                     </td>
                                 </tr>
                             ))}
