@@ -16,9 +16,9 @@ const DashboardPage = () => {
         dispatch(fetchUsers());
     }, [dispatch]);
 
-    useEffect(() => {
-        console.log('Users data:', users);
-    }, [users]);
+    // useEffect(() => {
+    //     // console.log('Users data:', users);
+    // }, [users]);
 
     if (loading) return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">

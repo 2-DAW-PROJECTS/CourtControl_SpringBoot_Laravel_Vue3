@@ -8,8 +8,8 @@ const SummerDashboard = () => {
     const status = useSelector((state) => state.summers.status);
     const summers = useSelector((state) => state.summers.summers);
     const [search, setSearch] = useState('');
-    const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
-    const resultsPerPage = 10; // Número de resultados por página
+    const [currentPage, setCurrentPage] = useState(1);
+    const resultsPerPage = 10;
 
     useEffect(() => {
         dispatch(fetchSummers());

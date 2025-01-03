@@ -1,21 +1,22 @@
 import React from 'react';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import DashboardPage from './views/DashboardsPage';
+import { Route, Routes } from 'react-router-dom';
+import DashboardsPage from './views/DashboardsPage';
+import CourtDetails from './components/details/CourtDetails';
+import LessonDetails from './components/details/LessonDetails';
+import SummerDetails from './components/details/SummerDetails';
+import UserDetails from './components/details/UserDetails';
 
-function App() {
-  return (
-    <div id="app">
-      <Header />
-      <div className="container mx-auto px-4 py-8">
-        <DashboardPage>
-          {/* <h1>Esto es una prueba de funcionamiento</h1> */}
-          {}
-        </DashboardPage>
-      </div>
-      <Footer />
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<DashboardsPage />} />
+            <Route path="/admin/courts/:id" element={<CourtDetails />} />
+            <Route path="/admin/lessons/:id" element={<LessonDetails />} />
+            <Route path="/admin/summers/:id" element={<SummerDetails />} />
+            <Route path="/admin/users/:id" element={<UserDetails />} />
+            <Route path="/admin/:type" element={<DashboardsPage />} />
+        </Routes>
+    );
+};
 
 export default App;
