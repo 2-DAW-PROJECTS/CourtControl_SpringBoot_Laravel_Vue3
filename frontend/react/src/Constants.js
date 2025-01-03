@@ -20,6 +20,9 @@ const Constants = {
     // Lesson actions
     FETCH_LESSONS: 'lessons/fetchLessons',
     FETCH_LESSON_BY_ID: 'lessons/fetchLessonById',
+    CREATE_LESSON: 'lessons/createLesson',
+    UPDATE_LESSON: 'lessons/updateLesson',
+    DELETE_LESSON: 'lessons/deleteLesson',
 
     // Summer actions
     FETCH_SUMMERS: 'summers/fetchSummers',
