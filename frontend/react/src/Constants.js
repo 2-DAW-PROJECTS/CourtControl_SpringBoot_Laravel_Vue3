@@ -13,6 +13,9 @@ const Constants = {
     // Court actions
     FETCH_COURTS: 'courts/fetchCourts',
     FETCH_COURT_BY_ID: 'courts/fetchCourtById',
+    CREATE_COURT: 'courts/createCourt',
+    UPDATE_COURT: 'courts/updateCourt',
+    DELETE_COURT: 'courts/deleteCourt',
 
     // Lesson actions
     FETCH_LESSONS: 'lessons/fetchLessons',

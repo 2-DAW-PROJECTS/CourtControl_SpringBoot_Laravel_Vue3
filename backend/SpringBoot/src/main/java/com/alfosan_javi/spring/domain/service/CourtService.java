@@ -81,18 +81,21 @@ public class CourtService {
 
     public Court updateCourt(long id, CourtDTO courtDTO) {
         Optional<Court> existingCourt = courtRepository.findById(id);
-        if (!existingCourt.isPresent()) {
-            return null;
+        if (existingCourt.isPresent()) {
+            Court court = existingCourt.get();
+            // Actualizar los campos de court con los valores de courtDTO
+            court.setSportId(courtDTO.getSportId());
+            court.setTypePista(courtDTO.getTypePista());
+            court.setNamePista(courtDTO.getNamePista());
+            court.setAncho(courtDTO.getAncho());
+            court.setMaterial(courtDTO.getMaterial());
+            court.setDescription(courtDTO.getDescription());
+            court.setImg(courtDTO.getImg());
+            court.setTagCourt(courtDTO.getTagCourt());
+            court.setIsActive(courtDTO.getIsActive());
+            return courtRepository.save(court);
         }
-        Court court = existingCourt.get();
-        Sport sport = sportRepository.findById(courtDTO.getSportId()).orElse(null);
-        if (sport == null) {
-            return null;
-        }
-        court.setNamePista(courtDTO.getNamePista());
-        court.setMaterial(courtDTO.getMaterial());
-        court.setSport(sport);
-        return courtRepository.save(court);
+        return null;
     }
 
     public boolean deleteCourt(long id) {

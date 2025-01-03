@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchCourts } from '../../store/slices/courtSlice';
 import Constants from '../../Constants';
 
 const CourtDashboard = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const courts = useSelector(state => state.courts.courts);
     const loading = useSelector(state => state.courts.status === Constants.SET_LOADING);
     const error = useSelector(state => state.courts.error);
@@ -39,6 +42,10 @@ const CourtDashboard = () => {
     const totalPages = Math.ceil(filteredCourts.length / resultsPerPage);
 
     const currentResults = filteredCourts.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
+
+    const handleCourtClick = (id) => {
+        navigate(`/admin/courts/${id}`);
+    };
 
     return (
         <div className="bg-gray-900 text-gray-200 rounded-lg">
@@ -78,7 +85,7 @@ const CourtDashboard = () => {
                         </thead>
                         <tbody className="bg-gray-700 divide-y divide-gray-600">
                             {currentResults.map(court => (
-                                <tr key={court.id} className="hover:bg-gray-600">
+                                <tr key={court.id} className="hover:bg-gray-600 cursor-pointer" onClick={() => handleCourtClick(court.id)}>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">{court.id}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
