@@ -36,6 +36,28 @@ public class LessonService {
         return false;
     }
 
+        public Lesson updateLesson(long id, LessonDTO lessonDTO) {
+        Optional<Lesson> existingLesson = lessonRepository.findById(id);
+        if (existingLesson.isPresent()) {
+            Lesson lesson = existingLesson.get();
+            lesson.setNameClass(lessonDTO.getNameClass());
+            lesson.setIsActive(lessonDTO.isActive());
+            lesson.setVacancies(lessonDTO.getVacancies());
+            lesson.setDays(lessonDTO.getDays());
+            lesson.setTime(lessonDTO.getTime());
+            lesson.setDuration(lessonDTO.getDuration());
+            lesson.setBaseCost(lessonDTO.getBaseCost());
+            lesson.setLevel(lessonDTO.getLevel());
+            lesson.setCoach(lessonDTO.getCoach());
+            lesson.setMaxCapacity(lessonDTO.getMaxCapacity());
+            lesson.setDescription(lessonDTO.getDescription());
+            lesson.setImg(lessonDTO.getImg());
+            lesson.setIdSport(lessonDTO.getIdSport());
+            return lessonRepository.save(lesson);
+        }
+        return null;
+    }
+
     public boolean existsById(long id) {
         return lessonRepository.existsById(id);
     }
