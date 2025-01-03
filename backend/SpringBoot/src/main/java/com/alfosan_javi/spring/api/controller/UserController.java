@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -42,4 +44,11 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping
+    public ResponseEntity<UserDTO[]> getAllUsers() {
+        UserDTO[] users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
 }

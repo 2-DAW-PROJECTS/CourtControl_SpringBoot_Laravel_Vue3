@@ -1,5 +1,5 @@
 
-version: '3.8'
+# version: '3.8'
 
 services:
   apache:
@@ -80,6 +80,22 @@ services:
     networks:
       - app-network
 
+
+  react:
+    build:
+      context: ./frontend/react
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/react:/app
+      - /app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+    networks:
+      - app-network
 
 
   # react:
