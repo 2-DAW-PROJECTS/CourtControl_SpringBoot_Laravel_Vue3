@@ -33,6 +33,10 @@ public class SummerService {
         return summerRepository.findById(id);
     }
 
+    public Summer saveSummer(Summer summer) {
+        return summerRepository.save(summer);
+    }
+
     public SummerDTO createSummer(SummerDTO summerDTO) {
         Sport sport = sportRepository.findById(summerDTO.getIdSport()).orElse(null);
         if (sport == null) {
