@@ -11,9 +11,9 @@ public class LessonSpecifications {
     public static Specification<Lesson> hasSportIdIn(List<Long> sportIds) {
         return (root, query, criteriaBuilder) -> {
             if (sportIds == null || sportIds.isEmpty()) {
-                return criteriaBuilder.conjunction(); // No aplica ningún filtro
+                return criteriaBuilder.conjunction();
             }
-            return root.get("sport").get("id").in(sportIds); // Filtra por ids de Sport
+            return root.get("sport").get("id").in(sportIds);
         };
     }
 }
