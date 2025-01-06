@@ -42,9 +42,9 @@ const LessonDetails = () => {
     useEffect(() => {
         dispatch(fetchLessonById(id));
     }, [dispatch, id]);
-    useEffect(() => {
-        console.log('Lesson data:', lesson);
-    }, [lesson]);
+    // useEffect(() => {
+    //     console.log('Lesson data:', lesson);
+    // }, [lesson]);
 
     useEffect(() => {
         if (lesson) {

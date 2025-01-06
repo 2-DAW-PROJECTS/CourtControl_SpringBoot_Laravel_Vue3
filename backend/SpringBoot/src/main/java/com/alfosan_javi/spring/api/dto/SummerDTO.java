@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SummerDTO {
-
     private long id;
     private long idSport;
     private String img;
