@@ -47,6 +47,10 @@ const CourtDashboard = () => {
         navigate(`/admin/courts/${id}`);
     };
 
+    const createNewCourt = () => {
+        navigate('/admin/courts/create');
+    };
+
     return (
         <div className="bg-gray-900 text-gray-200 rounded-lg">
             <div className="container mx-auto p-6 rounded-lg bg-gray-800 shadow-lg">
@@ -66,7 +70,7 @@ const CourtDashboard = () => {
                             </svg>
                         </div>
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={() => createNewCourt()}>
                         Add New Court
                     </button>
                 </div>
@@ -85,7 +89,7 @@ const CourtDashboard = () => {
                         </thead>
                         <tbody className="bg-gray-700 divide-y divide-gray-600">
                             {currentResults.map(court => (
-                                <tr key={court.id} className="hover:bg-gray-600 cursor-pointer">
+                                <tr key={court.id} className="hover:bg-gray-600">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-200">{court.id}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
