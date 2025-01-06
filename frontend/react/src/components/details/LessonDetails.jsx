@@ -13,7 +13,6 @@ const daysOfWeek = [
     { label: 'Jueves', value: 'J' },
     { label: 'Viernes', value: 'V' },
     { label: 'Sábado', value: 'S' },
-    { label: 'Domingo', value: 'D' }
 ];
 
 const LessonDetails = () => {
@@ -26,7 +25,7 @@ const LessonDetails = () => {
 
     const [formData, setFormData] = useState({
         nameClass: '',
-        isActive: false,
+        isActive: 1,
         vacancies: 0,
         days: [],
         time: '',
@@ -37,7 +36,7 @@ const LessonDetails = () => {
         maxCapacity: 0,
         description: '',
         img: '',
-        idSport: '1',
+        idSport: 1,
     });
 
     useEffect(() => {
@@ -188,16 +187,41 @@ const LessonDetails = () => {
                                     </div>
                                 </div>  
 
-                                <div>
+                                {/* <div>
                                     <label className="block text-sm font-medium text-[#f6f1de] mb-1">Time</label>
                                     <input
-                                        type="text"
+                                        type="time"
                                         name="time"
                                         value={formData.time}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 bg-[#23232f] text-[#f6f1de] border border-[#525055] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#92d8be] transition-all duration-300"
                                     />
+                                </div> */}
+                                <div>
+                                    <label className="block text-sm font-medium text-[#f6f1de] mb-1">Time</label>
+                                    <input
+                                        type="time"
+                                        name="time"
+                                        value={formData.time}
+                                        onChange={(e) => {
+                                            const timeValue = e.target.value;
+                                            // Asegurarse de que el formato sea HH:mm
+                                            const [hours, minutes] = timeValue.split(":");
+                                            if (hours && minutes) {
+                                                const formattedTime = `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+                                                handleChange({
+                                                    target: {
+                                                        name: "time",
+                                                        value: formattedTime,
+                                                    },
+                                                });
+                                            }
+                                        }}
+                                        className="w-full px-4 py-2 bg-[#23232f] text-[#f6f1de] border border-[#525055] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#92d8be] transition-all duration-300"
+                                    />
                                 </div>
+
+
                                 <div>
                                     <label className="block text-sm font-medium text-[#f6f1de] mb-1">Duration (minutes)</label>
                                     <input

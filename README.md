@@ -137,7 +137,8 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE.md para m�
 
 - **Trivia Deportiva:** ¿Sabías que el voleibol se originó en Estados Unidos en 1895? ¡Ahora puedes gestionar tus canchas de voleibol con tecnología de punta!
 
-- **Mascota Oficial:** Conoce a "Courtney", nuestra mascota oficial, que te acompañará en cada paso del camino mientras usas nuestra app.
+- **Mascota Oficial:** Conoce a "Courtney" & "Foxney", nuestras mascotas oficiales, que te acompañarán en cada paso del camino mientras usas nuestra app.
 ![Courtney - La mascota oficial de CourtControl](./Courtney.webp)
+![Foxney - La mascota oficial de CourtControl](./Foxney.webp)
 
 ¡Gracias por usar CourtControl! ¡Esperamos que disfrutes de una experiencia de gestión deportiva sin igual! 🎾🏀🏐🏸

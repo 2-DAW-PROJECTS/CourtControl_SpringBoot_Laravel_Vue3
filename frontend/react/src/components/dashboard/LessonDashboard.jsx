@@ -45,6 +45,10 @@ const LessonDashboard = () => {
         navigate(`/admin/lessons/${id}`);
     };
 
+    const createNewLesson = () => {
+        navigate('/admin/lessons/create');
+    };
+
     return (
         <div className="bg-gray-900 text-gray-200 rounded-lg">
             <div className="container mx-auto p-6 rounded-lg bg-gray-800 shadow-lg">
@@ -64,7 +68,7 @@ const LessonDashboard = () => {
                             </svg>
                         </div>
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={() => createNewLesson()}>
                         Add New Lesson
                     </button>
                 </div>
