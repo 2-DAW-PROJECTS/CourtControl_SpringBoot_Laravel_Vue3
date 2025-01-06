@@ -67,24 +67,42 @@ public class CourtService {
         return courtRepository.findById(id);
     }
 
+    // public Court createCourt(CourtDTO courtDTO) {
+    //     Sport sport = sportRepository.findById(courtDTO.getSportId()).orElse(null);
+    //     if (sport == null) {
+    //         return null;
+    //     }
+    //     Court court = new Court();
+    //     court.setNamePista(courtDTO.getNamePista());
+    //     court.setMaterial(courtDTO.getMaterial());
+    //     court.setSport(sport);
+    //     return courtRepository.save(court);
+    // }
     public Court createCourt(CourtDTO courtDTO) {
         Sport sport = sportRepository.findById(courtDTO.getSportId()).orElse(null);
         if (sport == null) {
             return null;
         }
         Court court = new Court();
-        court.setNamePista(courtDTO.getNamePista());
-        court.setMaterial(courtDTO.getMaterial());
         court.setSport(sport);
+        court.setTypePista(courtDTO.getTypePista());
+        court.setNamePista(courtDTO.getNamePista());
+        court.setAncho(courtDTO.getAncho());
+        court.setMaterial(courtDTO.getMaterial());
+        court.setDescription(courtDTO.getDescription());
+        court.setImg(courtDTO.getImg());
+        court.setTagCourt(courtDTO.getTagCourt());
+        court.setIsActive(courtDTO.getIsActive());
         return courtRepository.save(court);
     }
+
 
     public Court updateCourt(long id, CourtDTO courtDTO) {
         Optional<Court> existingCourt = courtRepository.findById(id);
         if (existingCourt.isPresent()) {
             Court court = existingCourt.get();
             // Actualizar los campos de court con los valores de courtDTO
-            court.setSportId(courtDTO.getSportId());
+            court.setSport(sportRepository.findById(courtDTO.getSportId()).orElse(null));
             court.setTypePista(courtDTO.getTypePista());
             court.setNamePista(courtDTO.getNamePista());
             court.setAncho(courtDTO.getAncho());
@@ -97,6 +115,24 @@ public class CourtService {
         }
         return null;
     }
+    // public Court updateCourt(long id, CourtDTO courtDTO) {
+    //     Optional<Court> existingCourt = courtRepository.findById(id);
+    //     if (existingCourt.isPresent()) {
+    //         Court court = existingCourt.get();
+    //         // Actualizar los campos de court con los valores de courtDTO
+    //         court.setSportId(courtDTO.getSportId());
+    //         court.setTypePista(courtDTO.getTypePista());
+    //         court.setNamePista(courtDTO.getNamePista());
+    //         court.setAncho(courtDTO.getAncho());
+    //         court.setMaterial(courtDTO.getMaterial());
+    //         court.setDescription(courtDTO.getDescription());
+    //         court.setImg(courtDTO.getImg());
+    //         court.setTagCourt(courtDTO.getTagCourt());
+    //         court.setIsActive(courtDTO.getIsActive());
+    //         return courtRepository.save(court);
+    //     }
+    //     return null;
+    // }
 
     public boolean deleteCourt(long id) {
         if (courtRepository.existsById(id)) {
