@@ -27,6 +27,10 @@ const Constants = {
     // Summer actions
     FETCH_SUMMERS: 'summers/fetchSummers',
     FETCH_SUMMER_BY_ID: 'summers/fetchSummerById',
+    CREATE_SUMMER: 'CREATE_SUMMER',
+    UPDATE_SUMMER: 'UPDATE_SUMMER',
+    DELETE_SUMMER: 'DELETE_SUMMER',
+    
 
     // Status codes
     STATUS_OK: 200,
