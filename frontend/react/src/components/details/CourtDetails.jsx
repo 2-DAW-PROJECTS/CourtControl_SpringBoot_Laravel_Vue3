@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchCourtById, updateExistingCourt, deleteExistingCourt } from '../../store/slices/courtSlice';
 import Constants from '../../Constants';
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
+// import Header from '../layout/Header';
+// import Footer from '../layout/Footer';
 
 const CourtDetails = () => {
     const { id } = useParams();
@@ -90,7 +90,6 @@ const CourtDetails = () => {
 
     return (
         <div className="bg-gradient-to-br from-[#f6f1de] to-[#9bada1] min-h-screen flex flex-col">
-            <Header />
             <div className="container mx-auto p-8 flex-grow">
                 <button
                     onClick={() => navigate('/admin/courts')}
@@ -231,7 +230,6 @@ const CourtDetails = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

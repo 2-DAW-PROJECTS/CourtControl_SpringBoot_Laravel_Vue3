@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchSummerById, updateExistingSummer, deleteExistingSummer } from '../../store/slices/summerSlice';
 import Constants from '../../Constants';
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
+// import Header from '../layout/Header';
+// import Footer from '../layout/Footer';
 
 const SummerDetails = () => {
     const { id } = useParams();
@@ -92,7 +92,6 @@ const SummerDetails = () => {
 
     return (
         <div className="bg-gradient-to-br from-[#f6f1de] to-[#9bada1] min-h-screen flex flex-col">
-            <Header />
             <div className="container mx-auto p-8 flex-grow">
                 <button
                     onClick={() => navigate('/admin/summers')}
@@ -228,7 +227,6 @@ const SummerDetails = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };
