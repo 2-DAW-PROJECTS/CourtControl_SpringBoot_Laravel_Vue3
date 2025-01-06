@@ -27,6 +27,7 @@ public class SummerController {
     @Autowired
     private SummerAssembler summerAssembler;
 
+    // Obtener todas las 'summers' o filtrar por deporte
     @GetMapping
     public List<SummerDTO> getFilteredSummers(
             @RequestParam(required = false) List<Long> sportIds) {
@@ -38,6 +39,7 @@ public class SummerController {
                 .collect(Collectors.toList());
     }
 
+    // Obtener una 'summer' por ID
     @GetMapping("/{id}")
     public ResponseEntity<SummerDTO> getSummerById(@PathVariable long id) {
         return summerService.getSummerById(id)
@@ -47,33 +49,28 @@ public class SummerController {
 
     @PostMapping
     public ResponseEntity<SummerDTO> createSummer(@RequestBody SummerDTO summerDTO) {
-        return sportService.getSportById(summerDTO.getIdSport())
-                .map(sport -> {
-                    Summer summer = summerAssembler.toEntity(summerDTO, sport);
-                    Summer createdSummer = summerService.saveSummer(summer);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(summerAssembler.toModel(createdSummer));
-                })
-                .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        SummerDTO createdSummer = summerService.createSummer(summerDTO);  // Usar createSummer
+        if (createdSummer == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSummer);
     }
 
+    // Actualizar una 'summer' existente por ID
     @PutMapping("/{id}")
     public ResponseEntity<SummerDTO> updateSummer(@PathVariable long id, @RequestBody SummerDTO summerDTO) {
-        if (!summerService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Summer updatedSummer = summerService.updateSummer(id, summerDTO);
+        if (updatedSummer == null) {
+            return ResponseEntity.notFound().build();
         }
-        return sportService.getSportById(summerDTO.getIdSport())
-                .map(sport -> {
-                    summerDTO.setId(id);
-                    Summer updatedSummer = summerService.saveSummer(summerAssembler.toEntity(summerDTO, sport));
-                    return ResponseEntity.ok(summerAssembler.toModel(updatedSummer));
-                })
-                .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        return ResponseEntity.ok(summerAssembler.toModel(updatedSummer));
     }
 
+    // Eliminar una 'summer' por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSummer(@PathVariable long id) {
         if (!summerService.deleteSummer(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(404).build();
         }
         return ResponseEntity.noContent().build();
     }

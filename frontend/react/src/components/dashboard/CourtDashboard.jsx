@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchCourts } from '../../store/slices/courtSlice';
 import Constants from '../../Constants';
 
 const CourtDashboard = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const courts = useSelector(state => state.courts.courts);
     const loading = useSelector(state => state.courts.status === Constants.SET_LOADING);
     const error = useSelector(state => state.courts.error);
@@ -40,6 +43,14 @@ const CourtDashboard = () => {
 
     const currentResults = filteredCourts.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
 
+    const handleCourtClick = (id) => {
+        navigate(`/admin/courts/${id}`);
+    };
+
+    const createNewCourt = () => {
+        navigate('/admin/courts/create');
+    };
+
     return (
         <div className="bg-gray-900 text-gray-200 rounded-lg">
             <div className="container mx-auto p-6 rounded-lg bg-gray-800 shadow-lg">
@@ -59,7 +70,7 @@ const CourtDashboard = () => {
                             </svg>
                         </div>
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={() => createNewCourt()}>
                         Add New Court
                     </button>
                 </div>
@@ -99,8 +110,7 @@ const CourtDashboard = () => {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button className="text-blue-400 hover:text-blue-600 mr-3">Edit</button>
-                                        <button className="text-red-400 hover:text-red-600">Delete</button>
+                                        <button className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600" onClick={() => handleCourtClick(court.id)}>Modify</button>
                                     </td>
                                 </tr>
                             ))}

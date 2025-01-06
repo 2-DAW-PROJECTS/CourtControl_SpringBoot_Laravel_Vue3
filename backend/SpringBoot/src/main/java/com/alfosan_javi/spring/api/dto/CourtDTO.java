@@ -19,4 +19,6 @@ public class CourtDTO {
     private String img;
     private String tagCourt;
     private Boolean isActive;
+    // private String materiales;
+
 }

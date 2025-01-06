@@ -28,3 +28,29 @@ export const getCourtById = async (id) => {
         throw new Error(error.response?.data?.message || error.message);
     }
 };
+
+export const createCourt = async (courtData) => {
+    try {
+        const response = await axios.post(`${API_URL}`, courtData);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
+};
+
+export const updateCourt = async (id, courtData) => {
+    try {
+        const response = await axios.put(`${API_URL}/${id}`, courtData);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
+};
+
+export const deleteCourt = async (id) => {
+    try {
+        await axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
+};

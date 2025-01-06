@@ -55,6 +55,7 @@ public class CourtController {
     // Crear una nueva pista
     @PostMapping
     public ResponseEntity<CourtDTO> createCourt(@RequestBody CourtDTO courtDTO) {
+            System.out.println("Received court data: " + courtDTO);
         Court createdCourt = courtService.createCourt(courtDTO);
         if (createdCourt == null) {
             return ResponseEntity.badRequest().build();

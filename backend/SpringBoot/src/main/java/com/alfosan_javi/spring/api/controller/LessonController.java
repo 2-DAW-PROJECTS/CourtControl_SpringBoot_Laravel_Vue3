@@ -51,13 +51,21 @@ public class LessonController {
     }
 
     // Actualizar una lección existente
+    // @PutMapping("/{id}")
+    // public ResponseEntity<LessonDTO> updateLesson(@PathVariable long id, @RequestBody LessonDTO lessonDTO) {
+    //     if (!lessonService.existsById(id)) {
+    //         return ResponseEntity.status(404).build();
+    //     }
+    //     lessonDTO.setId(id);
+    //     Lesson updatedLesson = lessonService.saveLesson(lessonAssembler.toEntity(lessonDTO));
+    //     return ResponseEntity.ok(lessonAssembler.toModel(updatedLesson));
+    // }
     @PutMapping("/{id}")
     public ResponseEntity<LessonDTO> updateLesson(@PathVariable long id, @RequestBody LessonDTO lessonDTO) {
-        if (!lessonService.existsById(id)) {
-            return ResponseEntity.status(404).build();
+        Lesson updatedLesson = lessonService.updateLesson(id, lessonDTO);
+        if (updatedLesson == null) {
+            return ResponseEntity.notFound().build();
         }
-        lessonDTO.setId(id);
-        Lesson updatedLesson = lessonService.saveLesson(lessonAssembler.toEntity(lessonDTO));
         return ResponseEntity.ok(lessonAssembler.toModel(updatedLesson));
     }
 

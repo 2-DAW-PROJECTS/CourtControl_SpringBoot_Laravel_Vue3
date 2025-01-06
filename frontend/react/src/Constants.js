@@ -13,14 +13,24 @@ const Constants = {
     // Court actions
     FETCH_COURTS: 'courts/fetchCourts',
     FETCH_COURT_BY_ID: 'courts/fetchCourtById',
+    CREATE_COURT: 'courts/createCourt',
+    UPDATE_COURT: 'courts/updateCourt',
+    DELETE_COURT: 'courts/deleteCourt',
 
     // Lesson actions
     FETCH_LESSONS: 'lessons/fetchLessons',
     FETCH_LESSON_BY_ID: 'lessons/fetchLessonById',
+    CREATE_LESSON: 'lessons/createLesson',
+    UPDATE_LESSON: 'lessons/updateLesson',
+    DELETE_LESSON: 'lessons/deleteLesson',
 
     // Summer actions
     FETCH_SUMMERS: 'summers/fetchSummers',
     FETCH_SUMMER_BY_ID: 'summers/fetchSummerById',
+    CREATE_SUMMER: 'CREATE_SUMMER',
+    UPDATE_SUMMER: 'UPDATE_SUMMER',
+    DELETE_SUMMER: 'DELETE_SUMMER',
+    
 
     // Status codes
     STATUS_OK: 200,

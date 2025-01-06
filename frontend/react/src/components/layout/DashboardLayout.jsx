@@ -1,7 +1,14 @@
-// frontend/react/src/components/layout/DashboardLayout.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardLayout = ({ children, activeDashboard, setActiveDashboard }) => {
+    const navigate = useNavigate();
+
+    const handleDashboardChange = (dashboard) => {
+        setActiveDashboard(dashboard);
+        navigate(`/admin/${dashboard}`);
+    };
+
     return (
         <div className="dashboard-layout min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
             <nav className="sticky top-0 backdrop-blur-md bg-white/90 shadow-sm border-b border-gray-200">
@@ -13,7 +20,7 @@ const DashboardLayout = ({ children, activeDashboard, setActiveDashboard }) => {
                                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
                                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                             }`} 
-                            onClick={() => setActiveDashboard('courts')}
+                            onClick={() => handleDashboardChange('courts')}
                         >
                             Courts
                         </button>
@@ -23,7 +30,7 @@ const DashboardLayout = ({ children, activeDashboard, setActiveDashboard }) => {
                                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
                                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                             }`} 
-                            onClick={() => setActiveDashboard('lessons')}
+                            onClick={() => handleDashboardChange('lessons')}
                         >
                             Lessons
                         </button>
@@ -33,7 +40,7 @@ const DashboardLayout = ({ children, activeDashboard, setActiveDashboard }) => {
                                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
                                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                             }`} 
-                            onClick={() => setActiveDashboard('summers')}
+                            onClick={() => handleDashboardChange('summers')}
                         >
                             Summers
                         </button>
@@ -43,7 +50,7 @@ const DashboardLayout = ({ children, activeDashboard, setActiveDashboard }) => {
                                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
                                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                             }`} 
-                            onClick={() => setActiveDashboard('users')}
+                            onClick={() => handleDashboardChange('users')}
                         >
                             Users
                         </button>
