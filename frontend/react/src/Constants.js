@@ -30,7 +30,17 @@ const Constants = {
     CREATE_SUMMER: 'CREATE_SUMMER',
     UPDATE_SUMMER: 'UPDATE_SUMMER',
     DELETE_SUMMER: 'DELETE_SUMMER',
-    
+
+    // Reservation actions
+    FETCH_ALL_BOOKINGS : 'bookings/fetchAll',
+    FETCH_BOOKING_BY_ID : 'bookings/fetchById',
+    CREATE_BOOKING : 'bookings/create',
+    UPDATE_BOOKING : 'bookings/update',
+    DELETE_BOOKING : 'bookings/delete',
+    STATUS_IDLE : 'idle',
+    STATUS_LOADING : 'loading',
+    STATUS_SUCCEEDED : 'succeeded',
+    STATUS_FAILED : 'failed',
 
     // Status codes
     STATUS_OK: 200,
