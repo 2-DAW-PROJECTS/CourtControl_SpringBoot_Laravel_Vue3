@@ -31,6 +31,7 @@ export const createUser = async (userData) => {
 
 export const updateUser = async (userData) => {
     try {
+        console.log(userData);
         const response = await axios.put(`${API_URL}/${userData.id}`, userData);
         return response.data;
     } catch (error) {

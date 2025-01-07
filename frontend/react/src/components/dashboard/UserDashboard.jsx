@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchUsers } from '../../store/slices/userSlice';
 import Constants from '../../Constants';
 
 const DashboardPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const users = useSelector(state => state.users.users);
     const loading = useSelector(state => state.users.status === Constants.SET_LOADING);
     const error = useSelector(state => state.users.error);
@@ -17,8 +19,13 @@ const DashboardPage = () => {
     }, [dispatch]);
 
     // useEffect(() => {
-    //     // console.log('Users data:', users);
+    //     console.log('Users data:', users);
     // }, [users]);
+
+
+    const handleUserClick = (id) => {
+        navigate(`/admin/users/${id}`);
+    };
 
     if (loading) return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -60,9 +67,6 @@ const DashboardPage = () => {
                             </svg>
                         </div>
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                        Add New User
-                    </button>
                 </div>
                 <div className="overflow-x-auto bg-gray-700 rounded-lg shadow">
                     <table className="min-w-full table-auto">
@@ -96,8 +100,7 @@ const DashboardPage = () => {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button className="text-blue-400 hover:text-blue-600 mr-3">Edit</button>
-                                        <button className="text-red-400 hover:text-red-600">Delete</button>
+                                        <button className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600" onClick={() => handleUserClick(user.id)}>Modify</button>
                                     </td>
                                 </tr>
                             ))}
