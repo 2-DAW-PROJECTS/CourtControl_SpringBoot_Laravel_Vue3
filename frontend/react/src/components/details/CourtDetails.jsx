@@ -68,7 +68,7 @@ const CourtDetails = () => {
             navigate('/admin/courts');
             setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 500);
         } else {
             alert('Incorrect code. Deletion cancelled.');
         }

@@ -58,7 +58,7 @@ const CreateLessonForm = () => {
         if (!formData.img) {
             setFormData(prev => ({
                 ...prev,
-                img: '/Foxney.webp'
+                img: 'foxney.webp'
             }));
         }
     }, [formData.img]);

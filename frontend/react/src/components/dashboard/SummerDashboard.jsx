@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchSummers } from '../../store/slices/summerSlice';
 import Constants from '../../Constants';
 
 const SummerDashboard = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const status = useSelector((state) => state.summers.status);
     const summers = useSelector((state) => state.summers.summers);
     const [search, setSearch] = useState('');
@@ -14,6 +16,14 @@ const SummerDashboard = () => {
     useEffect(() => {
         dispatch(fetchSummers());
     }, [dispatch]);
+
+    const handleSummerClick = (id) => {
+        navigate(`/admin/summers/${id}`);
+    };
+
+    const createNewSummer = () => {
+        navigate('/admin/summers/create');
+    };
 
     const filteredSummers = summers.filter(summer =>
         summer.nameSummer.toLowerCase().includes(search.toLowerCase()) ||
@@ -62,7 +72,7 @@ const SummerDashboard = () => {
                             </svg>
                         </div>
                     </div>
-                    <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Añadir Nuevo</button>
+                    <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600" onClick={() => createNewSummer()}>Añadir Nuevo</button>
                 </div>
 
                 <div className="overflow-x-auto bg-gray-700 rounded-lg shadow">
@@ -96,8 +106,9 @@ const SummerDashboard = () => {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button className="text-blue-400 hover:text-blue-600 mr-3">Editar</button>
-                                        <button className="text-red-400 hover:text-red-600">Eliminar</button>
+                                        <button className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600" onClick={() => handleSummerClick(summer.id)}>Modify</button>
+                                        {/* <button className="text-blue-400 hover:text-blue-600 mr-3">Editar</button>
+                                        <button className="text-red-400 hover:text-red-600">Eliminar</button> */}
                                     </td>
                                 </tr>
                             ))}

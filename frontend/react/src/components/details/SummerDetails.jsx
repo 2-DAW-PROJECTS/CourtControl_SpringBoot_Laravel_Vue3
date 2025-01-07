@@ -64,13 +64,13 @@ const SummerDetails = () => {
 
     const handleDeleteSummer = () => {
         const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
-        const userCode = prompt(`Please enter the following code to confirm deletion: ${randomCode}`);
+        const userCode = prompt(`⚠️ WARNING: Estas apunto de eliminar ${formData.nameSummer}! ⚠️\n\nSi quieres eliminarla introduce este codigo y confirma como administrador: ${randomCode}\n\nNote: Esto no se puede deshacer. Si no quieres eliminarla, pulsa Cancelar.\n\nCodigo: `);
         if (userCode === randomCode) {
             dispatch(deleteExistingSummer(id));
             navigate('/admin/summers');
             setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 500);
         } else {
             alert('Incorrect code. Deletion cancelled.');
         }
