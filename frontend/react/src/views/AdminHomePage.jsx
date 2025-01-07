@@ -40,7 +40,7 @@ const AdminHomePage = () => {
                 </Link>
 
                 <Link 
-                    to="/admin/reservations" 
+                    to="/admin/reservations/court" 
                     className="flex flex-col items-center justify-center rounded-xl shadow-xl transition duration-300 p-8 text-center col-span-2"
                     style={{ backgroundColor: "#eb6a65", color: "#f6f1de" }}>
                     <h2 className="text-2xl font-bold mb-4">📅 Bookings</h2>
