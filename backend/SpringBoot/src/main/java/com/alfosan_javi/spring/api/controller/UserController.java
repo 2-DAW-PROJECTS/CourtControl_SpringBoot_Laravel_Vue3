@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import com.alfosan_javi.spring.api.assembler.UserAssembler;
+import com.alfosan_javi.spring.domain.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -16,9 +19,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserAssembler userAssembler;
 
-    public UserController(UserService userService) {
+
+    public UserController(UserService userService, UserAssembler userAssembler) {
         this.userService = userService;
+        this.userAssembler = userAssembler;
     }
 
     @GetMapping("/profile")
@@ -49,6 +55,41 @@ public class UserController {
     public ResponseEntity<UserDTO[]> getAllUsers() {
         UserDTO[] users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUserById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (UserNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        System.out.println("Received userDTO: " + userDTO);
+        try {
+            if (userDTO.getName() == null || userDTO.getEmail() == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            UserDTO updatedUser = userService.updateUserById(id, userDTO);
+            return ResponseEntity.ok(updatedUser);
+        } catch (UserNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        try {
+            UserDTO userDTO = userService.getUserById(id);
+            return ResponseEntity.ok(userDTO);
+        } catch (UserNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
