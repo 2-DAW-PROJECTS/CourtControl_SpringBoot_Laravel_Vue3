@@ -13,11 +13,13 @@ const Header = () => {
 
                 {/* Navegación */}
                 <nav className="hidden md:flex space-x-6">
-                    <Link to="/" className="text-sm font-medium hover:text-white transition duration-300">Inicio</Link>
-                    <Link to="/shop" className="text-sm font-medium hover:text-white transition duration-300">Reserva</Link>
-                    <Link to="/auth" className="text-sm font-medium hover:text-white transition duration-300">Login/Register</Link>
-                    <Link to="/profile" className="text-sm font-medium hover:text-white transition duration-300">Perfil</Link>
-                    <Link to="/home" className="text-sm font-medium hover:text-white transition duration-300">Logout</Link>
+                    <Link to="/admin" className="text-sm font-medium hover:text-white transition duration-300">Inicio</Link>
+                    {/* <Link to="/reservations" className="text-sm font-medium hover:text-white transition duration-300">Reservas</Link>
+                    <Link to="/admin/courts" className="text-sm font-medium hover:text-white transition duration-300">Courts</Link>
+                    <Link to="/admin/lessons" className="text-sm font-medium hover:text-white transition duration-300">Lessons</Link>
+                    <Link to="/admin/summers" className="text-sm font-medium hover:text-white transition duration-300">Summers</Link>
+                    <Link to="/admin/users" className="text-sm font-medium hover:text-white transition duration-300">Users</Link> */}
+                    <Link to="/logout" className="text-sm font-medium hover:text-white transition duration-300">LogOut</Link>
                 </nav>
 
                 {/* Botón de Menú (Mobile) */}
@@ -30,12 +32,9 @@ const Header = () => {
 
             {/* Menú desplegable para móvil */}
             <div className="md:hidden bg-gray-800 text-gray-300">
-                <nav className="flex flex-col space-y-2 py-4 px-6">
-                    <Link to="/" className="text-sm font-medium hover:text-white transition duration-300">Inicio</Link>
-                    <Link to="/shop" className="text-sm font-medium hover:text-white transition duration-300">Reserva</Link>
-                    <Link to="/auth" className="text-sm font-medium hover:text-white transition duration-300">Login/Register</Link>
-                    <Link to="/profile" className="text-sm font-medium hover:text-white transition duration-300">Perfil</Link>
-                    <Link to="/home" className="text-sm font-medium hover:text-white transition duration-300">Logout</Link>
+                <nav className="hidden md:flex space-x-6">
+                    <Link to="/admin" className="text-sm font-medium hover:text-white transition duration-300">Inicio</Link>
+                    <Link to="/admin/users" className="text-sm font-medium hover:text-white transition duration-300">LogOut</Link>
                 </nav>
             </div>
         </header>
