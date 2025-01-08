@@ -45,6 +45,13 @@ const Constants = {
     UPDATE_LESSON_BOOKING: 'lessonBookings/update',
     DELETE_LESSON_BOOKING: 'lessonBookings/delete',
 
+    // Summer Reservation actions
+    FETCH_ALL_SUMMER_BOOKINGS: 'summerBookings/fetchAll',
+    FETCH_SUMMER_BOOKING_BY_ID: 'summerBookings/fetchById',
+    CREATE_SUMMER_BOOKING: 'summerBookings/create',
+    UPDATE_SUMMER_BOOKING: 'summerBookings/update',
+    DELETE_SUMMER_BOOKING: 'summerBookings/delete',
+
 
     // Status codes
     STATUS_OK: 200,

@@ -5,6 +5,7 @@ import summersReducer from './slices/summerSlice';
 import usersReducer from './slices/userSlice';
 import reservationsCourtsReducer from './slices/reservations/reservationCourtSlice';
 import reservationsLessonReducer from './slices/reservations/reservationLessonSlice';
+import reservationsSummerReducer from './slices/reservations/reservationSummerSlice';
 
 
 const store = configureStore({
@@ -15,6 +16,7 @@ const store = configureStore({
         users: usersReducer,
         bookings: reservationsCourtsReducer,
         bookingsLessons: reservationsLessonReducer,
+        bookingsSummers: reservationsSummerReducer,
     },
 });
 

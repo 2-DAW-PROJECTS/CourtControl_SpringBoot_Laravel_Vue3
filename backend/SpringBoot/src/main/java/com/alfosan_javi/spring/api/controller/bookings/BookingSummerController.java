@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/bookings/summers")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookingSummerController {
 
     private final BookingSummerService bookingSummerService;

@@ -18,7 +18,7 @@ const LessonReservationDashboard = () => {
     });
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 7;
+    const itemsPerPage = 6;
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
