@@ -40,6 +40,8 @@ export const lessons = {
             try {
                 const response = await LessonService.GetLessons(filters);
                 if (response.status === Constant.STATUS_OK) {
+                    console.log('Raw data from database:', response.data); 
+
                     commit(Constant.INITIALIZE_LESSONS, response.data);
                 } else {
                     throw new Error(`HTTP error! status: ${response.status}`);

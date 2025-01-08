@@ -32,9 +32,9 @@ public class SecurityConfig {
             .cors(cors -> cors.disable()) // Puedes habilitar o deshabilitar CORS según lo necesites
             .authorizeRequests(auth -> auth
                 // Rutas públicas
-                .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/**").permitAll()
+                .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/**", "/api/bookings/**").permitAll()
                 // Rutas protegidas
-                .requestMatchers("/api/users/profile", "/api/bookings/**").authenticated()
+                .requestMatchers("/api/users/profile").authenticated()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/employee/**").hasAnyRole("EMPLOYEE", "ADMIN")
                 .requestMatchers("/client/**").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN")

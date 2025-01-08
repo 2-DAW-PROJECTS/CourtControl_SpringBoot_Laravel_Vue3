@@ -85,20 +85,55 @@ export default {
     },
   },
   data() {
+    const randomProfileImage = `https://picsum.photos/400?random=${Math.floor(Math.random() * 1000)}`;
+    const isOnline = Math.random() > 0.5;
+    const userBioOptions = [
+      "Entrenador deportivo especializado en tecnificación de alto rendimiento.",
+      "Experto en metodologías avanzadas de entrenamiento y desarrollo atlético.",
+      "Apasionado por el deporte y el desarrollo de atletas jóvenes.",
+      "Especialista en nutrición y preparación física.",
+      "Coach con amplia experiencia en rehabilitación y biomecánica."
+    ];
+    const userBio = userBioOptions[Math.floor(Math.random() * userBioOptions.length)];
+    const sessionsCount = Math.floor(Math.random() * 500);
+    const athletesCount = Math.floor(Math.random() * 200);
+    const achievementsCount = Math.floor(Math.random() * 300);
+    const locationOptions = [
+      "Polideportivo Municipal Las Rozas",
+      "Centro Deportivo La Vaguada",
+      "Gimnasio Fit&Go",
+      "Club Deportivo Alcobendas",
+      "Centro de Alto Rendimiento Blume"
+    ];
+    const location = locationOptions[Math.floor(Math.random() * locationOptions.length)];
+    const departmentOptions = [
+      "Tecnificación Deportiva",
+      "Preparación Física",
+      "Nutrición Deportiva",
+      "Psicología Deportiva",
+      "Rehabilitación"
+    ];
+    const department = departmentOptions[Math.floor(Math.random() * departmentOptions.length)];
+    const skillsOptions = [
+      ["Fútbol", "Baloncesto", "Atletismo"],
+      ["Natación", "Tenis", "Preparación Física"],
+      ["Nutrición Deportiva", "Psicología Deportiva", "Rehabilitación"],
+      ["Biomecánica", "Fútbol", "Natación"],
+      ["Baloncesto", "Atletismo", "Tenis"]
+    ];
+    const skills = skillsOptions[Math.floor(Math.random() * skillsOptions.length)];
+
     return {
-      randomProfileImage: 'https://picsum.photos/400',
-      isOnline: true,
-      userBio: "Entrenador deportivo especializado en tecnificación de alto rendimiento. Experto en metodologías avanzadas de entrenamiento y desarrollo atlético.",
-      sessionsCount: 342,
-      athletesCount: 89,
-      achievementsCount: 156,
-      location: "Polideportivo Municipal Las Rozas",
-      department: "Tecnificación Deportiva",
-      skills: [
-        "Fútbol", "Baloncesto", "Atletismo", "Natación", "Tenis", 
-        "Preparación Física", "Nutrición Deportiva", "Psicología Deportiva", "Rehabilitación", "Biomecánica"
-      ]
-    }
+      randomProfileImage,
+      isOnline,
+      userBio,
+      sessionsCount,
+      athletesCount,
+      achievementsCount,
+      location,
+      department,
+      skills
+    };
   },
   computed: {
     formattedCreatedAt() {

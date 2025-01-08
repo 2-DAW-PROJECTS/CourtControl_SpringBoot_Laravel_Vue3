@@ -8,7 +8,7 @@
     
         <div class="pin"><img src="" alt=""></div>
         <div class="courts-grid">
-            <div v-for="court in courts" :key="court.id" class="sports-card">
+            <div v-for="court in courts" :key="court.id" class="sports-card" @click="goToDetails(court.id)">
                 <!-- <p>{{ court }}</p> -->
             <div class="image-section">
                 <div class="image-overlay">
@@ -68,6 +68,7 @@
     <script>
         import { ref, watch } from 'vue';
         import { useStore } from 'vuex';
+        import { useRouter } from 'vue-router';
         import { useIntersectionObserver } from '@vueuse/core';
         
         export default {
@@ -75,6 +76,7 @@
             
             setup() {
                 const store = useStore();
+                const router = useRouter();
                 const courts = ref([]);
                 const currentPage = ref(1);
                 const loadMoreTrigger = ref(null);
@@ -115,39 +117,37 @@
                 //         isLoading.value = false;
                 //     }                
                 // };
-                const loadNextCourt = async () => {
-    if (isComplete.value || isLoading.value || stopObserver.value) return;
+    const loadNextCourt = async () => {
+        if (isComplete.value || isLoading.value || stopObserver.value) return;
 
-    try {
-        isLoading.value = true;
+        try {
+            isLoading.value = true;
 
-        // Carga las canchas de la página actual
-        await store.dispatch('courts/INITIALIZE_COURTS', {
-            page: currentPage.value,
-            perPage: 3,
-        });
+            await store.dispatch('courts/INITIALIZE_COURTS', {
+                page: currentPage.value,
+                perPage: 3,
+            });
 
-        // Obtén solo las canchas de esta página desde el store
-        const storeCourts = store.getters['courts/allCourts'];
-        const newCourts = storeCourts.slice(
-            (currentPage.value - 1) * 3, 
-            currentPage.value * 3
-        );
+            const storeCourts = store.getters['courts/allCourts'];
+            const newCourts = storeCourts.slice(
+                (currentPage.value - 1) * 3, 
+                currentPage.value * 3
+            );
 
-        if (newCourts.length > 0) {
-            courts.value.push(...newCourts); // Añadir nuevas canchas al arreglo
-            currentPage.value++;
-        } else {
-            isComplete.value = true; // No hay más canchas para cargar
+            if (newCourts.length > 0) {
+                courts.value.push(...newCourts); 
+                currentPage.value++;
+            } else {
+                isComplete.value = true; 
+                stopObserver.value = true;
+            }
+        } catch (error) {
+            hasError.value = true;
             stopObserver.value = true;
+        } finally {
+            isLoading.value = false;
         }
-    } catch (error) {
-        hasError.value = true;
-        stopObserver.value = true;
-    } finally {
-        isLoading.value = false;
-    }
-};
+    };
 
 
                 const observer = useIntersectionObserver(
@@ -168,6 +168,10 @@
                         observer.stop();
                     }
                 });
+                const goToDetails = (courtId) => {
+                    console.log(`Navigating to court details with ID: ${courtId}`);
+                    router.push({ name: 'CourtDetails', params: { id: courtId } });
+                };
             
                 return {
                     courts,
@@ -177,7 +181,8 @@
                     hasError,
                     handleReservation: (courtId) => {
                         console.log(`Reservando la pista ${courtId}`);
-                    }
+                    },
+                    goToDetails
                 };
             }
         };

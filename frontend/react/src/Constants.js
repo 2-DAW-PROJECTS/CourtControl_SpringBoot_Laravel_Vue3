@@ -30,12 +30,37 @@ const Constants = {
     CREATE_SUMMER: 'CREATE_SUMMER',
     UPDATE_SUMMER: 'UPDATE_SUMMER',
     DELETE_SUMMER: 'DELETE_SUMMER',
-    
+
+    // Reservation actions
+    FETCH_ALL_BOOKINGS : 'bookings/fetchAll',
+    FETCH_BOOKING_BY_ID : 'bookings/fetchById',
+    CREATE_BOOKING : 'bookings/create',
+    UPDATE_BOOKING : 'bookings/update',
+    DELETE_BOOKING : 'bookings/delete',
+
+    // Lesson Reservation actions
+    FETCH_ALL_LESSON_BOOKINGS: 'lessonBookings/fetchAll',
+    FETCH_LESSON_BOOKING_BY_ID: 'lessonBookings/fetchById',
+    CREATE_LESSON_BOOKING: 'lessonBookings/create',
+    UPDATE_LESSON_BOOKING: 'lessonBookings/update',
+    DELETE_LESSON_BOOKING: 'lessonBookings/delete',
+
+    // Summer Reservation actions
+    FETCH_ALL_SUMMER_BOOKINGS: 'summerBookings/fetchAll',
+    FETCH_SUMMER_BOOKING_BY_ID: 'summerBookings/fetchById',
+    CREATE_SUMMER_BOOKING: 'summerBookings/create',
+    UPDATE_SUMMER_BOOKING: 'summerBookings/update',
+    DELETE_SUMMER_BOOKING: 'summerBookings/delete',
+
 
     // Status codes
     STATUS_OK: 200,
     STATUS_CREATED: 201,
     STATUS_BAD_REQUEST: 400,
+    STATUS_IDLE : 'idle',
+    STATUS_LOADING : 'loading',
+    STATUS_SUCCEEDED : 'succeeded',
+    STATUS_FAILED : 'failed',
 };
 
 export default Constants;
