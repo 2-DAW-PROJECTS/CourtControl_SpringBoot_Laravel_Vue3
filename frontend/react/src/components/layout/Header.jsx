@@ -50,7 +50,7 @@ const Header = () => {
                 <nav className="hidden md:flex items-center space-x-6">
                     <Link to="/admin" className="text-sm font-medium hover:text-white transition duration-300">Inicio</Link>
 
-                    <Link to="/admin/reservations" className="text-sm font-medium hover:text-white transition duration-300">Bookings</Link>
+                    <Link to="/admin/reservations/court" className="text-sm font-medium hover:text-white transition duration-300">Bookings</Link>
                     <Link to="/admin/courts" className="text-sm font-medium hover:text-white transition duration-300">Dashboards</Link>
                     {/* Notificaciones */}
                     <div className="relative">

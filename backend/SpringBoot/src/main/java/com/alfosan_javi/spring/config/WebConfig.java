@@ -13,11 +13,11 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Permite todos los endpoints
+                registry.addMapping("/**") 
                         .allowedOrigins("http://localhost:8081", "http://127.0.0.1:8081", "http://localhost:3000") 
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
-                        .allowedHeaders("*") // Headers permitidos
-                        .allowCredentials(true); // Permite cookies y headers como Authorization
+                        .allowedHeaders("*")
+                        .allowCredentials(true); 
             }
         };
     }
