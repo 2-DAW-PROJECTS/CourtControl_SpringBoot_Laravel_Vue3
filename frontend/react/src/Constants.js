@@ -37,15 +37,23 @@ const Constants = {
     CREATE_BOOKING : 'bookings/create',
     UPDATE_BOOKING : 'bookings/update',
     DELETE_BOOKING : 'bookings/delete',
-    STATUS_IDLE : 'idle',
-    STATUS_LOADING : 'loading',
-    STATUS_SUCCEEDED : 'succeeded',
-    STATUS_FAILED : 'failed',
+
+    // Lesson Reservation actions
+    FETCH_ALL_LESSON_BOOKINGS: 'lessonBookings/fetchAll',
+    FETCH_LESSON_BOOKING_BY_ID: 'lessonBookings/fetchById',
+    CREATE_LESSON_BOOKING: 'lessonBookings/create',
+    UPDATE_LESSON_BOOKING: 'lessonBookings/update',
+    DELETE_LESSON_BOOKING: 'lessonBookings/delete',
+
 
     // Status codes
     STATUS_OK: 200,
     STATUS_CREATED: 201,
     STATUS_BAD_REQUEST: 400,
+    STATUS_IDLE : 'idle',
+    STATUS_LOADING : 'loading',
+    STATUS_SUCCEEDED : 'succeeded',
+    STATUS_FAILED : 'failed',
 };
 
 export default Constants;
