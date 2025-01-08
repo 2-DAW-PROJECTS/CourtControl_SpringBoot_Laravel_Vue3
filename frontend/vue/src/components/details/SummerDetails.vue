@@ -43,9 +43,10 @@
                     <p>{{ summer.description }}</p>
                     <h3>Actividades</h3>
                     <p>{{ summer.activities }}</p>
-                    <button class="reserve-button" :disabled="!summer.active">
+                    <button class="reserve-button" :disabled="!summer.isActive || !isLoggedIn" @click="handleReservation">
                         <i class="fas fa-calendar-plus"></i> Reservar Ahora
                     </button>
+                    <!-- <p>{{ summer }}</p> -->
                 </div>
             </div>
         </div>
@@ -56,7 +57,7 @@
     </template>
 
     <script>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed } from 'vue';
     import { useStore } from 'vuex';
     import { useRoute, useRouter } from 'vue-router';
     import Constant from '@/Constant';
@@ -79,7 +80,17 @@
                 router.back();
             };
 
-            return { summer, goBack };
+            const handleReservation = () => {
+            if (!store.getters['auth/isLoggedIn']) {
+                router.push({ name: 'Login' });
+            } else {
+                // Lógica de reserva aquí
+            }
+        };
+
+        const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+
+        return { summer, goBack, handleReservation, isLoggedIn };
         },
     };
     </script>
