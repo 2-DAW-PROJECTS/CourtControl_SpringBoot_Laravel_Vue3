@@ -6,6 +6,8 @@ import CourtDetails from '../components/details/CourtDetails.vue';
 import LessonDetails from '../components/details/LessonDetails.vue';
 import SummerDetails from '../components/details/SummerDetails.vue';
 import AuthPage from '../components/auth/Auth.vue';
+import Logout from '../components/auth/logout.vue'; // Importa el nuevo componente
+
 
 const routes = [
   {
@@ -46,6 +48,11 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: ProfilePage,
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout,
   },
 ];
 

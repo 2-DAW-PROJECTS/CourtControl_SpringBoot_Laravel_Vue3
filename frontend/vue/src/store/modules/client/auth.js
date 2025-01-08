@@ -68,8 +68,7 @@ export const auth = {
         const { user, accessToken } = response.data;
         commit(Constant.LOGIN_SUCCESS, { user, accessToken });
 
-        // Redirigir al perfil después de un inicio de sesión exitoso
-        router.push('/profile'); // Cambia '/profile' si tienes otro nombre de ruta
+        router.push('/profile'); 
         return response;
       } catch (error) {
         console.error('LOGIN error:', error);
