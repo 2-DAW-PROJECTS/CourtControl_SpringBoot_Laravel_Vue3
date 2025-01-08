@@ -48,7 +48,6 @@
 </template>
 
 
-
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useStore } from 'vuex';
@@ -84,6 +83,52 @@ export default {
       await store.dispatch(`materials/${Constant.INITIALIZE_MATERIAL}`, sportId);
     };
 
+    const updateSportFilter = async () => {
+      await initializeMaterial(selectedSport.value);
+      emit("update:modelValue", {
+        ...filters.value,
+        sport: selectedSport.value ? [selectedSport.value] : [],
+      });
+    };
+
+    const updateMaterialFilter = () => {
+      emit("update:modelValue", {
+        ...filters.value,
+        material: selectedMaterial.value,
+      });
+    };
+
+    const clearFilters = () => {
+      emit("update:modelValue", {
+        ...filters.value,
+        category: 'pistas',
+        sport: [],
+        material: "",
+        search: "",
+      });
+      selectedSport.value = "";
+      selectedMaterial.value = "";
+      initializeMaterial();
+    };
+
+    const handleCategoryChange = () => {
+      emit("update:modelValue", filters.value);
+      window.location.reload();
+    };
+
+    watch(() => route.query, (query) => {
+      if (query.category) {
+        emit("update:modelValue", {
+          ...props.modelValue,
+          category: query.category
+        });
+      }
+      if (query.sport) {
+        selectedSport.value = query.sport[0];
+        updateSportFilter();
+      }
+    }, { immediate: true });
+
     onMounted(async () => {
       if (route.query.sport) {
         await initializeMaterial(route.query.sport[0]);
@@ -99,6 +144,71 @@ export default {
       }
     });
 
+    const toggleDropdown = () => {
+      isOpen.value = !isOpen.value;
+    };
+
+    return {
+      isOpen,
+      selectedSport,
+      selectedMaterial,
+      filters,
+      materials,
+      loading,
+      error,
+      toggleDropdown,
+      updateSportFilter,
+      updateMaterialFilter,
+      clearFilters,
+      handleCategoryChange,
+    };
+  }
+};
+</script>
+<!-- <script>
+import { ref, computed, watch, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import Constant from '../../Constant';
+
+export default {
+  name: "ShopFilters",
+  props: {
+    modelValue: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const route = useRoute();
+
+    
+    const isOpen = ref(false);
+    const selectedSport = ref(route.query.sport ? route.query.sport[0] : "");
+    const selectedMaterial = ref("");
+
+    const filters = computed({
+      get: () => props.modelValue,
+      set: (value) => emit("update:modelValue", value)
+    });
+
+    const materials = computed(() => store.state.materials.materials);
+    const loading = computed(() => store.state.materials.loading);
+    const error = computed(() => store.state.materials.error);
+
+    const initializeMaterial = async (sportId = null) => {
+      await store.dispatch(`materials/${Constant.INITIALIZE_MATERIAL}`, sportId);
+    };
+
+    const updateSportFilter = async () => {
+      await initializeMaterial(selectedSport.value);
+      emit("update:modelValue", {
+        ...filters.value,
+        sport: selectedSport.value ? [selectedSport.value] : [],
+      });
+    };
+
     watch(() => route.query, (query) => {
       if (query.category) {
         emit("update:modelValue", {
@@ -112,16 +222,23 @@ export default {
       }
     }, { immediate: true });
 
+    onMounted(async () => {
+      if (route.query.sport) {
+        await initializeMaterial(route.query.sport[0]);
+      } else {
+        await initializeMaterial();
+      }
+      
+      if (route.query.category) {
+        emit("update:modelValue", {
+          ...props.modelValue,
+          category: route.query.category
+        });
+      }
+    });
+
     const toggleDropdown = () => {
       isOpen.value = !isOpen.value;
-    };
-
-    const updateSportFilter = async () => {
-      await initializeMaterial(selectedSport.value);
-      emit("update:modelValue", {
-        ...filters.value,
-        sport: selectedSport.value ? [selectedSport.value] : [],
-      });
     };
 
     const updateMaterialFilter = () => {
@@ -165,7 +282,7 @@ export default {
     };
   }
 };
-</script>
+</script> -->
 
 
 

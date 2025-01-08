@@ -74,7 +74,7 @@
           <h3>¡Verano de Campeones!</h3>
           <p>¡Diversión asegurada para todos! ¡Ven a vivir la experiencia! 🌞</p>
         </div>
-        <div class="grid-item i12" @click.prevent="navigateToShop(1)">
+        <div class="grid-item i12" @click.prevent="navigateToShop(1, 'academias')">
           <div class="content-overlay"></div>
           <h3>Eventos</h3>
           <p>Competiciones y Torneos 🏆</p>
