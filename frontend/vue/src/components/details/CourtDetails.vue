@@ -47,9 +47,10 @@
             <div class="description-section">
                 <h3>Descripción</h3>
                 <p>{{ court.description }}</p>
-                <button class="reserve-button" :disabled="!court.active">
+                <button class="reserve-button" :disabled="!court.isActive || !isLoggedIn" @click="handleReservation">
                     <i class="fas fa-calendar-plus"></i> Reservar Ahora
                 </button>
+                <!-- <p>{{ court }}</p> -->
             </div>
         </div>
     </div>
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import Constant from '@/Constant';
@@ -84,7 +85,17 @@ export default {
             router.back();
         };
 
-        return { court, goBack };
+        const handleReservation = () => {
+            if (!store.getters['auth/isLoggedIn']) {
+                router.push({ name: 'Login' });
+            } else {
+                // Lógica de reserva aquí
+            }
+        };
+
+        const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+
+        return { court, goBack, handleReservation, isLoggedIn };
     },
 };
 </script>

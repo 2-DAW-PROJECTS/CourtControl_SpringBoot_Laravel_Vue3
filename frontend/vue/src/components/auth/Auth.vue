@@ -141,6 +141,9 @@ export default {
                     console.error('Error logging in:', error);
                 } finally {
                     console.log('El proceso auth ha finalizado');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 600);
                 }
             } else {
                 console.log('Errores en el formulario:', v$.value.$errors);
@@ -166,6 +169,9 @@ export default {
                     console.error('Error registering:', error);
                 } finally {
                     console.log('El proceso de registro ha finalizado');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 600);
                 }
             } else {
                 console.log('Errores en el formulario:', v$.value.$errors);
