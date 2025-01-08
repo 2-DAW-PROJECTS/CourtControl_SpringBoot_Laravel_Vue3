@@ -1,4 +1,5 @@
 package com.alfosan_javi.spring.domain.service;
+
 // Local imports
 import com.alfosan_javi.spring.api.response.LoginRequest;
 import com.alfosan_javi.spring.api.response.LoginResponse;
@@ -17,18 +18,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
-//fornecedor de dependencias
-import com.fasterxml.jackson.databind.ObjectMapper; // Importación necesaria
+// Fornecedor de dependencias
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 // Java imports
 import java.util.Optional;
 import java.time.Instant;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class AuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     private final RestTemplate restTemplate;
     private final UserRepository userRepository;
@@ -38,11 +48,10 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
-    // Inyección de dependencias
     @Autowired
     public AuthService(RestTemplate restTemplate, UserRepository userRepository, JwtUtils jwtUtils,
-                        RefreshTokenRepository refreshTokenRepository, RefreshTokenService refreshTokenService,
-                        PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+                       RefreshTokenRepository refreshTokenRepository, RefreshTokenService refreshTokenService,
+                       PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.restTemplate = restTemplate;
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
@@ -127,42 +136,58 @@ public class AuthService {
                 .anyMatch(role -> role.getName().equals("ADMIN"));
     }
 
-private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
-    String url = "http://apache/api/admin/test";
-    LoginResponse loginResponse = null;
-    try {
-        System.out.println("Enviando solicitud a Laravel con URL: " + url);
-        System.out.println("Datos de la solicitud: " + loginRequest);
+    // Método para autenticar admin en Laravel
+    private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
+        String url = "http://localhost:80/api/admin/auth/login";
+        
+        try {
+            // Crear el encabezado HTTP y la entidad que incluye el cuerpo
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String response = restTemplate.postForObject(url, loginRequest, String.class);
+            HttpEntity<LoginRequest> requestEntity = new HttpEntity<>(loginRequest, headers);
 
-        System.out.println("Respuesta recibida de Laravel: " + response);
+            // Enviar solicitud POST al servidor Laravel
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        loginResponse = objectMapper.readValue(response, LoginResponse.class);
+            // Log de la respuesta para depuración
+            log.info("Response from Laravel: Status - {}, Body - {}", 
+                     responseEntity.getStatusCode(), 
+                     responseEntity.getBody());
 
-        System.out.println("Respuesta deserializada a LoginResponse: " + loginResponse);
+            // Verificar si la respuesta es exitosa
+            if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
+                // Mapear la respuesta JSON a LoginResponse
+                ObjectMapper objectMapper = new ObjectMapper();
+                LoginResponse loginResponse = objectMapper.readValue(responseEntity.getBody(), LoginResponse.class);
 
-    } catch (Exception e) {
-        System.err.println("Error al autenticar admin en Laravel: " + e.getMessage());
-        e.printStackTrace();
+                // Validar que los tokens no sean nulos
+                if (loginResponse.getAccessToken() == null || loginResponse.getRefreshToken() == null) {
+                    throw new IllegalArgumentException("Tokens nulos en la respuesta de Laravel.");
+                }
+
+                return loginResponse;
+            } else {
+                throw new IllegalArgumentException("Error al autenticar admin en Laravel: Código de estado - " 
+                                                   + responseEntity.getStatusCode());
+            }
+        } catch (Exception e) {
+            // Manejar errores
+            log.error("Error al autenticar admin en Laravel", e);
+            throw new IllegalArgumentException("Error al autenticar admin en Laravel: " + e.getMessage(), e);
+        }
     }
-    if (loginResponse == null) {
-        throw new IllegalArgumentException("Failed to authenticate admin in Laravel");
-    }
-    return loginResponse;
-}
 
+    // Validación de correo electrónico
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
         return pattern.matcher(email).matches();
     }
 
+    // Obtener usuario por correo
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 }
-
-
