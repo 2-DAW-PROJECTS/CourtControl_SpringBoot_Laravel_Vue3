@@ -21,6 +21,19 @@ public class UserService {
         this.userAssembler = userAssembler;
     }
 
+    public UserDTO updateUserProfile(UserDTO userDTO) {
+        Optional<User> userOptional = userRepository.findById(userDTO.getId());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setName(userDTO.getName());
+            user.setEmail(userDTO.getEmail());
+            // Actualiza otros campos según sea necesario
+            userRepository.save(user);
+            return new UserDTO(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
     // public UserDTO getUserByEmail(String email) {
     //     User user = userRepository.findByEmail(email)
     //             .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));

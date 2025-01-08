@@ -10,6 +10,7 @@ import { summers } from './modules/client/summers';
 import { summersDashboard } from './modules/dashboard/summersDashboard';
 import { auth } from './modules/client/auth';
 import { profile } from './modules/client/profile';
+import { user } from './modules/client/user';
 
 export default createStore({
   strict: process.env.NODE_ENV !== 'production',
@@ -45,5 +46,6 @@ export default createStore({
     summers,
     summersDashboard,
     auth,
+    user
   },
 });

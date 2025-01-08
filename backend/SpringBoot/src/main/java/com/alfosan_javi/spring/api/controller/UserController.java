@@ -50,6 +50,12 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/profile")
+    public ResponseEntity<UserDTO> updateUserProfile(@RequestBody UserDTO userDTO) {
+        UserDTO updatedUser = userService.updateUserProfile(userDTO);
+        return ResponseEntity.ok(updatedUser);
+    }
+
 
     @GetMapping
     public ResponseEntity<UserDTO[]> getAllUsers() {
