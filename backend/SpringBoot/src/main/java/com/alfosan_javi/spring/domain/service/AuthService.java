@@ -128,7 +128,7 @@ public class AuthService {
     }
 
 private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
-    String url = "http://apache/api/admin/test";
+    String url = "http://apache/api/admin/auth/login";
     LoginResponse loginResponse = null;
     try {
         System.out.println("Enviando solicitud a Laravel con URL: " + url);
@@ -164,5 +164,3 @@ private LoginResponse authenticateAdminInLaravel(LoginRequest loginRequest) {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 }
-
-
