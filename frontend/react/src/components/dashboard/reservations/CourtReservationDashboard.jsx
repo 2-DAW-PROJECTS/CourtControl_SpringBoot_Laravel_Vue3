@@ -57,18 +57,18 @@ const CourtReservationDashboard = () => {
         localStorage.setItem('rejectedBookings', JSON.stringify(rejectedBookings));
     }, [rejectedBookings]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData(prev => ({
+    //         ...prev,
+    //         [name]: value
+    //     }));
+    // };
 
-    const handleUpdate = (id) => {
-        const token = localStorage.getItem('token'); 
-        dispatch(updateNewBooking({ id, bookingData: formData, token }));
-    };
+    // const handleUpdate = (id) => {
+    //     const token = localStorage.getItem('token'); 
+    //     dispatch(updateNewBooking({ id, bookingData: formData, token }));
+    // };
 
     const handleDelete = (id) => {
         const token = localStorage.getItem('token'); 
@@ -129,17 +129,17 @@ const CourtReservationDashboard = () => {
                                         {users.find(user => user.id === booking.idUser)?.name || 'Unknown User'}
                                     </div>
                                     <div className="flex space-x-2 mt-2">
-                                        <button 
+                                        {/* <button 
                                             className="px-2 py-1 bg-[#92d8be] text-[#23232f] rounded-lg font-semibold hover:bg-[#9bada1] transition-all duration-200"
                                             onClick={() => handleUpdate(booking.id)}
                                         >
                                             Update
-                                        </button>
+                                        </button> */}
                                         <button 
                                             className="px-2 py-1 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-700 transition-all duration-200"
                                             onClick={() => handleDelete(booking.id)}
                                         >
-                                            Delete
+                                            Reject
                                         </button>
                                     </div>
                                 </div>
