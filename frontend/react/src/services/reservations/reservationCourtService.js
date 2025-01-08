@@ -3,14 +3,18 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8085/api/bookings/court';
 
 export const getAllBookings = async (token) => {
+    // console.log(`Bearer ${token}`);
     try {
         const response = await axios.get(API_URL, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        // console.log(`Bearer ${token}`);
+        // console.log('Response from backend:', response.data);
         return response.data;
     } catch (error) {
+        console.error('Error fetching bookings:', error.response?.data?.message || error.message);
         throw new Error(error.response?.data?.message || error.message);
     }
 };

@@ -12,7 +12,7 @@ const store = configureStore({
         lessons: lessonsReducer,
         summers: summersReducer,
         users: usersReducer,
-        reservationsCourt: reservationsCourtsReducer,
+        bookings: reservationsCourtsReducer,
     },
 });
 
