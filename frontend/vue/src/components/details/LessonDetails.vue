@@ -58,10 +58,10 @@
                 <div class="description-section">
                     <h3>Descripción</h3>
                     <p>{{ lesson.description }}</p>
-                    <button class="reserve-button" :disabled="!lesson.active">
-                        <i class="fas fa-calendar-plus"></i>
-                        Reservar Ahora
-                    </button>
+                    <button class="reserve-button" :disabled="!lesson.isActive || !isLoggedIn" @click="handleReservation">
+                    <i class="fas fa-calendar-plus"></i> Reservar Ahora
+                </button>
+                    <!-- <p>{{ lesson }}</p> -->
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
     </template>
 
     <script>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed } from 'vue';
     import { useStore } from 'vuex';
     import { useRoute, useRouter } from 'vue-router';
     import Constant from '@/Constant';
@@ -96,8 +96,17 @@
             const goBack = () => {
                 router.back();
             };
+            const handleReservation = () => {
+            if (!store.getters['auth/isLoggedIn']) {
+                router.push({ name: 'Login' });
+            } else {
+                // Lógica de reserva aquí
+            }
+        };
 
-            return { lesson, goBack };
+        const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+
+        return { lesson, goBack, handleReservation, isLoggedIn };
         },
     };
     </script>

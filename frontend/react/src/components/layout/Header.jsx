@@ -27,6 +27,10 @@ const Header = () => {
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.href = 'http://localhost:8081/logout';
+    };
 
     return (
 
@@ -65,7 +69,7 @@ const Header = () => {
                             )}
                         </button>
                     </div>
-                    <Link to="/logout" className="text-sm font-medium bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition duration-300">LogOut</Link>
+                    <button onClick={handleLogout} className="text-sm font-medium bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition duration-300">LogOut</button>
                 </nav>
 
                 {/* Botón de Menú (Mobile) */}

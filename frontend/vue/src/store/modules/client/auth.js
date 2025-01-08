@@ -81,7 +81,6 @@ export const auth = {
           // Si no, redirigir a la página de perfil
           router.push('/profile'); // Cambia '/profile' si tienes otro nombre de ruta
         }
-
         return response;
       } catch (error) {
         console.error('LOGIN error:', error);
