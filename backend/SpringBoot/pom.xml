@@ -165,7 +165,6 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.36</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

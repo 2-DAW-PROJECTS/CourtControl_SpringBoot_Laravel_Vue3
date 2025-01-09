@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -29,7 +30,7 @@ public class UserService {
             user.setEmail(userDTO.getEmail());
             // Actualiza otros campos según sea necesario
             userRepository.save(user);
-            return new UserDTO(user);
+            return new UserDTO(user);  // Aquí se utiliza el nuevo constructor
         } else {
             throw new RuntimeException("User not found");
         }
