@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTokens } from './store/slices/userSlice';
+
+import { setTokens, fetchCurrentUser } from './store/slices/userSlice';
+
+import Constants from './Constants';
 
 import DashboardsPage from './views/DashboardsPage';
 import AdminHomePage from './views/AdminHomePage';
@@ -32,18 +35,26 @@ const App = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const encryptedAccessToken = urlParams.get('accessToken');
         const encryptedRefreshToken = urlParams.get('refreshToken');
-    
+
+
         if (encryptedAccessToken && encryptedRefreshToken) {
+            try {
             const accessToken = atob(encryptedAccessToken);
             const refreshToken = atob(encryptedRefreshToken);
-        
-            dispatch(setTokens({ accessToken, refreshToken }));
 
-        
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
-        
-            window.history.replaceState({}, document.title, window.location.pathname);
+                console.log(accessToken);
+                console.log(refreshToken);
+
+                dispatch(setTokens({ accessToken, refreshToken }));
+                dispatch(fetchCurrentUser(accessToken));
+
+                localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
+
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } catch (error) {
+                console.error('Error decoding tokens:', error);
+            }
         }
     }, [dispatch]);
 

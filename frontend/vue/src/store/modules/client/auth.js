@@ -86,6 +86,8 @@ export const auth = {
           const encryptedRefreshToken = btoa(storedRefreshToken);
           // console.log('Encrypted Access Token:', encryptedAccessToken);
           // console.log('Encrypted Refresh Token:', encryptedRefreshToken);
+          // console.log('Stored Access Token:', storedAccessToken);
+          // alert(storedAccessToken);
           window.location.href = `http://localhost:3000?accessToken=${encryptedAccessToken}&refreshToken=${encryptedRefreshToken}`;
         } else {
           router.push('/profile');
