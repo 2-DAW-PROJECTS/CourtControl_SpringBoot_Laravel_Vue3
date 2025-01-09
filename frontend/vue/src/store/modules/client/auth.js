@@ -71,21 +71,21 @@ export const auth = {
       try {
         const response = await AuthService.login(credentials);
         const { accessToken, refreshToken } = response.data;
-
-
-
-
         // console.log('Login successful, Access Token:', accessToken); 
 
         commit(Constant.LOGIN_SUCCESS, { accessToken, refreshToken });
 
-        const storedAccessToken = this.state.accessToken;
-        const storedRefreshToken = this.state.refreshToken;
+        const storedAccessToken = this.state.accessToken || localStorage.getItem('accessToken');
+        const storedRefreshToken = this.state.refreshToken || localStorage.getItem('refreshToken');
+
+        // console.log('Stored Access Token:', storedAccessToken);
+        // console.log('Stored Refresh Token:', storedRefreshToken);
 
         if (storedAccessToken === storedRefreshToken) {
           const encryptedAccessToken = btoa(storedAccessToken);
           const encryptedRefreshToken = btoa(storedRefreshToken);
-
+          // console.log('Encrypted Access Token:', encryptedAccessToken);
+          // console.log('Encrypted Refresh Token:', encryptedRefreshToken);
           window.location.href = `http://localhost:3000?accessToken=${encryptedAccessToken}&refreshToken=${encryptedRefreshToken}`;
         } else {
           router.push('/profile');
