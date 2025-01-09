@@ -21,6 +21,7 @@
             store.dispatch('auth/logout').then(() => {
                 router.push('/auth');
             });
+            localStorage.clear();
         };
     
         onMounted(() => {

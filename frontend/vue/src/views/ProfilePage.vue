@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import DetailsUser from "@/components/profile/DetailsUser.vue";
 import Constant from '@/Constant';
 
@@ -29,17 +30,21 @@ export default {
   components: {
     DetailsUser,
   },
-  computed: {
-    ...mapState('profile', ['userProfile', 'loading', 'error']),
-    isLoading() {
-      return this.loading;
-    },
-  },
-  methods: {
-    ...mapActions('profile', [Constant.FETCH_USER_PROFILE]),
-  },
-  mounted() {
-    this.FETCH_USER_PROFILE();
+  setup() {
+    const store = useStore();
+    const userProfile = computed(() => store.state.profile.userProfile);
+    const isLoading = computed(() => store.state.profile.loading);
+    const error = computed(() => store.state.profile.error);
+
+    onMounted(() => {
+      store.dispatch(`profile/${Constant.FETCH_USER_PROFILE}`);
+    });
+
+    return {
+      userProfile,
+      isLoading,
+      error,
+    };
   },
 };
 </script>

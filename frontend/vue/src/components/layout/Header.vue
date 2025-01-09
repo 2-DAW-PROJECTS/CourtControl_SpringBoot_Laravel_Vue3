@@ -37,6 +37,7 @@ export default {
     const logout = () => {
       store.commit('auth/LOGOUT');
       store.dispatch('auth/logout');
+      localStorage.clear();
     };
 
     return {

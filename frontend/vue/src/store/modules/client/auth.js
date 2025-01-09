@@ -10,6 +10,7 @@ export const auth = {
   state: {
     user: null,
     accessToken: localStorage.getItem('accessToken') || null,
+    refreshToken: localStorage.getItem('refreshToken') || null,
     status: { loggedIn: false },
     loading: false,
     error: null,
@@ -25,18 +26,18 @@ export const auth = {
     [Constant.LOGIN_SUCCESS](state, { accessToken, refreshToken }) {
       state.status.loggedIn = true;
       state.accessToken = accessToken;
-  
-      // Guardar ambos tokens en el localStorage
+      state.refreshToken = refreshToken;
       localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken); // Guardar el refreshToken también
+      localStorage.setItem('refreshToken', refreshToken);
       toaster.success('Login successful');
     },
     [Constant.LOGOUT](state) {
       state.status.loggedIn = false;
       state.user = null;
       state.accessToken = null;
-
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('accessToken');
+      localStorage.clear();
       toaster.success('Logged out successfully');
     },
     [Constant.LOGIN_FAILURE](state) {
@@ -54,13 +55,16 @@ export const auth = {
       toaster.error('Registration failed');
     },
     initializeState(state) {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
+      const accessToken = state.accessToken || localStorage.getItem('accessToken');
+      const refreshToken = state.refreshToken || localStorage.getItem('refreshToken');
+      if (accessToken && refreshToken) {{
         state.status.loggedIn = true;
-        state.accessToken = token;
+        state.accessToken = accessToken;
+        state.refreshToken = refreshToken;
       }
     }
-  },
+  }
+},
   actions: {
     async [Constant.LOGIN_SUCCESS]({ commit }, credentials) {
       commit(Constant.SET_LOADING, true);

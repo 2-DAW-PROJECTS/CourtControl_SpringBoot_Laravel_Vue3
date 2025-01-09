@@ -20,8 +20,10 @@ export default {
   mounted() {
     const store = useStore();
 
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('accessToken') || store.state.auth.accessToken;
     
+    // console.log('APP.vue accessToken:', accessToken);
+
     if (accessToken) {
       store.commit('LOGIN_SUCCESS', {
         user: JSON.parse(localStorage.getItem('user')),
