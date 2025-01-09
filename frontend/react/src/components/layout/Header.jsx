@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useLogout from '../../hooks/useLogout';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date());
     const [notifications] = useState(3);
+    const handleLogout = useLogout();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -27,10 +29,10 @@ const Header = () => {
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
-    const handleLogout = () => {
-        localStorage.clear();
-        window.location.href = 'http://localhost:8081/logout';
-    };
+    // const handleLogout = () => {
+    //     localStorage.clear();
+    //     window.location.href = 'http://localhost:8081/logout';
+    // };
 
     return (
 
