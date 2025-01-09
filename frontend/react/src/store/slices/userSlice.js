@@ -34,8 +34,15 @@ const usersSlice = createSlice({
         currentUser: null,
         status: 'idle',
         error: null,
+        accessToken: localStorage.getItem('accessToken') || null,
+        refreshToken: localStorage.getItem('refreshToken') || null,
     },
-    reducers: {},
+    reducers: {
+        setTokens(state, action) {
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
+        },
+    },
     extraReducers: (builder) => {
         builder
         .addCase(fetchUsers.pending, (state) => {
@@ -99,4 +106,5 @@ const usersSlice = createSlice({
     },
 });
 
+export const { setTokens } = usersSlice.actions;
 export default usersSlice.reducer;

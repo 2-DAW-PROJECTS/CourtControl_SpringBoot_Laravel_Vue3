@@ -15,77 +15,89 @@ export const auth = {
     loading: false,
     error: null,
   },
-  mutations: {
-    [Constant.SET_LOADING](state, status) {
-      state.loading = status;
-    },
-    [Constant.SET_ERROR](state, error) {
-      state.error = error;
-      toaster.error(error);
-    },
-    [Constant.LOGIN_SUCCESS](state, { accessToken, refreshToken }) {
-      state.status.loggedIn = true;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      toaster.success('Login successful');
-    },
-    [Constant.LOGOUT](state) {
-      state.status.loggedIn = false;
-      state.user = null;
-      state.accessToken = null;
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('accessToken');
-      localStorage.clear();
-      toaster.success('Logged out successfully');
-    },
-    [Constant.LOGIN_FAILURE](state) {
-      state.status.loggedIn = false;
-      state.user = null;
-      state.accessToken = null;
-      toaster.error('Login failed');
-    },
-    [Constant.REGISTER_SUCCESS](state) {
-      state.status.loggedIn = false;
-      toaster.success('Registration successful');
-    },
-    [Constant.REGISTER_FAILURE](state) {
-      state.status.loggedIn = false;
-      toaster.error('Registration failed');
-    },
-    initializeState(state) {
-      const accessToken = state.accessToken || localStorage.getItem('accessToken');
-      const refreshToken = state.refreshToken || localStorage.getItem('refreshToken');
-      if (accessToken && refreshToken) {{
+    mutations: {
+      [Constant.SET_LOADING](state, status) {
+        state.loading = status;
+      },
+      [Constant.SET_ERROR](state, error) {
+        state.error = error;
+        toaster.error(error);
+      },
+      [Constant.LOGIN_SUCCESS](state, { accessToken, refreshToken }) {
         state.status.loggedIn = true;
         state.accessToken = accessToken;
         state.refreshToken = refreshToken;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        toaster.success('Login successful');
+      },
+      [Constant.LOGOUT](state) {
+        state.status.loggedIn = false;
+        state.user = null;
+        state.accessToken = null;
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('accessToken');
+        localStorage.clear();
+        toaster.success('Logged out successfully');
+      },
+      [Constant.LOGIN_FAILURE](state) {
+        state.status.loggedIn = false;
+        state.user = null;
+        state.accessToken = null;
+        toaster.error('Login failed');
+      },
+      [Constant.REGISTER_SUCCESS](state) {
+        state.status.loggedIn = false;
+        toaster.success('Registration successful');
+      },
+      [Constant.REGISTER_FAILURE](state) {
+        state.status.loggedIn = false;
+        toaster.error('Registration failed');
+      },
+      initializeState(state) {
+        const accessToken = state.accessToken || localStorage.getItem('accessToken');
+        const refreshToken = state.refreshToken || localStorage.getItem('refreshToken');
+        if (accessToken && refreshToken) {{
+          state.status.loggedIn = true;
+          state.accessToken = accessToken;
+          state.refreshToken = refreshToken;
+        }
       }
     }
-  }
-},
+  },
   actions: {
     async [Constant.LOGIN_SUCCESS]({ commit }, credentials) {
       commit(Constant.SET_LOADING, true);
       try {
-        // Realizar el login a través del servicio de autenticación
         const response = await AuthService.login(credentials);
         const { accessToken, refreshToken } = response.data;
 
-        console.log('Login successful, Access Token:', accessToken); // Verificación
+
+
+
+        // console.log('Login successful, Access Token:', accessToken); 
 
         commit(Constant.LOGIN_SUCCESS, { accessToken, refreshToken });
 
-        // Compara el accessToken y refreshToken
-        if (accessToken === refreshToken) {
-          // Si los tokens son iguales, redirigir a la página de admin
-          window.location.href = 'http://localhost:3000/admin'; // Redirige a la app de React
+        const storedAccessToken = this.state.accessToken;
+        const storedRefreshToken = this.state.refreshToken;
+
+        if (storedAccessToken === storedRefreshToken) {
+          const encryptedAccessToken = btoa(storedAccessToken);
+          const encryptedRefreshToken = btoa(storedRefreshToken);
+
+          window.location.href = `http://localhost:3000?accessToken=${encryptedAccessToken}&refreshToken=${encryptedRefreshToken}`;
         } else {
-          // Si no, redirigir a la página de perfil
-          router.push('/profile'); // Cambia '/profile' si tienes otro nombre de ruta
+          router.push('/profile');
         }
         return response;
+
+
+
+
+
+
+
       } catch (error) {
         console.error('LOGIN error:', error);
         commit(Constant.SET_ERROR, error.message);

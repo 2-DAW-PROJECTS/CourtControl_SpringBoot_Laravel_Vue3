@@ -131,20 +131,18 @@ export default {
                     password: formData.password
                 });
 
-                // Redireccionar o manejar el flujo después del login
                 } catch (error) {
                 console.error('Error logging in:', error);
                 } finally {
                 console.log('El proceso auth ha finalizado');
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 600);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 600);
                 }
             } else {
                 console.log('Errores en el formulario:', v$.value.$errors);
             }
             };
-  
         
         
         const register = async () => {
