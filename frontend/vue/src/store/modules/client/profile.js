@@ -1,5 +1,5 @@
-import Constant from '@/Constant';  // Importar las constantes
-import { DetailsUserService } from '@/services/client/DetailsUserService';  // Importar el servicio
+import Constant from '@/Constant';  
+import { DetailsUserService } from '@/services/client/DetailsUserService';
 
 export const profile = {
   namespaced: true,
@@ -20,18 +20,21 @@ export const profile = {
     },
   },
   actions: {
-    // Cambia el nombre de la acción a FETCH_USER_PROFILE
     async FETCH_USER_PROFILE({ commit, rootState }) {
       commit(Constant.SET_LOADING, true);
       try {
-        const token = rootState.auth.accessToken;  // Asegúrate de que el token esté correctamente accesible
-        const profileData = await DetailsUserService.getUserProfile(token);  // Llamada al servicio
-        commit(Constant.SET_USER_PROFILE, profileData);  // Guarda el perfil en el estado
+        // console.log('Fetching user profile...');
+        const token = rootState.auth.accessToken;
+        // console.log('Access token:', token);
+        const profileData = await DetailsUserService.getUserProfile(token);
+        // console.log('Profile data received:', profileData);
+        commit(Constant.SET_USER_PROFILE, profileData);
       } catch (error) {
         commit(Constant.SET_ERROR, error.message);
         console.error('Error al cargar perfil:', error.message);
       } finally {
         commit(Constant.SET_LOADING, false);
+        // console.log('Finished fetching user profile.');
       }
     },
   },

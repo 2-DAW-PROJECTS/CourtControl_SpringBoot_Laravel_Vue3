@@ -136,9 +136,9 @@ export default {
                 console.error('Error logging in:', error);
                 } finally {
                 console.log('El proceso auth ha finalizado');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 600);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 600);
                 }
             } else {
                 console.log('Errores en el formulario:', v$.value.$errors);
