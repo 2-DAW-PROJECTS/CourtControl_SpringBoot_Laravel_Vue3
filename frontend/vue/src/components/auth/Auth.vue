@@ -126,29 +126,25 @@ export default {
             v$.value.$touch();
             if (!v$.value.$invalid) {
                 try {
-                    // const response = 
-                    await store.dispatch(`auth/${Constant.LOGIN_SUCCESS}`, {
-                        email: formData.email,
-                        password: formData.password
-                    });
+                await store.dispatch(`auth/${Constant.LOGIN_SUCCESS}`, {
+                    email: formData.email,
+                    password: formData.password
+                });
 
-                    // const accessToken = store.getters['auth/getAccessToken'];
-                    // console.log('AccessToken:', accessToken);
-
-                    // console.log('Login successful:', response);
-                    // console.log(response.data.accessToken);
+                // Redireccionar o manejar el flujo después del login
                 } catch (error) {
-                    console.error('Error logging in:', error);
+                console.error('Error logging in:', error);
                 } finally {
-                    console.log('El proceso auth ha finalizado');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 600);
+                console.log('El proceso auth ha finalizado');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 600);
                 }
             } else {
                 console.log('Errores en el formulario:', v$.value.$errors);
             }
-        };      
+            };
+  
         
         
         const register = async () => {

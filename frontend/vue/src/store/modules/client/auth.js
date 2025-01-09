@@ -22,12 +22,13 @@ export const auth = {
       state.error = error;
       toaster.error(error);
     },
-    [Constant.LOGIN_SUCCESS](state, { user, accessToken }) {
+    [Constant.LOGIN_SUCCESS](state, { accessToken, refreshToken }) {
       state.status.loggedIn = true;
-      state.user = user;
       state.accessToken = accessToken;
-
+  
+      // Guardar ambos tokens en el localStorage
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken); // Guardar el refreshToken también
       toaster.success('Login successful');
     },
     [Constant.LOGOUT](state) {
@@ -64,11 +65,22 @@ export const auth = {
     async [Constant.LOGIN_SUCCESS]({ commit }, credentials) {
       commit(Constant.SET_LOADING, true);
       try {
+        // Realizar el login a través del servicio de autenticación
         const response = await AuthService.login(credentials);
-        const { user, accessToken } = response.data;
-        commit(Constant.LOGIN_SUCCESS, { user, accessToken });
+        const { accessToken, refreshToken } = response.data;
 
-        router.push('/profile'); 
+        console.log('Login successful, Access Token:', accessToken); // Verificación
+
+        commit(Constant.LOGIN_SUCCESS, { accessToken, refreshToken });
+
+        // Compara el accessToken y refreshToken
+        if (accessToken === refreshToken) {
+          // Si los tokens son iguales, redirigir a la página de admin
+          window.location.href = 'http://localhost:3000/admin'; // Redirige a la app de React
+        } else {
+          // Si no, redirigir a la página de perfil
+          router.push('/profile'); // Cambia '/profile' si tienes otro nombre de ruta
+        }
         return response;
       } catch (error) {
         console.error('LOGIN error:', error);
@@ -101,7 +113,6 @@ export const auth = {
   getters: {
     isLoading: state => state.loading,
     getError: state => state.error,
-    getUser: state => state.user,
     getAccessToken: state => state.accessToken,
     isLoggedIn: state => state.status.loggedIn || !!state.accessToken
   }

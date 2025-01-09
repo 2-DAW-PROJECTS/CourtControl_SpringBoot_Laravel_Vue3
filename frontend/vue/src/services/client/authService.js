@@ -4,19 +4,17 @@ const API_URL = 'http://localhost:8085/api/auth';
 
 class AuthService {
     async login(user) {
-        // console.log('llega al service de login con:', user);
         try {
-            const response = await axios.post(`${API_URL}/login`, {
-                email: user.email,
-                password: user.password,
-            });
-            // console.log(response);
-            return response;
+          const response = await axios.post(`${API_URL}/login`, {
+            email: user.email,
+            password: user.password,
+          });
+          return response; // Retornar la respuesta, que contendrá ambos tokens
         } catch (error) {
-            console.error("Error during login:", error.response ? error.response.data : error.message);
-            throw error;
+          console.error("Error during login:", error.response ? error.response.data : error.message);
+          throw error;
         }
-    }
+      }
 
 
 
