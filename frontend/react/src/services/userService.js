@@ -11,7 +11,7 @@ export const getUsers = async () => {
     }
 };
 
-export const getUserById = async (id) => {
+export const getUserByEmail = async (id) => {
     try {
         const response = await axios.get(`${API_URL}/email/${id}`);
         return response.data;
@@ -19,7 +19,14 @@ export const getUserById = async (id) => {
         throw new Error(error.response?.data?.message || error.message);
     }
 };
-
+export const getUserById = async (id) => {
+    try {
+        const response = await axios.get(`${API_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
+};
 export const createUser = async (userData) => {
     try {
         const response = await axios.post(API_URL, userData);

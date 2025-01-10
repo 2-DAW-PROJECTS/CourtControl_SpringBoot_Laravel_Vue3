@@ -9,7 +9,7 @@ const CreateLessonForm = () => {
 
     const [formData, setFormData] = React.useState({
         nameClass: '',
-        isActive: 1,
+        isActive: 0,
         vacancies: '',
         days: '',
         time: '',
@@ -271,8 +271,7 @@ const CreateLessonForm = () => {
                                     className="w-full px-4 py-2 rounded-md bg-[#23232f] border border-[#9bada1] focus:outline-none focus:ring-2 focus:ring-[#92d8be] text-[#f6f1de]"
                                     required
                                 >
-                                    <option value="false">Inactive</option>
-                                    <option value="true">Active</option>
+                                    <option value="0">Inactive</option>
                                 </select>
                             </div>
                         </div>

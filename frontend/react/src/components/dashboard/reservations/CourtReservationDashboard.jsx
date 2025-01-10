@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllBookings, deleteNewBooking } from '../../../store/slices/reservations/reservationCourtSlice';
 import { fetchCourtById } from '../../../store/slices/courtSlice';
-import { fetchUserById } from '../../../store/slices/userSlice';
+import { fetchUserByEmail } from '../../../store/slices/userSlice';
 import Constants from '../../../Constants';
 
 const CourtReservationDashboard = () => {
@@ -38,7 +38,7 @@ const CourtReservationDashboard = () => {
                     setCourts(prevCourts => [...prevCourts, court]);
                 })
                 .catch(error => console.error(`Error fetching court with id ${booking.idCourt}:`, error));
-            dispatch(fetchUserById(booking.email))
+            dispatch(fetchUserByEmail(booking.email))
                 .unwrap()
                 .then(user => {
                     setUsers(prevUsers => [...prevUsers, user]);
