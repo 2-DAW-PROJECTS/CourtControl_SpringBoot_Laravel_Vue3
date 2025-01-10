@@ -10,7 +10,7 @@ import { summers } from './modules/client/summers';
 import { summersDashboard } from './modules/dashboard/summersDashboard';
 import { auth } from './modules/client/auth';
 import { profile } from './modules/client/profile';
-import { user } from './modules/client/user';
+// import { user } from './modules/client/user';
 import bookingCourt from './modules/client/bookingCourt';
 import reservationModule from './modules/client/reservationsCourts';
 
@@ -50,7 +50,7 @@ export default createStore({
     summersDashboard,
     auth,
     bookingCourt,
-    user,
+    // user,
     reservations: reservationModule
   },
 });

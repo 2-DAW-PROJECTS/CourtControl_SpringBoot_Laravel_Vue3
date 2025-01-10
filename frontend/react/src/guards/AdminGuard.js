@@ -10,7 +10,7 @@ const AdminGuard = ({ children }) => {
 
     const handleLogout = useLogout();
 
-console.log(user.data.roles[0]);
+// console.log(user.data.roles[0]);
 
     useEffect(() => {
         if (!user?.data?.roles?.[0] || user.data.roles[0] !== 'ADMIN') {

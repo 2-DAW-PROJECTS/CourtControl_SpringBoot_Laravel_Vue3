@@ -13,7 +13,7 @@ export const getUsers = async () => {
 
 export const getUserById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/${id}`);
+        const response = await axios.get(`${API_URL}/email/${id}`);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || error.message);
