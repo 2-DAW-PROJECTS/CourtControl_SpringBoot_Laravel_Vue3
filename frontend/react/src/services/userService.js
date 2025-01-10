@@ -50,7 +50,7 @@ export const deleteUser = async (id) => {
 
 export const getCurrentUser = async (token) => {
     try {
-        console.log(token);
+        // console.log(token);
         const response = await axios.get(`${API_URL}/profile`, {
             headers: { 
                 Authorization: `Bearer ${token}`
