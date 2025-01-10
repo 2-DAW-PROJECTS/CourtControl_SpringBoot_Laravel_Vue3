@@ -176,8 +176,15 @@ Para cualquier consulta o soporte, por favor contacta a los mantenedores del pro
 
 
 ## Mascotas Oficial:
+
 - Conoce a "Courtney" & "Foxney", nuestras mascotas oficiales, que te acompañarán en cada paso del camino mientras usas nuestra app.
-| ![Courtney - La mascota oficial de CourtControl](./Courtney.webp) | ![Foxney - La mascota oficial de CourtContro](./Foxney.webp) |
+
+<div style="display: flex; justify-content: center; align-items: center; gap: 10px; text-align: center; margin: 0 auto; max-width: 90%;">
+  <img src="./Courtney.webp" alt="Courtney - La mascota oficial de CourtControl" width="49.5%">
+  <img src="./Foxney.webp" alt="Foxney - La mascota oficial de CourtControl" width="49.5%">
+</div>
+
+
 
  ## 🎪 Estructura del Frontend React
     ```
