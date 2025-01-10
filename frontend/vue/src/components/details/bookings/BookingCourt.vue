@@ -52,10 +52,13 @@
   
   <script>
   import { ref, onMounted, computed } from 'vue';
+  import { useRouter } from 'vue-router';
+  import Swal from 'sweetalert2';
   
   export default {
     name: 'BookingCourt',
     setup() {
+      const router = useRouter();
       const currentYear = ref(new Date().getFullYear());
       const currentMonth = ref(new Date().getMonth());
       const daysInMonth = ref([]);
@@ -155,7 +158,11 @@
             }));
         } catch (error) {
             console.error('Error en selectDay:', error);
-            alert('Hubo un problema al obtener las horas disponibles o las reservas.');
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al obtener las horas disponibles o las reservas.'
+            });
         }
       };
   
@@ -166,7 +173,11 @@
       const reserveCourt = async () => {
         const token = localStorage.getItem('accessToken');
         if (!token) {
-          alert('No estás autenticado. Por favor, inicia sesión.');
+          Swal.fire({
+            icon: 'warning',
+            title: 'No autenticado',
+            text: 'Por favor, inicia sesión para continuar.'
+          });
           return;
         }
   
@@ -188,13 +199,25 @@
           });
   
           if (response.ok) {
-            alert('Reserva realizada con éxito');
+            Swal.fire({
+              icon: 'success',
+              title: '¡Reserva completada!',
+              text: 'Tu reserva se ha realizado con éxito',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              router.push('/shop');
+            });
           } else {
             throw new Error('Error al crear la reserva');
           }
         } catch (error) {
           console.error('Error en reserveCourt:', error);
-          alert('Hubo un problema al realizar la reserva.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al realizar la reserva.'
+          });
         }
       };
   
@@ -430,10 +453,9 @@
     .day {
       padding: 15px;
     }
-
+    
     .reserve-button {
-      font-size: 1.2em;
-      padding: 15px;
+      max-width: 100%;
     }
   }
   </style>
