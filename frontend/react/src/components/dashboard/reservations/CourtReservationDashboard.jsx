@@ -78,6 +78,37 @@ const CourtReservationDashboard = () => {
         return 'Active';
     };
 
+    const renderPaginationButtons = (totalPages, currentPageValue, handlePageChangeFunction) => {
+        const maxVisibleButtons = 8;
+        let buttons = [];
+
+        if (totalPages <= maxVisibleButtons) {
+            buttons = Array.from({ length: totalPages }, (_, i) => i + 1);
+        } else {
+            if (currentPageValue <= 4) {
+                buttons = [...Array.from({ length: 6 }, (_, i) => i + 1), '...', totalPages];
+            } else if (currentPageValue >= totalPages - 3) {
+                buttons = [1, '...', ...Array.from({ length: 6 }, (_, i) => totalPages - 5 + i)];
+            } else {
+                buttons = [1, '...', currentPageValue - 1, currentPageValue, currentPageValue + 1, '...', totalPages];
+            }
+        }
+
+        return buttons.map((button, index) => (
+            button === '...' ? (
+                <span key={`ellipsis-${index}`} className="px-3 py-1 mx-1">...</span>
+            ) : (
+                <button
+                    key={button}
+                    className={`px-3 py-1 mx-1 rounded ${currentPageValue === button ? 'bg-[#92d8be] text-[#23232f]' : 'bg-[#525055] text-[#92d8be]'}`}
+                    onClick={() => handlePageChangeFunction(button)}
+                >
+                    {button}
+                </button>
+            )
+        ));
+    };
+
     if (status === Constants.STATUS_LOADING) return <div>Loading...</div>;
     if (status === Constants.STATUS_FAILED) return <div>Error: {error}</div>;
 
@@ -127,15 +158,7 @@ const CourtReservationDashboard = () => {
                         ))}
                     </div>
                     <div className="flex justify-center mt-4">
-                        {Array.from({ length: totalPagesToday }, (_, i) => i + 1).map(pageNumber => (
-                            <button
-                                key={pageNumber}
-                                className={`px-3 py-1 mx-1 rounded ${currentPageToday === pageNumber ? 'bg-[#92d8be] text-[#23232f]' : 'bg-[#525055] text-[#92d8be]'}`}
-                                onClick={() => handlePageChangeToday(pageNumber)}
-                            >
-                                {pageNumber}
-                            </button>
-                        ))}
+                        {renderPaginationButtons(totalPagesToday, currentPageToday, handlePageChangeToday)}
                     </div>
                 </div>
 
@@ -174,15 +197,7 @@ const CourtReservationDashboard = () => {
                     })}
                 </div>
                 <div className="flex justify-center mt-4">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
-                        <button
-                            key={pageNumber}
-                            className={`px-3 py-1 mx-1 rounded ${currentPage === pageNumber ? 'bg-[#92d8be] text-[#23232f]' : 'bg-[#525055] text-[#92d8be]'}`}
-                            onClick={() => handlePageChange(pageNumber)}
-                        >
-                            {pageNumber}
-                        </button>
-                    ))}
+                    {renderPaginationButtons(totalPages, currentPage, handlePageChange)}
                 </div>
             </div>
 
