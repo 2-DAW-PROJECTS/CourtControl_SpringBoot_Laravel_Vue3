@@ -1,27 +1,25 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCurrentUser } from '../store/slices/userSlice';
+import { useSelector } from 'react-redux';
 import useLogout from '../hooks/useLogout';
 
+
 const AdminGuard = ({ children }) => {
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.users.currentUser);
-    const accessToken = useSelector((state) => state.users.accessToken);
+    const localUser = JSON.parse(localStorage.getItem('currentAdmin'));
+    const reduxUser = useSelector((state) => state.users.currentUser);
+    const user = localUser || reduxUser;
+
     const handleLogout = useLogout();
 
-    useEffect(() => {
-        if (accessToken) {
-            dispatch(fetchCurrentUser(accessToken));
-        }
-    }, [dispatch, accessToken]);
+console.log(user.data.roles[0]);
 
     useEffect(() => {
-        if (!user || user.role !== 'ADMIN') {
+        if (!user?.data?.roles?.[0] || user.data.roles[0] !== 'ADMIN') {
             handleLogout();
+            console.log('Not an admin');
         }
     }, [user, handleLogout]);
 
-    return user && user.role === 'ADMIN' ? children : null;
+    return user?.data?.roles?.[0] === 'ADMIN' ? children : null;
 };
 
 export default AdminGuard;
