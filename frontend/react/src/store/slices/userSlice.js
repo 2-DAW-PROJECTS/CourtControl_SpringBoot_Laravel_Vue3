@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUsers, getUserById, createUser, updateUser, deleteUser } from '../../services/userService';
+import { getUsers, getUserById, createUser, updateUser, deleteUser, getCurrentUser } from '../../services/userService';
 import Constants from '../../Constants';
 
 export const fetchUsers = createAsyncThunk(Constants.FETCH_USERS, async () => {
@@ -27,15 +27,33 @@ export const deleteUserById = createAsyncThunk(Constants.DELETE_USER, async (id)
     return id;
 });
 
+export const fetchCurrentUser = createAsyncThunk(Constants.FETCH_CURRENT_USER, async (token) => {
+    const response = await getCurrentUser(token);
+    return response.data;
+});
+
 const usersSlice = createSlice({
     name: 'users',
     initialState: {
         users: [],
-        currentUser: null,
+        currentAdmin: JSON.parse(localStorage.getItem('currentAdmin')) || null,
         status: 'idle',
         error: null,
+        accessToken: localStorage.getItem('accessToken') || null,
+        refreshToken: localStorage.getItem('refreshToken') || null,
     },
-    reducers: {},
+    reducers: {
+        setTokens(state, action) {
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
+        },
+        getTokens(state) {
+            return {
+                accessToken: state.accessToken,
+                refreshToken: state.refreshToken,
+            };
+        },
+    },
     extraReducers: (builder) => {
         builder
         .addCase(fetchUsers.pending, (state) => {
@@ -95,8 +113,21 @@ const usersSlice = createSlice({
         .addCase(deleteUserById.rejected, (state, action) => {
             state.status = Constants.SET_ERROR;
             state.error = action.error.message;
+        })
+        .addCase(fetchCurrentUser.pending, (state) => {
+            state.status = Constants.SET_LOADING;
+        })
+        .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+            state.status = 'succeeded';
+            state.currentUser = action.payload;
+            localStorage.setItem('currentAdmin', JSON.stringify(action.payload));
+        })
+        .addCase(fetchCurrentUser.rejected, (state, action) => {
+            state.status = Constants.SET_ERROR;
+            state.error = action.error.message;
         });
     },
 });
 
+export const { setTokens, getTokens } = usersSlice.actions;
 export default usersSlice.reducer;

@@ -12,6 +12,8 @@ import { auth } from './modules/client/auth';
 import { profile } from './modules/client/profile';
 import { user } from './modules/client/user';
 import bookingCourt from './modules/client/bookingCourt';
+import reservationModule from './modules/client/reservationsCourts';
+
 
 export default createStore({
   strict: process.env.NODE_ENV !== 'production',
@@ -48,6 +50,7 @@ export default createStore({
     summersDashboard,
     auth,
     bookingCourt,
-    user
+    user,
+    reservations: reservationModule
   },
 });

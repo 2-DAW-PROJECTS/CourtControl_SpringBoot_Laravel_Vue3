@@ -12,7 +12,8 @@
 
   <!-- BKPLLORENÇ -->
     <!-- <BKPLLORENÇ /> -->
-
+    <!-- Reservation Calendar -->
+    <ReservationCalendarCourts />
   <!-- Card Description Home -->
   <CardDescription_home />
 
@@ -32,6 +33,7 @@ import HomeGifts from "@/components/home/Home_gifts.vue";
 
 // import BKPLLORENÇ from "@/components/home/bkp_llorenç.vue";
 import InfinityScrollCourts from "@/components/home/InfinityScrollCourts.vue";
+import ReservationCalendarCourts from "@/components/home/ReservationCalendarCourts.vue";
 
 export default {
   name: "HomePage",
@@ -42,7 +44,8 @@ export default {
     // InfiniteScrollCourts,
     // BKPLLORENÇ,
     CarrouselHome,
-    InfinityScrollCourts
+    InfinityScrollCourts,
+    ReservationCalendarCourts
   }
 };
 </script>

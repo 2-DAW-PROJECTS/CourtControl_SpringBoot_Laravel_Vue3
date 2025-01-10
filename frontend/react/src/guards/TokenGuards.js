@@ -6,7 +6,7 @@ const TokenGuard = ({ token1, token2, children }) => {
 
     useEffect(() => {
         if (token1 !== token2) {
-        handleLogout();
+            handleLogout();
         }
     }, [token1, token2, handleLogout]);
 

@@ -131,7 +131,6 @@ export default {
                     password: formData.password
                 });
 
-                // Redireccionar o manejar el flujo después del login
                 } catch (error) {
                 console.error('Error logging in:', error);
                 } finally {
@@ -144,7 +143,6 @@ export default {
                 console.log('Errores en el formulario:', v$.value.$errors);
             }
             };
-  
         
         
         const register = async () => {

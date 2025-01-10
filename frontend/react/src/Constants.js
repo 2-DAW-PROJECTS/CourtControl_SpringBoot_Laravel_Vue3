@@ -52,6 +52,8 @@ const Constants = {
     UPDATE_SUMMER_BOOKING: 'summerBookings/update',
     DELETE_SUMMER_BOOKING: 'summerBookings/delete',
 
+    // Authentication actions
+    DECODER: 'This_Is_a_Super_Secret_Key_Trust_Me',
 
     // Status codes
     STATUS_OK: 200,

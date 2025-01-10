@@ -46,3 +46,18 @@ export const deleteUser = async (id) => {
         throw new Error(error.response?.data?.message || error.message);
     }
 };
+
+
+export const getCurrentUser = async (token) => {
+    try {
+        // console.log(token);
+        const response = await axios.get(`${API_URL}/profile`, {
+            headers: { 
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
+};

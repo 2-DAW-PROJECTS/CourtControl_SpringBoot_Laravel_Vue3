@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Header /> <!-- Incluir el header -->
-    <router-view /> <!-- Aquí se renderizarán las vistas de cada ruta -->
-    <Footer /> <!-- Incluir el footer -->
+    <Header /> 
+    <router-view /> 
+    <Footer /> 
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   mounted() {
     const store = useStore();
 
-    const accessToken = localStorage.getItem('accessToken') || store.state.auth.accessToken;
+    const accessToken = store.state.auth.accessToken || localStorage.getItem('accessToken');
     
     // console.log('APP.vue accessToken:', accessToken);
 

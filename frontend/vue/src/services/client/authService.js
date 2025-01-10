@@ -16,9 +16,17 @@ class AuthService {
         }
       }
 
+      async getUserByEmail(email) {
+        try {
+          const response = await axios.get(`http://localhost:8085/api/users/email/${email}`);
+          return response;
+        } catch (error) {
+          console.error("Error fetching user by email:", error.response ? error.response.data : error.message);
+          throw error;
+        }
+      }
 
-
-
+// 
     async register(user) {
         // console.log("llega al register del service con ", user);
         try {
