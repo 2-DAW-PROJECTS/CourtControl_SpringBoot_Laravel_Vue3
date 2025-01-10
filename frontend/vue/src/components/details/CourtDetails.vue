@@ -50,6 +50,7 @@
                 <button 
                     class="reserve-button" 
                     @click="handleReservation"
+                    :disabled="!court.isActive"
                 >
                     <i class="fas fa-calendar-plus"></i> Reservar Ahora
                 </button>
