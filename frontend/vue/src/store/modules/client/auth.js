@@ -72,12 +72,14 @@ export const auth = {
         const response = await AuthService.login(credentials);
         const { accessToken, refreshToken } = response.data;
         // console.log('Login successful, Access Token:', accessToken); 
+        const user = await AuthService.getUserByEmail(credentials.email);
 
-        commit(Constant.LOGIN_SUCCESS, { accessToken, refreshToken });
+        commit(Constant.LOGIN_SUCCESS, { accessToken, refreshToken, user });
 
         const storedAccessToken = this.state.accessToken || localStorage.getItem('accessToken');
         const storedRefreshToken = this.state.refreshToken || localStorage.getItem('refreshToken');
 
+        // console.log('suth.js 82', user);
         // console.log('Stored Access Token:', storedAccessToken);
         // console.log('Stored Refresh Token:', storedRefreshToken);
 
@@ -88,17 +90,11 @@ export const auth = {
           // console.log('Encrypted Refresh Token:', encryptedRefreshToken);
           // console.log('Stored Access Token:', storedAccessToken);
           // alert(storedAccessToken);
-          window.location.href = `http://localhost:3000?accessToken=${encryptedAccessToken}&refreshToken=${encryptedRefreshToken}`;
+          window.location.href = `http://localhost:3000?accessToken=${encryptedAccessToken}&refreshToken=${encryptedRefreshToken}&user=${encodeURIComponent(JSON.stringify(user))}`;
         } else {
           router.push('/profile');
         }
         return response;
-
-
-
-
-
-
 
       } catch (error) {
         console.error('LOGIN error:', error);
