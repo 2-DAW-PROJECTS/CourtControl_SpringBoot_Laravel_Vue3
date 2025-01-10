@@ -13,8 +13,8 @@ public class BookingCourtDTO {
     private int idMonth;
     private int idCourt;
 
-    // Cambiar de 'int' a 'Long'
-    private Long idUser;  // Cambié el tipo de 'int' a 'Long'
+    // Cambiar de 'Long' a 'String' para email
+    private String email;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

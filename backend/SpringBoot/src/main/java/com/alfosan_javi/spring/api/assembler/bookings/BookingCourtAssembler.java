@@ -14,7 +14,7 @@ public class BookingCourtAssembler {
         dto.setIdHour(bookingCourt.getIdHour());
         dto.setIdMonth(bookingCourt.getIdMonth());
         dto.setIdCourt(bookingCourt.getIdCourt());
-        dto.setIdUser(bookingCourt.getIdUser());
+        dto.setEmail(bookingCourt.getEmail());
         dto.setCreatedAt(bookingCourt.getCreatedAt());
         dto.setUpdatedAt(bookingCourt.getUpdatedAt());
         return dto;
@@ -27,7 +27,7 @@ public class BookingCourtAssembler {
         bookingCourt.setIdHour(dto.getIdHour());
         bookingCourt.setIdMonth(dto.getIdMonth());
         bookingCourt.setIdCourt(dto.getIdCourt());
-        bookingCourt.setIdUser(dto.getIdUser());
+        bookingCourt.setEmail(dto.getEmail());
         bookingCourt.setCreatedAt(dto.getCreatedAt());
         bookingCourt.setUpdatedAt(dto.getUpdatedAt());
         return bookingCourt;

@@ -29,10 +29,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.disable()) // Puedes habilitar o deshabilitar CORS según lo necesites
+            .cors(cors -> cors.disable())
             .authorizeRequests(auth -> auth
                 // Rutas públicas
-                .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/**", "/api/bookings/**").permitAll()
+                .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/**", "/api/bookings/court", "/api/bookings/court/**", "/api/hours/**").permitAll()
                 // Rutas protegidas
                 .requestMatchers("/api/users/profile").authenticated()
                 .requestMatchers("/admin/**").hasRole("ADMIN")

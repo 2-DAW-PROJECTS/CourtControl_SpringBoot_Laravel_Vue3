@@ -26,9 +26,9 @@ public class BookingCourt {
     @Column(name = "id_court", nullable = false)
     private int idCourt;
 
-    // Cambiar de 'int' a 'Long'
-    @Column(name = "id_user", nullable = false)
-    private Long idUser;  // Cambié el tipo de 'int' a 'Long'
+    // Cambiar de 'Long' a 'String' y hacerlo email
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

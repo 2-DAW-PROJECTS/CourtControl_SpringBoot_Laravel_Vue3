@@ -47,10 +47,12 @@
             <div class="description-section">
                 <h3>Descripción</h3>
                 <p>{{ court.description }}</p>
-                <button class="reserve-button" :disabled="!court.isActive || !isLoggedIn" @click="handleReservation">
+                <button 
+                    class="reserve-button" 
+                    @click="handleReservation"
+                >
                     <i class="fas fa-calendar-plus"></i> Reservar Ahora
                 </button>
-                <!-- <p>{{ court }}</p> -->
             </div>
         </div>
     </div>
@@ -87,9 +89,9 @@ export default {
 
         const handleReservation = () => {
             if (!store.getters['auth/isLoggedIn']) {
-                router.push({ name: 'Login' });
+                router.push({ name: 'auth' });
             } else {
-                // Lógica de reserva aquí
+                router.push({ name: 'BookingCourt', params: { courtId: court.value.id } });
             }
         };
 

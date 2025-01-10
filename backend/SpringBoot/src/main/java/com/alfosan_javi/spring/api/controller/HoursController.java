@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/hours")
+@CrossOrigin(origins = "http://localhost:8081")
 public class HoursController {
 
     @Autowired
