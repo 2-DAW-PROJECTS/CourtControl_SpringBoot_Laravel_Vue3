@@ -45,14 +45,14 @@
 - **🗄️ Base de Datos:** MySQL 8.0 (¡Donde los datos hacen breakdance!)
 - **📡 API:** REST + WebSocket (¡Comunicación nivel telepatía!)
 
-### 🎪 Tecnologías Frontend Vue
+## 🎪 Tecnologías Frontend Vue
 - **🎭 Vue3:** ¡El director del espectáculo!
 - **🎨 Tailwind CSS:** ¡El maquillador profesional!
 - **🎢 Vue Router:** ¡El tren de la diversión!
 - **🎪 Vuex:** ¡El mago de los datos!
 - **🎭 Axios:** ¡El mensajero supersónico!
 
-# 🎨 ¡Nuestro Frontend React! 💣
+## 🎨 ¡Nuestro Frontend React! 💣
 - **⚛️ React 18:** ¡Más moderno que un Tesla en Marte! 🚀
 - **🎭 Redux Toolkit:** ¡Gestión de estado más ordenada que tu habitación! 🧹
 - **🎨 Tailwind CSS:** ¡Estilos más frescos que un helado en verano! 🍦
@@ -175,62 +175,64 @@ Para cualquier consulta o soporte, por favor contacta a los mantenedores del pro
                                 ¡Ahora puedes gestionar tus canchas de voleibol con tecnología de punta!
 
 
-- **Mascotas Oficial:** Conoce a "Courtney" & "Foxney", nuestras mascotas oficiales, que te acompañarán en cada paso del camino mientras usas nuestra app.
+## Mascotas Oficial:
+- Conoce a "Courtney" & "Foxney", nuestras mascotas oficiales, que te acompañarán en cada paso del camino mientras usas nuestra app.
+| ![Courtney - La mascota oficial de CourtControl](./Courtney.webp) | ![Foxney - La mascota oficial de CourtContro](./Foxney.webp) |
 
-| ![Courtney - La mascota oficial de CourtControl](./Courtney.webp) | ![Foxney - La mascota oficial de CourtControl](./Foxney.webp) |
-
-## 🎪 Estructura del Frontend React
-
-frontend/react/
-├── 🎭 src/
-│   ├── 🎪 components/     # ¡Piezas LEGO de nuestra app!
-│   ├── 🎢 pages/         # ¡Donde la magia sucede!
-│   ├── 🎨 assets/        # ¡El tesoro de recursos!
-│   ├── 🎭 hooks/         # ¡Súper poderes personalizados!
-│   ├── 🎪 store/         # ¡El cerebro de Redux!
-│   ├── 🎫 services/      # ¡Los ninjas de las API!
-│   └── 🎪 utils/         # ¡La caja de herramientas mágica!
-└── 🎫 public/            # ¡El escaparate al mundo!
-
-
-## 🎪 Estructura del Frontend
-
-frontend/vue/
-├── 🎭 src/
-│   ├── 🎪 components/     # ¡La troupe de artistas!
-│   ├── 🎢 views/         # ¡Los escenarios principales!
-│   ├── 🎨 assets/        # ¡El vestuario y utilería!
-│   ├── 🎭 router/        # ¡El mapa del parque!
-│   └── 🎪 store/         # ¡La caja mágica de Vuex!
-└── 🎫 public/            # ¡La entrada al espectáculo!
-
+ ## 🎪 Estructura del Frontend React
+    ```
+        frontend/react/
+        ├── 🎭 src/
+        │   ├── 🎪 components/     # ¡Piezas LEGO de nuestra app!
+        │   ├── 🎢 pages/         # ¡Donde la magia sucede!
+        │   ├── 🎨 assets/        # ¡El tesoro de recursos!
+        │   ├── 🎭 hooks/         # ¡Súper poderes personalizados!
+        │   ├── 🎪 store/         # ¡El cerebro de Redux!
+        │   ├── 🎫 services/      # ¡Los ninjas de las API!
+        │   └── 🎪 utils/         # ¡La caja de herramientas mágica!
+        └── 🎫 public/            # ¡El escaparate al mundo!
+    ```
+    
+## 🎪 Estructura del Frontend Vue
+    ```
+        frontend/vue/
+        ├── 🎭 src/
+        │   ├── 🎪 components/     # ¡La troupe de artistas!
+        │   ├── 🎢 views/         # ¡Los escenarios principales!
+        │   ├── 🎨 assets/        # ¡El vestuario y utilería!
+        │   ├── 🎭 router/        # ¡El mapa del parque!
+        │   └── 🎪 store/         # ¡La caja mágica de Vuex!
+        └── 🎫 public/            # ¡La entrada al espectáculo!
+    ```
 
 ## 🎨 Estructura del Proyecto Spring Boot
-
-backend/SpringBoot/
-├── 📁 src/main/java/
-│   ├── 📁 controllers/     # ¡El centro de comando!
-│   ├── 📁 models/         # ¡Las entidades legendarias!
-│   ├── 📁 repositories/   # ¡El almacén mágico!
-│   ├── 📁 services/       # ¡La fábrica de hechizos!
-│   └── 📁 config/         # ¡La sala de control!
-├── 📁 src/test/
-│   └── 📁 java/          # ¡El campo de entrenamiento!
-└── 📄 pom.xml            # ¡El libro de hechizos!
-
+    ```
+        backend/SpringBoot/
+        ├── 📁 src/main/java/
+        │   ├── 📁 controllers/     # ¡El centro de comando!
+        │   ├── 📁 models/         # ¡Las entidades legendarias!
+        │   ├── 📁 repositories/   # ¡El almacén mágico!
+        │   ├── 📁 services/       # ¡La fábrica de hechizos!
+        │   └── 📁 config/         # ¡La sala de control!
+        ├── 📁 src/test/
+        │   └── 📁 java/          # ¡El campo de entrenamiento!
+        └── 📄 pom.xml            # ¡El libro de hechizos!
+    ```
 
 ## 🎨 Estructura del Proyecto Laravel
+    ```
+        backend/laravel/
+        ├── 📁 app/
+        │   ├── 📁 Http/Controllers/     # ¡Donde la magia sucede!
+        │   ├── 📁 Models/              # ¡Los superhéroes de los datos!
+        │   └── 📁 Services/            # ¡La fábrica de lógica empresarial!
+        ├── 📁 database/
+        │   └── 📁 migrations/          # ¡El arquitecto de la base de datos!
+        ├── 📁 routes/
+        │   └── 📄 api.php             # ¡El mapa del tesoro de endpoints!
+        └── 📁 tests/                   # ¡El campo de entrenamiento!
+    ```
 
-backend/laravel/
-├── 📁 app/
-│   ├── 📁 Http/Controllers/     # ¡Donde la magia sucede!
-│   ├── 📁 Models/              # ¡Los superhéroes de los datos!
-│   └── 📁 Services/            # ¡La fábrica de lógica empresarial!
-├── 📁 database/
-│   └── 📁 migrations/          # ¡El arquitecto de la base de datos!
-├── 📁 routes/
-│   └── 📄 api.php             # ¡El mapa del tesoro de endpoints!
-└── 📁 tests/                   # ¡El campo de entrenamiento!
 
 
 <!-- ## 🎭 Nuestras Mascotas Técnicas
