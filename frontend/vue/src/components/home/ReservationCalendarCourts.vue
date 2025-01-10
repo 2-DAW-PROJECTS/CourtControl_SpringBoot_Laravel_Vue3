@@ -19,7 +19,7 @@
                 <div v-for="(day, index) in calendarDays" 
                     :key="index"
                     class="day-cell"
-                    :class="{ 'inactive': !day.isCurrentMonth }"
+                    :class="{ 'inactive': !day.isCurrentMonth, 'today': day.isToday, 'pulse-effect': day.isToday }"
                     :style="{ backgroundColor: getConcurrencyColor(day.dayNumber) }">
                     <div class="day-content">
                         <span class="day-number">{{ day.dayNumber }}</span>
@@ -46,6 +46,10 @@
                     <div class="color-box" style="background-color: #eb6a65"></div>
                     <span>Alta</span>
                 </div>
+                <div class="legend-item">
+                    <div class="color-box pulse-box"></div>
+                    <span>Hoy</span>
+                </div>
             </div>
         </div>
     </div>
@@ -69,6 +73,13 @@ export default {
         const allReservations = computed(() => store.getters['reservations/getAllReservations']);
         const isLoading = computed(() => store.getters['reservations/isLoading']);
 
+        const isToday = (day) => {
+            const today = new Date();
+            return day.dayNumber === today.getDate() && 
+                currentMonth.value === today.getMonth() && 
+                currentYear.value === today.getFullYear();
+        };
+
         const calendarDays = computed(() => {
             const firstDay = new Date(currentYear.value, currentMonth.value, 1);
             const lastDay = new Date(currentYear.value, currentMonth.value + 1, 0);
@@ -79,14 +90,16 @@ export default {
                 const date = new Date(currentYear.value, currentMonth.value, -i);
                 days.push({
                     dayNumber: date.getDate(),
-                    isCurrentMonth: false
+                    isCurrentMonth: false,
+                    isToday: isToday({ dayNumber: date.getDate() })
                 });
             }
             
             for (let i = 1; i <= lastDay.getDate(); i++) {
                 days.push({
                     dayNumber: i,
-                    isCurrentMonth: true
+                    isCurrentMonth: true,
+                    isToday: isToday({ dayNumber: i })
                 });
             }
             
@@ -94,7 +107,8 @@ export default {
             for (let i = 1; i <= remainingDays; i++) {
                 days.push({
                     dayNumber: i,
-                    isCurrentMonth: false
+                    isCurrentMonth: false,
+                    isToday: isToday({ dayNumber: i })
                 });
             }
             
@@ -122,8 +136,8 @@ export default {
             if (count === 0) return '#f6f1de';
             
             const ratio = count / maxConcurrency;
-            if (ratio < 0.3) return '#92d8be';
-            if (ratio < 0.7) return '#f5ce8d';
+            if (ratio < 3) return '#92d8be';
+            if (ratio < 7) return '#f5ce8d';
             return '#eb6a65';
         };
 
@@ -153,7 +167,8 @@ export default {
             getConcurrencyCount,
             getConcurrencyColor,
             changeMonth,
-            isLoading
+            isLoading,
+            isToday
         };
     }
 };
@@ -161,7 +176,7 @@ export default {
 
 <style scoped>
 .calendar-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background: #f6f1de;
@@ -229,11 +244,13 @@ export default {
 }
 
 .day-cell {
-    aspect-ratio: 1.5;
+    aspect-ratio: 2.5;
     padding: 10px;
     background: #f6f1de;
     transition: all 0.3s ease;
     border-radius: 4px;
+    position: relative;
+    overflow: hidden;
 }
 
 .day-cell:hover {
@@ -246,6 +263,8 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+    z-index: 1;
 }
 
 .day-number {
@@ -270,7 +289,6 @@ export default {
 }
 
 .concurrency-legend {
-    margin-top: 20px;
     padding: 15px;
     border-top: 2px solid #525055;
 }
@@ -309,5 +327,33 @@ export default {
 .legend-item span {
     color: #23232f;
     font-weight: 500;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(92, 98, 211, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(92, 98, 211, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(92, 98, 211, 0);
+    }
+}
+
+.pulse-effect::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle, rgba(92, 98, 211, 0.2) 0%, rgba(92, 98, 211, 0) 70%);
+    animation: pulse 2s infinite;
+}
+
+.pulse-box {
+    background: linear-gradient(45deg, #5c62d3, #8186e0);
+    animation: pulse 2s infinite;
 }
 </style>
