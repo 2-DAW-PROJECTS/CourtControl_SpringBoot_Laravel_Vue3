@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllBookings, deleteNewBooking } from '../../../store/slices/reservations/reservationCourtSlice';
 import { fetchCourtById } from '../../../store/slices/courtSlice';
-import { fetchUserById } from '../../../store/slices/userSlice';
+import { fetchUserByEmail } from '../../../store/slices/userSlice';
 import Constants from '../../../Constants';
 
 const CourtReservationDashboard = () => {
@@ -19,7 +19,8 @@ const CourtReservationDashboard = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPageToday, setCurrentPageToday] = useState(1);
-    const itemsPerPage = 4;
+    const itemsPerPage = 7;
+    const itemsPerPageToday = 3;
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -38,7 +39,7 @@ const CourtReservationDashboard = () => {
                     setCourts(prevCourts => [...prevCourts, court]);
                 })
                 .catch(error => console.error(`Error fetching court with id ${booking.idCourt}:`, error));
-            dispatch(fetchUserById(booking.email))
+            dispatch(fetchUserByEmail(booking.email))
                 .unwrap()
                 .then(user => {
                     setUsers(prevUsers => [...prevUsers, user]);
@@ -77,6 +78,37 @@ const CourtReservationDashboard = () => {
         return 'Active';
     };
 
+    const renderPaginationButtons = (totalPages, currentPageValue, handlePageChangeFunction) => {
+        const maxVisibleButtons = 8;
+        let buttons = [];
+
+        if (totalPages <= maxVisibleButtons) {
+            buttons = Array.from({ length: totalPages }, (_, i) => i + 1);
+        } else {
+            if (currentPageValue <= 4) {
+                buttons = [...Array.from({ length: 6 }, (_, i) => i + 1), '...', totalPages];
+            } else if (currentPageValue >= totalPages - 3) {
+                buttons = [1, '...', ...Array.from({ length: 6 }, (_, i) => totalPages - 5 + i)];
+            } else {
+                buttons = [1, '...', currentPageValue - 1, currentPageValue, currentPageValue + 1, '...', totalPages];
+            }
+        }
+
+        return buttons.map((button, index) => (
+            button === '...' ? (
+                <span key={`ellipsis-${index}`} className="px-3 py-1 mx-1">...</span>
+            ) : (
+                <button
+                    key={button}
+                    className={`px-3 py-1 mx-1 rounded ${currentPageValue === button ? 'bg-[#92d8be] text-[#23232f]' : 'bg-[#525055] text-[#92d8be]'}`}
+                    onClick={() => handlePageChangeFunction(button)}
+                >
+                    {button}
+                </button>
+            )
+        ));
+    };
+
     if (status === Constants.STATUS_LOADING) return <div>Loading...</div>;
     if (status === Constants.STATUS_FAILED) return <div>Error: {error}</div>;
 
@@ -88,12 +120,12 @@ const CourtReservationDashboard = () => {
     const currentCourts = uniqueCourts.slice(indexOfFirstItem, indexOfLastItem);
 
     const todayBookings = bookings.filter(booking => new Date(booking.createdAt).toDateString() === new Date().toDateString());
-    const indexOfLastToday = currentPageToday * itemsPerPage;
-    const indexOfFirstToday = indexOfLastToday - itemsPerPage;
+    const indexOfLastToday = currentPageToday * itemsPerPageToday;
+    const indexOfFirstToday = indexOfLastToday - itemsPerPageToday;
     const currentTodayBookings = todayBookings.slice(indexOfFirstToday, indexOfLastToday);
 
     const totalPages = Math.ceil(uniqueCourts.length / itemsPerPage);
-    const totalPagesToday = Math.ceil(todayBookings.length / itemsPerPage);
+    const totalPagesToday = Math.ceil(todayBookings.length / itemsPerPageToday);
 
     return (
         <div className="space-y-6">
@@ -101,8 +133,8 @@ const CourtReservationDashboard = () => {
                 <h1 className="text-2xl font-bold text-[#92d8be]">Court Reservation Dashboard</h1>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="bg-[#23232f] p-6 rounded-xl border border-[#92d8be]/20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-[#23232f] p-6 rounded-xl border border-[#92d8be]/20 col-span-1">
                     <h2 className="text-lg font-semibold mb-4">Today's Reservations</h2>
                     <div className="space-y-4">
                         {currentTodayBookings.map(booking => (
@@ -126,50 +158,11 @@ const CourtReservationDashboard = () => {
                         ))}
                     </div>
                     <div className="flex justify-center mt-4">
-                        {Array.from({ length: totalPagesToday }, (_, i) => i + 1).map(pageNumber => (
-                            <button
-                                key={pageNumber}
-                                className={`px-3 py-1 mx-1 rounded ${currentPageToday === pageNumber ? 'bg-[#92d8be] text-[#23232f]' : 'bg-[#525055] text-[#92d8be]'}`}
-                                onClick={() => handlePageChangeToday(pageNumber)}
-                            >
-                                {pageNumber}
-                            </button>
-                        ))}
+                        {renderPaginationButtons(totalPagesToday, currentPageToday, handlePageChangeToday)}
                     </div>
                 </div>
 
-                <div className="bg-[#23232f] p-6 rounded-xl border border-[#92d8be]/20">
-                    <h2 className="text-lg font-semibold mb-4">Court Usage Statistics</h2>
-                    <div className="space-y-4">
-                        {currentCourts.map(court => {
-                            const courtBookings = bookings.filter(booking => booking.idCourt === court.id);
-                            return (
-                                <div key={court.id} className="flex items-center justify-between">
-                                    <span>Court {court.namePista}</span>
-                                    <div className="w-2/3 bg-[#525055] rounded-full h-2">
-                                        <div 
-                                            className="bg-[#92d8be] h-2 rounded-full"
-                                            style={{ width: `${(courtBookings.length / bookings.length) * 100}%` }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className="flex justify-center mt-4">
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
-                            <button
-                                key={pageNumber}
-                                className={`px-3 py-1 mx-1 rounded ${currentPage === pageNumber ? 'bg-[#92d8be] text-[#23232f]' : 'bg-[#525055] text-[#92d8be]'}`}
-                                onClick={() => handlePageChange(pageNumber)}
-                            >
-                                {pageNumber}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="bg-[#23232f] p-6 rounded-xl border border-[#92d8be]/20">
+                <div className="bg-[#23232f] p-6 rounded-xl border border-[#92d8be]/20 col-span-1">
                     <h2 className="text-lg font-semibold mb-4">Monthly Overview</h2>
                     <div className="space-y-4">
                         {Array.from({ length: 12 }, (_, i) => i + 1).map(month => {
@@ -182,6 +175,29 @@ const CourtReservationDashboard = () => {
                             );
                         })}
                     </div>
+                </div>
+            </div>
+
+            <div className="bg-[#23232f] p-6 rounded-xl border border-[#92d8be]/20">
+                <h2 className="text-lg font-semibold mb-4">Court Usage Statistics</h2>
+                <div className="space-y-4">
+                    {currentCourts.map(court => {
+                        const courtBookings = bookings.filter(booking => booking.idCourt === court.id);
+                        return (
+                            <div key={court.id} className="flex items-center justify-between">
+                                <span>Court {court.namePista}</span>
+                                <div className="w-2/3 bg-[#525055] rounded-full h-2">
+                                    <div 
+                                        className="bg-[#92d8be] h-2 rounded-full"
+                                        style={{ width: `${(courtBookings.length / bookings.length) * 100}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className="flex justify-center mt-4">
+                    {renderPaginationButtons(totalPages, currentPage, handlePageChange)}
                 </div>
             </div>
 

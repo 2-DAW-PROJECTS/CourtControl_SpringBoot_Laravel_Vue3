@@ -25,7 +25,7 @@ const LessonDetails = () => {
 
     const [formData, setFormData] = useState({
         nameClass: '',
-        isActive: 1,
+        isActive: 0,
         vacancies: 0,
         days: [],
         time: '',

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUsers, getUserById, createUser, updateUser, deleteUser, getCurrentUser } from '../../services/userService';
+import { getUsers, getUserById, getUserByEmail, createUser, updateUser, deleteUser, getCurrentUser } from '../../services/userService';
 import Constants from '../../Constants';
 
 export const fetchUsers = createAsyncThunk(Constants.FETCH_USERS, async () => {
@@ -9,6 +9,11 @@ export const fetchUsers = createAsyncThunk(Constants.FETCH_USERS, async () => {
 
 export const fetchUserById = createAsyncThunk(Constants.FETCH_USER_BY_ID, async (id) => {
     const user = await getUserById(id);
+    return user;
+});
+
+export const fetchUserByEmail = createAsyncThunk(Constants.FETCH_USER_BY_ID, async (id) => {
+    const user = await getUserByEmail(id);
     return user;
 });
 

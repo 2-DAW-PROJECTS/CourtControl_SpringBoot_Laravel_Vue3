@@ -165,7 +165,6 @@ const CreateSummerForm = () => {
                                     required
                                 >
                                     <option value="false">Inactive</option>
-                                    <option value="true">Active</option>
                                 </select>
                             </div>
                         </div>

@@ -194,10 +194,9 @@ const CreateCourtForm = () => {
                                     value={formData.isActive}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 rounded-md bg-[#23232f] border border-[#9bada1] focus:outline-none focus:ring-2 focus:ring-[#92d8be] text-[#f6f1de]"
-                                    required
+                                    
                                 >
                                     <option value="0">Inactive</option>
-                                    <option value="1">Active</option>
                                 </select>
                             </div>
                         </div>
