@@ -122,8 +122,8 @@ export default {
             if (count === 0) return '#f6f1de';
             
             const ratio = count / maxConcurrency;
-            if (ratio < 0.3) return '#92d8be';
-            if (ratio < 0.7) return '#f5ce8d';
+            if (ratio < 3) return '#92d8be';
+            if (ratio < 7) return '#f5ce8d';
             return '#eb6a65';
         };
 

@@ -8,6 +8,16 @@
           <span class="current-month">{{ currentMonthName }} {{ currentYear }}</span>
           <button class="month-button" @click="changeMonth(1)">Mes siguiente →</button>
         </div>
+
+        <div class="weekdays-grid">
+          <div class="weekday">Miércoles</div>
+          <div class="weekday">Jueves</div>
+          <div class="weekday">Viernes</div>
+          <div class="weekday">Sábado</div>
+          <div class="weekday">Domingo</div>
+          <div class="weekday">Lunes</div>
+          <div class="weekday">Martes</div>
+        </div>
   
         <div class="days-grid">
           <div
@@ -74,6 +84,7 @@
       const formattedSelectedDate = computed(() => {
         if (!selectedDate.value) return '';
         const date = new Date(selectedDate.value);
+        date.setDate(date.getDate() + 1);
         return date.toLocaleDateString('es-ES', {
           weekday: 'long',
           day: 'numeric',
@@ -262,6 +273,33 @@
     font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
   }
+
+  .weekdays-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.weekday {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-weight: 600;
+  color: #1a237e;
+  font-size: 1.1em;
+}
+
+@media (max-width: 768px) {
+  .weekday {
+    font-size: 0.9em;
+    padding: 5px;
+  }
+}
 
   .calendar-section {
     flex: 1;
@@ -453,7 +491,7 @@
     .day {
       padding: 15px;
     }
-    
+
     .reserve-button {
       max-width: 100%;
     }
