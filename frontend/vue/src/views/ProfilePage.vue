@@ -1,20 +1,16 @@
 <template>
   <div class="profile-page">
-    <!-- Estado de carga con animación -->
     <div v-if="isLoading" class="loading-container">
       <div class="spinner"></div>
       <p>Cargando tu perfil...</p>
     </div>
-
-    <!-- Mensaje de error estilizado -->
     <div v-else-if="error" class="error-container">
       <i class="fas fa-exclamation-circle"></i>
       <p>{{ error }}</p>
     </div>
-
-    <!-- Contenido principal -->
-    <div v-else class="profile-content">
+    <div v-if="userProfile">
       <DetailsUser :user="userProfile" />
+      <GetBookingCourts />
     </div>
   </div>
 </template>
@@ -23,21 +19,26 @@
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import DetailsUser from "@/components/profile/DetailsUser.vue";
-import Constant from '@/Constant';
+import GetBookingCourts from "@/components/profile/GetBookingCourts.vue";
 
 export default {
   name: "ProfilePage",
   components: {
     DetailsUser,
+    GetBookingCourts,
   },
   setup() {
     const store = useStore();
-    const userProfile = computed(() => store.state.profile.userProfile);
-    const isLoading = computed(() => store.state.profile.loading);
-    const error = computed(() => store.state.profile.error);
 
+    // Accediendo al estado y los getters correctos
+    const userProfile = computed(() => store.state.profile.userProfile);
+    const isLoading = computed(() => store.state.bookingCourtsUserProfile.loading); // Aquí debes apuntar al módulo correcto
+    const error = computed(() => store.state.bookingCourtsUserProfile.error); // Apuntando al módulo correcto
+
+    // Despachando las acciones
     onMounted(() => {
-      store.dispatch(`profile/${Constant.FETCH_USER_PROFILE}`);
+      store.dispatch('profile/FETCH_USER_PROFILE');
+      store.dispatch('bookingCourtsUserProfile/FETCH_USER_BOOKINGS');
     });
 
     return {
@@ -47,7 +48,10 @@ export default {
     };
   },
 };
+
 </script>
+
+
 
 <style scoped>
 .profile-page {

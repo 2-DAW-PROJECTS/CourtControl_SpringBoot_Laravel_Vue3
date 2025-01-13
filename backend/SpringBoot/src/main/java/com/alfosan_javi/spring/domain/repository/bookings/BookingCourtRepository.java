@@ -13,5 +13,7 @@ public interface BookingCourtRepository extends JpaRepository<BookingCourt, Long
     @Query(value = "SELECT * FROM bookings_courts b WHERE b.id_court = :idCourt AND b.id_day = :idDay AND b.id_month = :idMonth", nativeQuery = true)
     List<BookingCourt> findByIdCourtAndIdDayAndIdMonth(@Param("idCourt") Long idCourt, @Param("idDay") int idDay, @Param("idMonth") int idMonth);
 
+    @Query(value = "SELECT * FROM bookings_courts b WHERE b.email = :email", nativeQuery = true)
+    List<BookingCourt> findByEmail(@Param("email") String email);
 
 }

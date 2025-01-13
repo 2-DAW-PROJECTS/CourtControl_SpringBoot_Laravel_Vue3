@@ -116,4 +116,47 @@ public class BookingCourtService {
                 .collect(Collectors.toList());
     }
 
+    public List<BookingCourtDTO> getBookingsByEmail(String email) {
+        logger.info("Fetching bookings for user with email: {}", email);
+        List<BookingCourt> bookings = bookingCourtRepository.findByEmail(email);
+
+        if (bookings.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return bookings.stream()
+                .map(bookingCourtAssembler::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    public boolean deleteBookingByUser(Long id, String email) {
+        logger.info("Attempting to delete booking with ID: {} for user with email: {}", id, email);
+        
+        // Buscamos la reserva por ID
+        Optional<BookingCourt> existingBooking = bookingCourtRepository.findById(id);
+        if (!existingBooking.isPresent()) {
+            logger.warn("No booking found with ID: {}", id);
+            return false;
+        }
+
+        BookingCourt bookingCourt = existingBooking.get();
+
+        // Verificamos que la reserva pertenezca al usuario autenticado
+        if (!bookingCourt.getEmail().equals(email)) {
+            logger.warn("Booking with ID: {} does not belong to user with email: {}", id, email);
+            return false;  // Si la reserva no pertenece al usuario, no la eliminamos
+        }
+
+        try {
+            bookingCourtRepository.deleteById(id);
+            logger.info("Booking with ID: {} deleted successfully.", id);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error occurred while deleting booking: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+
 }
