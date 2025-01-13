@@ -151,7 +151,18 @@ const CourtReservationDashboard = () => {
     const indexOfLastRecent = currentPageRecent * itemsPerPageRecent;
     const indexOfFirstRecent = indexOfLastRecent - itemsPerPageRecent;
     const currentRecentBookings = [...bookings]
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .sort((a, b) => {
+            if (a.idMonth !== b.idMonth) {
+                return b.idMonth - a.idMonth;
+            }
+            if (a.idDay !== b.idDay) {
+                return b.idDay - a.idDay;
+            }
+            if (a.idHour !== b.idHour) {
+                return getHourLabel(b.idHour) - getHourLabel(a.idHour);
+            }
+            return getHourLabel(b.idHour) - getHourLabel(a.idHour);
+        })
         .slice(indexOfFirstRecent, indexOfLastRecent);
 
     const totalPages = Math.ceil(uniqueCourts.length / itemsPerPage);
@@ -247,38 +258,29 @@ const CourtReservationDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentRecentBookings
-                                .sort((a, b) => {
-                                    const dateA = new Date(new Date(a.createdAt).getFullYear(), a.idMonth, a.idDay);
-                                    const dateB = new Date(new Date(b.createdAt).getFullYear(), b.idMonth, b.idDay);
-                                    if (dateA.getTime() === dateB.getTime()) {
-                                        return getHourLabel(a.idHour) - getHourLabel(b.idHour);
-                                    }
-                                    return dateB - dateA;
-                                })
-                                .map(booking => (
-                                    <tr key={booking.id} className="border-b border-[#525055]/20">
-                                        <td className="py-2">{`${booking.idDay}/${booking.idMonth}/${new Date(booking.createdAt).getFullYear()}`}</td>
-                                        <td className="py-2">{getHourLabel(booking.idHour)}</td>
-                                        <td className="py-2">Court {courts.find(court => court.id === booking.idCourt)?.namePista || booking.idCourt}</td>
-                                        <td className="py-2">{users.find(user => user.email === booking.email)?.name || 'Unknown User'}</td>
-                                        <td className="py-2">
-                                            <span className={`px-2 py-1 rounded-full text-sm ${getStatus(booking) === 'Rejected' ? 'bg-red-500 text-white' : getStatus(booking) === 'Out Time' ? 'bg-yellow-500 text-white' : 'bg-[#92d8be]/20 text-[#92d8be]'}`}>
-                                                {getStatus(booking)}
-                                            </span>
-                                        </td>
-                                        <td className="py-2">
-                                            {getStatus(booking) === 'Active' && (
-                                                <button 
-                                                    className="px-2 py-1 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-700 transition-all duration-200"
-                                                    onClick={() => handleDelete(booking.id)}
-                                                >
-                                                    Reject
-                                                </button>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
+                            {currentRecentBookings.map(booking => (
+                                <tr key={booking.id} className="border-b border-[#525055]/20">
+                                    <td className="py-2">{`${booking.idDay}/${booking.idMonth}/${new Date(booking.createdAt).getFullYear()}`}</td>
+                                    <td className="py-2">{getHourLabel(booking.idHour)}</td>
+                                    <td className="py-2">Court {courts.find(court => court.id === booking.idCourt)?.namePista || booking.idCourt}</td>
+                                    <td className="py-2">{users.find(user => user.email === booking.email)?.name || 'Unknown User'}</td>
+                                    <td className="py-2">
+                                        <span className={`px-2 py-1 rounded-full text-sm ${getStatus(booking) === 'Rejected' ? 'bg-red-500 text-white' : getStatus(booking) === 'Out Time' ? 'bg-yellow-500 text-white' : 'bg-[#92d8be]/20 text-[#92d8be]'}`}>
+                                            {getStatus(booking)}
+                                        </span>
+                                    </td>
+                                    <td className="py-2">
+                                        {getStatus(booking) === 'Active' && (
+                                            <button 
+                                                className="px-2 py-1 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-700 transition-all duration-200"
+                                                onClick={() => handleDelete(booking.id)}
+                                            >
+                                                Reject
+                                            </button>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
