@@ -4,10 +4,10 @@
       <div class="spinner"></div>
       <p>Cargando tu perfil...</p>
     </div>
-    <div v-else-if="error" class="error-container">
+    <!-- <div v-else-if="error" class="error-container">
       <i class="fas fa-exclamation-circle"></i>
       <p>{{ error }}</p>
-    </div>
+    </div> -->
     <div v-if="userProfile">
       <DetailsUser :user="userProfile" />
       <GetBookingCourts />

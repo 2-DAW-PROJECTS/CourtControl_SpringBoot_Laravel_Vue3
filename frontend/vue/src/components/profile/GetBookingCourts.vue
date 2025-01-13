@@ -7,8 +7,10 @@
           <p>Cargando reservas...</p>
         </div>
         <div v-else-if="error" class="error-state">
-          <i class="fas fa-exclamation-circle"></i>
-          <p>{{ error }}</p>
+          <i class="fas fa-calendar-times"></i>
+          <p>No tienes reservas realizadas.</p>
+          <!-- <i class="fas fa-exclamation-circle"></i>
+          <p>{{ error }}</p> -->
         </div>
         <div v-else class="bookings-wrapper">
           <div v-if="formattedBookings && formattedBookings.length > 0" class="bookings-list">

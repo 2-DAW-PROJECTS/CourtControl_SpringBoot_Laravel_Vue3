@@ -4,7 +4,7 @@ const AdminHomePage = () => {
     return (
         <div className="h-[70vh] flex flex-col items-center justify-center" style={{ backgroundColor: "#f6f1de" }}>
             <h1 className="text-4xl font-extrabold mb-12 text-center" style={{ color: "#23232f" }}>
-                CourtControl Management Hub 🏀🏐
+            🏐🏀 CourtControl Management Hub 🏀🏐
             </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl px-4">
                 <Link 
