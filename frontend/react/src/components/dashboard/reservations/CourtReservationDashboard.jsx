@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllBookings, deleteNewBooking } from '../../../store/slices/reservations/reservationCourtSlice';
 import { fetchCourtById } from '../../../store/slices/courtSlice';
 import { fetchUserByEmail } from '../../../store/slices/userSlice';
+import { getAllHours } from '../../../services/reservations/reservationCourtService';
 import Constants from '../../../Constants';
 
 const CourtReservationDashboard = () => {
@@ -12,6 +13,7 @@ const CourtReservationDashboard = () => {
     const error = useSelector(state => state.bookings.error);
     const [users, setUsers] = useState([]);
     const [courts, setCourts] = useState([]);
+    const [hours, setHours] = useState([]);
     const [rejectedBookings, setRejectedBookings] = useState(() => {
         const savedRejectedBookings = localStorage.getItem('rejectedBookings');
         return savedRejectedBookings ? JSON.parse(savedRejectedBookings) : [];
@@ -19,13 +21,16 @@ const CourtReservationDashboard = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPageToday, setCurrentPageToday] = useState(1);
+    const [currentPageRecent, setCurrentPageRecent] = useState(1);
     const itemsPerPage = 7;
     const itemsPerPageToday = 3;
+    const itemsPerPageRecent = 10;
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         if (token) {
             dispatch(fetchAllBookings(token));
+            getAllHours(token).then(setHours).catch(console.error);
         } else {
             console.error('No token found');
         }
@@ -66,16 +71,30 @@ const CourtReservationDashboard = () => {
         setCurrentPageToday(pageNumber);
     };
 
+    const handlePageChangeRecent = (pageNumber) => {
+        setCurrentPageRecent(pageNumber);
+    };
+
     const getStatus = (booking) => {
         if (rejectedBookings.includes(booking.id)) {
             return 'Rejected';
         }
-        const bookingDate = new Date(booking.createdAt);
         const currentDate = new Date();
-        if (bookingDate < currentDate) {
+        const currentDay = currentDate.getDate();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentYear = currentDate.getFullYear();
+
+        if (new Date(booking.createdAt).getFullYear() < currentYear || 
+            (new Date(booking.createdAt).getFullYear() === currentYear && booking.idMonth < currentMonth) ||
+            (new Date(booking.createdAt).getFullYear() === currentYear && booking.idMonth === currentMonth && booking.idDay < currentDay)) {
             return 'Out Time';
         }
         return 'Active';
+    };
+
+    const getHourLabel = (idHour) => {
+        const hour = hours.find(h => h.id === idHour);
+        return hour ? hour.hourTime.slice(0, 5) : 'Unknown Hour';
     };
 
     const renderPaginationButtons = (totalPages, currentPageValue, handlePageChangeFunction) => {
@@ -119,13 +138,25 @@ const CourtReservationDashboard = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentCourts = uniqueCourts.slice(indexOfFirstItem, indexOfLastItem);
 
-    const todayBookings = bookings.filter(booking => new Date(booking.createdAt).toDateString() === new Date().toDateString());
+    const today = new Date();
+    const todayBookings = bookings.filter(booking => 
+        booking.idDay === today.getDate() && 
+        booking.idMonth === (today.getMonth() + 1) && 
+        new Date(booking.createdAt).getFullYear() === today.getFullYear()
+    );
     const indexOfLastToday = currentPageToday * itemsPerPageToday;
     const indexOfFirstToday = indexOfLastToday - itemsPerPageToday;
     const currentTodayBookings = todayBookings.slice(indexOfFirstToday, indexOfLastToday);
 
+    const indexOfLastRecent = currentPageRecent * itemsPerPageRecent;
+    const indexOfFirstRecent = indexOfLastRecent - itemsPerPageRecent;
+    const currentRecentBookings = [...bookings]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(indexOfFirstRecent, indexOfLastRecent);
+
     const totalPages = Math.ceil(uniqueCourts.length / itemsPerPage);
     const totalPagesToday = Math.ceil(todayBookings.length / itemsPerPageToday);
+    const totalPagesRecent = Math.ceil(bookings.length / itemsPerPageRecent);
 
     return (
         <div className="space-y-6">
@@ -141,7 +172,7 @@ const CourtReservationDashboard = () => {
                             <div key={booking.id} className="p-4 bg-[#525055] rounded-lg">
                                 <div className="flex justify-between items-center">
                                     <span>Court {courts.find(court => court.id === booking.idCourt)?.namePista || booking.idCourt}</span>
-                                    <span>{`${booking.idHour}:00`}</span>
+                                    <span>{getHourLabel(booking.idHour)}</span>
                                 </div>
                                 <div className="text-sm text-[#92d8be]">
                                     {users.find(user => user.email === booking.email)?.name || 'Unknown User'}
@@ -216,13 +247,19 @@ const CourtReservationDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {[...bookings]
-                                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                                .slice(0, 10)
+                            {currentRecentBookings
+                                .sort((a, b) => {
+                                    const dateA = new Date(new Date(a.createdAt).getFullYear(), a.idMonth, a.idDay);
+                                    const dateB = new Date(new Date(b.createdAt).getFullYear(), b.idMonth, b.idDay);
+                                    if (dateA.getTime() === dateB.getTime()) {
+                                        return getHourLabel(a.idHour) - getHourLabel(b.idHour);
+                                    }
+                                    return dateB - dateA;
+                                })
                                 .map(booking => (
                                     <tr key={booking.id} className="border-b border-[#525055]/20">
-                                        <td className="py-2">{new Date(booking.createdAt).toLocaleDateString()}</td>
-                                        <td className="py-2">{`${booking.idHour}:00`}</td>
+                                        <td className="py-2">{`${booking.idDay}/${booking.idMonth}/${new Date(booking.createdAt).getFullYear()}`}</td>
+                                        <td className="py-2">{getHourLabel(booking.idHour)}</td>
                                         <td className="py-2">Court {courts.find(court => court.id === booking.idCourt)?.namePista || booking.idCourt}</td>
                                         <td className="py-2">{users.find(user => user.email === booking.email)?.name || 'Unknown User'}</td>
                                         <td className="py-2">
@@ -245,6 +282,9 @@ const CourtReservationDashboard = () => {
                         </tbody>
                     </table>
                 </div>
+                <div className="flex justify-center mt-4">
+                    {renderPaginationButtons(totalPagesRecent, currentPageRecent, handlePageChangeRecent)}
+                </div>            
             </div>
         </div>
     );

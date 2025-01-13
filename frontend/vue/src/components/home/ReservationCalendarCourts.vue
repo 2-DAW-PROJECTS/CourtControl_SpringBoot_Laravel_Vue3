@@ -19,7 +19,7 @@
                 <div v-for="(day, index) in calendarDays" 
                     :key="index"
                     class="day-cell"
-                    :class="{ 'inactive': !day.isCurrentMonth, 'today': day.isToday, 'pulse-effect': day.isToday }"
+                    :class="{ 'inactive': !day.isCurrentMonth, 'today': day.isToday }"
                     :style="{ backgroundColor: getConcurrencyColor(day.dayNumber) }">
                     <div class="day-content">
                         <span class="day-number">{{ day.dayNumber }}</span>
@@ -47,7 +47,7 @@
                     <span>Alta</span>
                 </div>
                 <div class="legend-item">
-                    <div class="color-box pulse-box"></div>
+                    <div class="color-box today-box"></div>
                     <span>Hoy</span>
                 </div>
             </div>
@@ -329,31 +329,12 @@ export default {
     font-weight: 500;
 }
 
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(92, 98, 211, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(92, 98, 211, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(92, 98, 211, 0);
-    }
+.today {
+    border: 3px solid #5c62d3;
 }
 
-.pulse-effect::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, rgba(92, 98, 211, 0.2) 0%, rgba(92, 98, 211, 0) 70%);
-    animation: pulse 2s infinite;
-}
-
-.pulse-box {
-    background: linear-gradient(45deg, #5c62d3, #8186e0);
-    animation: pulse 2s infinite;
+.today-box {
+    border: 3px solid #5c62d3;
+    background-color: #f6f1de;
 }
 </style>
