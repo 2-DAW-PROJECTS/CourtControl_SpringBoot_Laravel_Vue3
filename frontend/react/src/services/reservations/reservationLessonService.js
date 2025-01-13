@@ -16,6 +16,19 @@ export const fetchAllLessonBookings = async (token) => {
     }
 };
 
+export const getAllHours = async (token) => {
+    try {
+        const response = await axios.get('http://localhost:8085/api/hours', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
+    }
+};
+
 export const fetchLessonBookingById = async (id, token) => {
     try {
         const response = await axios.get(`${API_URL}/${id}`, {
