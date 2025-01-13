@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings/lessons")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:3000"})
 public class BookingLessonController {
 
     @Autowired
@@ -29,18 +29,10 @@ public class BookingLessonController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingLessonDTO> createLesson(@RequestBody BookingLessonDTO bookingLessonDTO) {
-        BookingLessonDTO createdLesson = bookingLessonService.createLesson(bookingLessonDTO);
+    public ResponseEntity<BookingLessonDTO> createLesson(@RequestHeader("Authorization") String token, @RequestBody BookingLessonDTO bookingLessonDTO) {
+        // Se pasa el token para extraer id_user y email
+        BookingLessonDTO createdLesson = bookingLessonService.createLesson(token, bookingLessonDTO);
         return ResponseEntity.status(201).body(createdLesson);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<BookingLessonDTO> updateLesson(@PathVariable Long id, @RequestBody BookingLessonDTO bookingLessonDTO) {
-        BookingLessonDTO updatedLesson = bookingLessonService.updateLesson(id, bookingLessonDTO);
-        if (updatedLesson == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedLesson);
     }
 
     @DeleteMapping("/{id}")

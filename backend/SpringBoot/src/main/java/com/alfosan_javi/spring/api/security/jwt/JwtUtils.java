@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Date;
-import javax.servlet.http.HttpServletRequest;  // Importación correcta de HttpServletRequest
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtUtils {
@@ -111,6 +111,7 @@ public class JwtUtils {
         }
     }
 
+    // Agrega este método
     public long getRefreshExpirationMs() {
         return refreshExpirationMs;
     }

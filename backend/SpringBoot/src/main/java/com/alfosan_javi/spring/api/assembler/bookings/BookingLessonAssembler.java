@@ -19,6 +19,7 @@ public class BookingLessonAssembler {
         dto.setIsClosed(bookingLesson.getIsClosed());
         dto.setCreatedAt(bookingLesson.getCreatedAt());
         dto.setUpdatedAt(bookingLesson.getUpdatedAt());
+        dto.setEmail(bookingLesson.getEmail()); 
         return dto;
     }
 
@@ -34,6 +35,7 @@ public class BookingLessonAssembler {
         bookingLesson.setIsClosed(dto.getIsClosed());
         bookingLesson.setCreatedAt(dto.getCreatedAt());
         bookingLesson.setUpdatedAt(dto.getUpdatedAt());
+        bookingLesson.setEmail(dto.getEmail());  
         return bookingLesson;
     }
 }

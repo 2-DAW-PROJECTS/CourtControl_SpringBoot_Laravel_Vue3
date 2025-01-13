@@ -1,115 +1,154 @@
-    <template>
-        <br><br><br><br>
-        <div class="lesson-details-container" v-if="lesson">
-
-            <!-- Back Button -->
-            <button class="back-button" @click="goBack">
-                <font-awesome-icon :icon="['fas', 'backward']" /> Volver
-            </button>
-
-            <!-- Header -->
-            <div class="lesson-header">
-                <h1>{{ lesson.nameClass }}</h1>
-                <span class="level-tag">{{ lesson.level }}</span>
-            </div>
-
-            <!-- Content -->
-            <div class="lesson-content">
-                <!-- Left Column: Image -->
-                <div class="lesson-image">
-                    <img 
-                        :src="require('@/assets/img_lessons/' + lesson.img)"
-                        :alt="lesson.nameClass"
-                    />
-                </div>
-
-                <!-- Right Column: Info and Description -->
-                <div class="info-section">
-                    <h3>Características</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Días:</span>
-                            <strong>{{ lesson.days }}</strong>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Duración:</span>
-                            <strong>{{ lesson.duration }} minutos</strong>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-user"></i>
-                            <span>Coach:</span>
-                            <strong>{{ lesson.coach }}</strong>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-users"></i>
-                            <span>Capacidad Máxima:</span>
-                            <strong>{{ lesson.maxCapacity }}</strong>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-dollar-sign"></i>
-                            <span>Costo Base:</span>
-                            <strong>{{ lesson.baseCost }} €</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="description-section">
-                    <h3>Descripción</h3>
-                    <p>{{ lesson.description }}</p>
-                    <button class="reserve-button" :disabled="!lesson.isActive || !isLoggedIn" @click="handleReservation">
-                    <i class="fas fa-calendar-plus"></i> Reservar Ahora
-                </button>
-                    <!-- <p>{{ lesson }}</p> -->
-                </div>
-            </div>
+<template>
+    <br><br><br><br>
+    <div class="lesson-details-container" v-if="lesson">
+      <!-- Back Button -->
+      <button class="back-button" @click="goBack">
+        <font-awesome-icon :icon="['fas', 'backward']" /> Volver
+      </button>
+  
+      <!-- Header -->
+      <div class="lesson-header">
+        <h1>{{ lesson.nameClass }}</h1>
+        <span class="level-tag">{{ lesson.level }}</span>
+      </div>
+  
+      <!-- Content -->
+      <div class="lesson-content">
+        <!-- Left Column: Image -->
+        <div class="lesson-image">
+          <img 
+            :src="require('@/assets/img_lessons/' + lesson.img)"
+            :alt="lesson.nameClass"
+          />
         </div>
-
-        <!-- Loading Section -->
-        <div v-else class="loading">
-            <i class="fas fa-spinner fa-spin"></i>
-            Cargando detalles...
+  
+        <!-- Right Column: Info and Description -->
+        <div class="info-section">
+          <h3>Características</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Días:</span>
+              <strong>{{ lesson.days }}</strong>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <span>Duración:</span>
+              <strong>{{ lesson.duration }} minutos</strong>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-user"></i>
+              <span>Coach:</span>
+              <strong>{{ lesson.coach }}</strong>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-users"></i>
+              <span>Capacidad Máxima:</span>
+              <strong>{{ lesson.maxCapacity }}</strong>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-dollar-sign"></i>
+              <span>Costo Base:</span>
+              <strong>{{ lesson.baseCost }} €</strong>
+            </div>
+          </div>
         </div>
-    </template>
-
-    <script>
-    import { ref, onMounted, computed } from 'vue';
-    import { useStore } from 'vuex';
-    import { useRoute, useRouter } from 'vue-router';
-    import Constant from '@/Constant';
-
-    export default {
-        name: 'LessonDetails',
-        setup() {
-            const store = useStore();
-            const route = useRoute();
-            const router = useRouter();
-            const lesson = ref(null);
-
-            onMounted(async () => {
-                const lessonId = route.params.id;
-                await store.dispatch(`lessons/${Constant.FETCH_LESSON_BY_ID}`, lessonId);
-                lesson.value = store.getters['lessons/currentLesson'];
+  
+        <div class="description-section">
+          <h3>Descripción</h3>
+          <p>{{ lesson.description }}</p>
+          <button class="reserve-button" 
+                  :disabled="!lesson.active" 
+                  :class="{ 'active-reserve': lesson.active, 'inactive-reserve': !lesson.active }" 
+                  @click="handleReservation">
+            <i class="fas fa-calendar-plus"></i> 
+            {{ lesson.active ? 'Reservar Ahora' : 'Lección Inactiva' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Loading Section -->
+    <div v-else class="loading">
+      <i class="fas fa-spinner fa-spin"></i>
+      Cargando detalles...
+    </div>
+  </template>
+  
+  <script>
+  import { ref, onMounted, computed } from 'vue';
+  import { useStore } from 'vuex';
+  import { useRoute, useRouter } from 'vue-router';
+  import Constant from '@/Constant';
+  import Swal from 'sweetalert2';
+  
+  export default {
+    name: 'LessonDetails',
+    setup() {
+      const store = useStore();
+      const route = useRoute();
+      const router = useRouter();
+      const lesson = ref(null);
+  
+      onMounted(async () => {
+        const lessonId = route.params.id;
+        await store.dispatch(`lessons/${Constant.FETCH_LESSON_BY_ID}`, lessonId);
+        lesson.value = store.getters['lessons/currentLesson'];
+  
+        // Verifica si la lección está activa
+        console.log('lesson.active:', lesson.value.active);
+        console.log('isLoggedIn:', store.getters['auth/isLoggedIn']);
+      });
+  
+      const goBack = () => {
+        router.back();
+      };
+  
+      const handleReservation = async () => {
+        if (!store.getters['auth/isLoggedIn']) {
+          router.push({ name: 'Login' });
+        } else {
+          // Lógica de reserva aquí
+          const currentDate = new Date();
+          const idDay = currentDate.getDate();
+          const idMonth = currentDate.getMonth() + 1; // 1-based month (1 = January)
+  
+          try {
+            // Crear la reserva usando la API
+            await store.dispatch('bookingLesson/bookLesson', {
+              idDay,
+              idMonth,
+              idLesson: lesson.value.id,
+              capacity: lesson.value.maxCapacity,
+              currentCapacity: lesson.value.currentCapacity,
+              isClosed: lesson.value.isClosed,
             });
+  
+            Swal.fire({
+              icon: 'success',
+              title: 'Reserva realizada',
+              text: 'La reserva se ha creado exitosamente.',
+            });
+          } catch (error) {
+            console.error('Error al hacer la reserva:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al hacer la reserva. ' + error.message,
+            });
+          }
+        }
+      };
+  
+      const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+  
+      return { lesson, goBack, handleReservation, isLoggedIn };
+    },
+  };
+  </script>
+  
 
-            const goBack = () => {
-                router.back();
-            };
-            const handleReservation = () => {
-            if (!store.getters['auth/isLoggedIn']) {
-                router.push({ name: 'Login' });
-            } else {
-                // Lógica de reserva aquí
-            }
-        };
 
-        const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
-
-        return { lesson, goBack, handleReservation, isLoggedIn };
-        },
-    };
-    </script>
 
     <style scoped>
     /* General Reset and Font Imports */

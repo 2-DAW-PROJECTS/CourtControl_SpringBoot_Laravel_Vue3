@@ -13,6 +13,7 @@ import { profile } from './modules/client/profile';
 // Importamos el módulo bookingCourtsUserProfile
 import { bookingCourtsUserProfile } from './modules/client/bookingCourtsUserProfile'; 
 import reservationModule from './modules/client/reservationsCourts';
+import { bookingLesson } from './modules/client/bookingLesson'; 
 
 export default createStore({
   strict: process.env.NODE_ENV !== 'production',
@@ -48,7 +49,8 @@ export default createStore({
     summers,
     summersDashboard,
     auth,
-    bookingCourtsUserProfile,  // Asegúrate de que el módulo esté correctamente registrado
+    bookingCourtsUserProfile,
+    bookingLesson,
     reservations: reservationModule
   },
 });

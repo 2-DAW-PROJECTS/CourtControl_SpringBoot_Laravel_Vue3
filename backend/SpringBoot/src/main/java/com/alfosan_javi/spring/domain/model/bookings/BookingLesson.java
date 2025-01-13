@@ -42,6 +42,9 @@ public class BookingLesson {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "email", nullable = true)  // Agregamos el campo email
+    private String email;
+
     // Agregar el método getIsClosed para garantizar compatibilidad
     public boolean getIsClosed() {
         return isClosed;
