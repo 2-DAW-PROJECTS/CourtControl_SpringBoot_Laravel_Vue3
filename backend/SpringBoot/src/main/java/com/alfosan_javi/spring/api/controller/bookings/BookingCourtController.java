@@ -128,13 +128,50 @@ public class BookingCourtController {
             this.idDay = idDay;
         }
 
-        public int getIdMonth() {  // Añadir el getter para idMonth
+        public int getIdMonth() {
             return idMonth;
         }
 
-        public void setIdMonth(int idMonth) {  // Añadir el setter para idMonth
+        public void setIdMonth(int idMonth) {
             this.idMonth = idMonth;
         }
     }
 
+    @GetMapping("/byuser")
+    public ResponseEntity<List<BookingCourtDTO>> getBookingsByUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String email = authentication.getName();
+        List<BookingCourtDTO> bookings = bookingCourtService.getBookingsByEmail(email);
+
+        if (bookings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(bookings);
+    }
+
+            // Endpoint DELETE para eliminar una reserva por id, solo si pertenece al usuario autenticado
+    @DeleteMapping("/byuser/{id}")
+    public ResponseEntity<Void> deleteBookingByUser(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String email = authentication.getName();  // Obtener el email del usuario desde el token
+        boolean deleted = bookingCourtService.deleteBookingByUser(id, email);
+        
+        if (deleted) {
+            return ResponseEntity.noContent().build();  // Elimina la reserva y responde con 204
+        }
+        
+        return ResponseEntity.notFound().build();  // Si no se encuentra la reserva, retorna 404
+    }
 }
+

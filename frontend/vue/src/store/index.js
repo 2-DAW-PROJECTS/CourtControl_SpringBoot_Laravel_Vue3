@@ -10,10 +10,9 @@ import { summers } from './modules/client/summers';
 import { summersDashboard } from './modules/dashboard/summersDashboard';
 import { auth } from './modules/client/auth';
 import { profile } from './modules/client/profile';
-// import { user } from './modules/client/user';
-import bookingCourt from './modules/client/bookingCourt';
+// Importamos el módulo bookingCourtsUserProfile
+import { bookingCourtsUserProfile } from './modules/client/bookingCourtsUserProfile'; 
 import reservationModule from './modules/client/reservationsCourts';
-
 
 export default createStore({
   strict: process.env.NODE_ENV !== 'production',
@@ -49,8 +48,7 @@ export default createStore({
     summers,
     summersDashboard,
     auth,
-    bookingCourt,
-    // user,
+    bookingCourtsUserProfile,  // Asegúrate de que el módulo esté correctamente registrado
     reservations: reservationModule
   },
 });
