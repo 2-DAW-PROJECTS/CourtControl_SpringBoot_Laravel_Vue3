@@ -32,7 +32,7 @@ public class SecurityConfig {
             .cors(cors -> cors.disable())
             .authorizeRequests(auth -> auth
                 // Rutas públicas
-                .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/**", "/api/bookings/court", "/api/bookings/court/**", "/api/hours/**").permitAll()
+                .requestMatchers("/api/auth/**", "/api/courts/**", "/api/lessons/**", "/api/summers/**", "/api/users/**", "/api/bookings/court", "/api/bookings/court/**", "/api/bookings/lessons", "/api/bookings/lessons/**", "/api/bookings/summers", "/api/bookings/summers/**", "/api/hours/**").permitAll()
                 // Rutas protegidas
                 .requestMatchers("/api/users/profile").authenticated()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
